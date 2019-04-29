@@ -43,7 +43,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_maxy = NA, p_txt_size = 7,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
-                    p_freq_size = .5, p_cf_size = .5, p_cf_msize = 1, p_zstar_size = .5,
+                    p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
                     p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3) {
 
     # ------------------------------------------------
@@ -203,7 +203,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # get max of binned_data to position b
     zmax <- max(firstpass_prep$data_binned$bin)
     posx <- zstar + (zmax - zstar)*.7
-    posy <- max(firstpass_prep$data_binned$counterfactuals_for_graph, counterfactuals_for_graph)*.8
+    posy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)*.8
 
     # get name of z_vector to pass as xtitle if chosen
     if (p_xtitle == "z_name") {
@@ -218,7 +218,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    binwidth, bandwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size,
                    p_theme, p_freq_color, p_cf_color, p_zstar_color,
-                   p_freq_size, p_cf_size, p_cf_msize, p_zstar_size,
+                   p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                    p_b, b = b_estimate, b_sd = b_sd,
                    p_b_xpos, p_b_ypos, p_b_size)
 

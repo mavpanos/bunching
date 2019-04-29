@@ -12,7 +12,7 @@ plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bandwidth, bins_excl_l, bins_excl_r,
                           p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
-                          p_freq_size, p_cf_size, p_cf_msize, p_zstar_size,
+                          p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd,
                           p_b_xpos, p_b_ypos, p_b_size) {
 
@@ -34,14 +34,16 @@ plot_bunching <- function(binned_data, cf, zstar,
     # combine b and b_sd to pass to graph
     b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
 
+    # prepare color vector for main lines
+    freq_cf_colors <- c("freq_orig" = p_freq_color, "cf_graph" = p_cf_color)
     # the plot
     bunch_plot <- ggplot2::ggplot(df_plot, aes(y = value, x = bin, color = key)) +
+        scale_colour_manual(values=freq_cf_colors) +
         # plot vertical lines first so that they appear behind plot binpoints
         geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
         # plot main graph lines
-        geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_cf_msize) + geom_line(size = p_cf_size) +
-        geom_line(data = df_plot[df_plot$key == "cf_graph",], size = p_freq_size) +
-        scale_colour_manual(values=c(p_cf_color, p_freq_color)) +
+        geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) + geom_line(size = p_freq_size) +
+        geom_line(data = df_plot[df_plot$key == "cf_graph",], size = p_cf_size) +
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
         theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),

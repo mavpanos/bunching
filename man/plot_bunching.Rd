@@ -7,7 +7,7 @@
 plot_bunching(binned_data, cf, zstar, binwidth, bandwidth, bins_excl_l,
   bins_excl_r, p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size, p_theme,
   p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
-  p_cf_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size)
+  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated}
@@ -41,8 +41,6 @@ plot_bunching(binned_data, cf, zstar, binwidth, bandwidth, bins_excl_l,
 \item{p_freq_size}{plot's frequency line thickness}
 
 \item{p_cf_size}{plot's counterfactual line thickness}
-
-\item{p_cf_msize}{plot's counterfactual markers' size}
 
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 
