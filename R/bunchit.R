@@ -148,7 +148,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     firstpass_prep <- prepare_data(z_vector,binv,zstar,binwidth, bins_l, bins_r, poly,bins_excl_l, bins_excl_r, rn, extra_fe)
 
     # -----------------------------
-    # 3. run first pass regression
+    # 2. run first pass regression
     # -----------------------------
 
     firstpass <- fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula)
@@ -160,7 +160,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     e_estimate <- elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
     model_fit <- firstpass$coefficients
     # -----------------------------------------
-    # 4. if no correction needed, do bootstrap
+    # 3. if no correction needed, do bootstrap
     # -----------------------------------------
 
     if(correct == F) {
@@ -176,7 +176,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
     # ----------------------------------------------------------
-    # 5. if correction needed, do that first to get residuals
+    # 4. if correction needed, do that first to get residuals
     # ----------------------------------------------------------
     if (correct == T) {
         # initial correction to get vector of residuals for bootstrap for later
@@ -198,7 +198,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
     # ---------------------------------------------
-    # 6. make plot
+    # 5. make plot
     # ---------------------------------------------
     # get max of binned_data to position b
     zmax <- max(firstpass_prep$data_binned$bin)
