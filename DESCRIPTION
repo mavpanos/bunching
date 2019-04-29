@@ -10,7 +10,7 @@ Description: Implements the bunching estimator (current version for kinks).
     Produces publishable-style plots with lots of functionality on choosing plot options
 URL: http://github.com/mavpanos/bunching
 BugReports: https://github.com/mavpanos/bunching/issues
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr,
