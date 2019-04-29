@@ -10,7 +10,7 @@
 
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bandwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size,
+                          p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd,
@@ -36,18 +36,22 @@ plot_bunching <- function(binned_data, cf, zstar,
 
     # prepare color vector for main lines
     freq_cf_colors <- c("freq_orig" = p_freq_color, "cf_graph" = p_cf_color)
+    freq_cf_sizes <- c("freq_orig" = p_freq_size, "cf_graph" = p_cf_size)
+
     # the plot
-    bunch_plot <- ggplot2::ggplot(df_plot, aes(y = value, x = bin, color = key)) +
-        scale_colour_manual(values=freq_cf_colors) +
+    bunch_plot <- ggplot2::ggplot(df_plot, aes(y = value, x = bin, color = key, size = key)) +
+        # plot main lines, pass size and color options
+        geom_line() + scale_size_manual(values = freq_cf_sizes) + scale_colour_manual(values = freq_cf_colors) +
         # plot vertical lines first so that they appear behind plot binpoints
         geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
-        # plot main graph lines
-        geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) + geom_line(size = p_freq_size) +
-        geom_line(data = df_plot[df_plot$key == "cf_graph",], size = p_cf_size) +
+        # plot connector point marker for freq line
+        geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
+        # options for plot theme/titles etc.
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
         theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
-              text = element_text(size=p_txt_size)) +
+              text = element_text(size=p_axis_txt_size),
+              axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
         labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ylim(0,p_maxy) + guides(fill=FALSE, color=FALSE)
 
     # choice to show b on plot or not
@@ -59,3 +63,4 @@ plot_bunching <- function(binned_data, cf, zstar,
 
     return(bunch_plot)
 }
+

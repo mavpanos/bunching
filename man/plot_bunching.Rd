@@ -5,9 +5,10 @@
 \title{Create bunching plot.}
 \usage{
 plot_bunching(binned_data, cf, zstar, binwidth, bandwidth, bins_excl_l,
-  bins_excl_r, p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size, p_theme,
-  p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
-  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size)
+  bins_excl_r, p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size,
+  p_axis_val_size, p_theme, p_freq_color, p_cf_color, p_zstar_color,
+  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size, p_b, b, b_sd,
+  p_b_xpos, p_b_ypos, p_b_size)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated}
@@ -27,8 +28,6 @@ plot_bunching(binned_data, cf, zstar, binwidth, bandwidth, bins_excl_l,
 \item{p_ytitle}{plot y_axis label.}
 
 \item{p_maxy}{plot's maximum y_axis value.}
-
-\item{p_txt_size}{text size of plot' axes' labels.}
 
 \item{p_theme}{plot theme.}
 

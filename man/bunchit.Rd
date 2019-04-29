@@ -8,10 +8,11 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
   correct = T, iter_max = 200, t0, t1, p_title = "",
   p_xtitle = "z_name", p_ytitle = "Count", p_maxy = NA,
-  p_txt_size = 7, p_theme = "bw_light", p_freq_color = "black",
-  p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
-  p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5, p_b = T,
-  p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3)
+  p_axis_txt_size = 7, p_axis_val_size = 7, p_theme = "bw_light",
+  p_freq_color = "black", p_cf_color = "maroon",
+  p_zstar_color = "red", p_freq_size = 0.5, p_cf_size = 0.5,
+  p_freq_msize = 1, p_zstar_size = 0.5, p_b = T, p_b_xpos = posx,
+  p_b_ypos = posy, p_b_size = 3)
 }
 \arguments{
 \item{z_vector}{the vector of (unbinned) data to be analysed.}
@@ -54,8 +55,6 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
-\item{p_txt_size}{text size of plot' axes' labels.}
-
 \item{p_theme}{plot theme.}
 
 \item{p_freq_color}{plot's frequency line color}
@@ -77,6 +76,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 \item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
 
 \item{p_b_size}{size of plot's printed bunching estimate}
+
+\item{p_txt_size}{text size of plot' axes' labels.}
 
 \item{p_cf_msize}{plot's counterfactual markers' size}
 }
