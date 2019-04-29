@@ -9,7 +9,7 @@
 
 
 plot_bunching <- function(binned_data, cf, zstar,
-                          binwidth, bandwidth, bins_excl_l, bins_excl_r,
+                          binwidth, bins_excl_l, bins_excl_r,
                           p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,

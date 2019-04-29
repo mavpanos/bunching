@@ -140,12 +140,22 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
 
+    # -----------------------------
+    # 1. bin the data
+    # -----------------------------
+    # turn data into dataframe of binned counts
+    binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 
+    # -----------------------------
+    # 2. first pass prep
+    # -----------------------------
+    firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+                                                  poly, bins_excl_l, bins_excl_r, rn, extra_fe)
 
     # -----------------------------
     # 1. prepare data
     # -----------------------------
-    firstpass_prep <- bunching::prepare_data(z_vector,binv,zstar,binwidth, bins_l, bins_r, poly,bins_excl_l, bins_excl_r, rn, extra_fe)
+    #firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar,binwidth, bins_l, bins_r, poly,bins_excl_l, bins_excl_r, rn, extra_fe)
 
     # -----------------------------
     # 2. run first pass regression
@@ -215,7 +225,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         p_theme <- "theme_bw() + theme_light()"
     }
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
-                   binwidth, bandwidth, bins_excl_l, bins_excl_r,
+                   binwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
                    p_theme, p_freq_color, p_cf_color, p_zstar_color,
                    p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
