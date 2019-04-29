@@ -1,11 +1,20 @@
 Package: bunching
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Bunching Estimator
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
+    role = c("aut", "cre"))
+Maintainer: Panos Mavrokonstantis <mavpanos@sgmail.com>
+Description: Implements the bunching estimator (current version for kinks).
+    Flexible function that allows for round number bunching and presence of nearby bunch points within bandwidth.
+    Produces publishable-style plots with lots of functionality on choosing plot options
+URL: http://github.com/mavpanos/bunching
+BugReports: https://github.com/mavpanos/bunching/issues
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports: dplyr,
+    ggplot2,
+    stats,
+    tidyr
+RoxygenNote: 6.1.1.9000
