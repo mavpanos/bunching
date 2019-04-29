@@ -145,29 +145,29 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # -----------------------------
     # 1. prepare data
     # -----------------------------
-    firstpass_prep <- prepare_data(z_vector,binv,zstar,binwidth, bins_l, bins_r, poly,bins_excl_l, bins_excl_r, rn, extra_fe)
+    firstpass_prep <- bunching::prepare_data(z_vector,binv,zstar,binwidth, bins_l, bins_r, poly,bins_excl_l, bins_excl_r, rn, extra_fe)
 
     # -----------------------------
     # 2. run first pass regression
     # -----------------------------
 
-    firstpass <- fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula)
+    firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula)
     # get counterfactual and residuals
     counterfactuals_for_graph <- firstpass$cf_density
     residuals_for_boot <- firstpass$residuals
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
-    e_estimate <- elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
     model_fit <- firstpass$coefficients
     # -----------------------------------------
     # 3. if no correction needed, do bootstrap
     # -----------------------------------------
 
     if(correct == F) {
-        boot_results <- do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot, correction = correct, correction_iterations = iter_max)
+        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot, correction = correct, correction_iterations = iter_max)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
         B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
@@ -180,16 +180,16 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # ----------------------------------------------------------
     if (correct == T) {
         # initial correction to get vector of residuals for bootstrap for later
-        firstpass_corrected <- do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,  max_iterations = iter_max)
+        firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,  max_iterations = iter_max)
         b_estimate <- firstpass_corrected$b_corrected
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
         # we now have the correct residuals. add to our original data in firstpass_prep$data
         # applying correction each time
-        boot_results <- do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot, correction = correct, correction_iterations = iter_max)
+        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot, correction = correct, correction_iterations = iter_max)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
         B_for_output <- firstpass_corrected$B_corrected
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
@@ -214,7 +214,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (p_theme == "bw_light") {
         p_theme <- "theme_bw() + theme_light()"
     }
-    p <- plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
+    p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bandwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size,
                    p_theme, p_freq_color, p_cf_color, p_zstar_color,

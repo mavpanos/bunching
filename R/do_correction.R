@@ -29,7 +29,7 @@ do_correction <- function(thedata, firstpass_results, max_iterations) {
     iteration <- 1
     while(b_diff >= 1 & iteration < max_iterations){
         thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
-        iteration_results <- run_reg(thedata, model_formula)
+        iteration_results <- bunching::fit_bunching(thedata, model_formula)
         bunchers_excess_updated <- iteration_results$bunchers_excess
         cf_bunchers_updated <- iteration_results$cf_bunchers
         c0_updated <- cf_bunchers_updated/bins_bunchers

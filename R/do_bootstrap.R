@@ -21,13 +21,13 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
         # make this "freq" so we can pass to run_reg which requires "freq ~ ..."
         data_for_boot$freq <- data_for_boot$freq_orig
         # next, re-run first pass on this new series, get residuals out of this
-        booted_firstpass <- fit_bunching(data_for_boot, model)
+        booted_firstpass <- bunching::fit_bunching(data_for_boot, model)
 
         if(correction == F) { # if no need for correction, just take this b
             b_boot <- booted_firstpass$b_estimate
             B_boot <- booted_firstpass$bunchers_excess
         } else if (correction == T) {
-            booted_correction <- do_correction(thedata = data_for_boot, firstpass_results = booted_firstpass,
+            booted_correction <- bunching::do_correction(thedata = data_for_boot, firstpass_results = booted_firstpass,
                                                max_iterations = correction_iterations)
             b_boot <- booted_correction$b_corrected
             B_boot <- booted_correction$B_corrected
