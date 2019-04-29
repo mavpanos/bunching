@@ -55,9 +55,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Running variable must be a numeric vector")
     }
 
-    # bin_cut_version: is it one of the 3 allowed ones?
-    if(bin_cut_version %in% c("min", "max", "median") == F) {
-        stop(" bin_cut_version can only be one of 'min', 'max', 'median' ")
+    # binv: is it one of the 3 allowed ones?
+    if(binv %in% c("min", "max", "median") == F) {
+        stop("binv can only be one of 'min', 'max', 'median' ")
     }
 
     # zstar: is it within range? get max and min of variable
@@ -214,7 +214,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (p_theme == "bw_light") {
         p_theme <- "theme_bw() + theme_light()"
     }
-    g <- make_plot(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
+    p <- plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bandwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_txt_size,
                    p_theme, p_freq_color, p_cf_color, p_zstar_color,
@@ -233,7 +233,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "b_sd" = b_sd,
                    "e" = e_estimate,
                    "e_sd" = e_sd,
-                   "graph" = g,
+                   "graph" = p,
                    "modelfit" = model_fit)
     return(output)
 }
