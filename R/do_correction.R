@@ -56,7 +56,8 @@ do_correction <- function(thedata, firstpass_results, max_iterations) {
     thedata$residuals <- thedata$cf_density - thedata$freq_orig
 
     # generate output (updated with correction)
-    output <- list("data" = thedata, "b_corrected" = b_corrected, "B_corrected" = B_corrected)
+    output <- list("data" = thedata, "coefficients" = iteration_results$coefficients,
+                   "b_corrected" = b_corrected, "B_corrected" = B_corrected)
 
     return(output)
 }
