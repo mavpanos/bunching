@@ -21,10 +21,10 @@ prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     data_binned$z_rel = (data_binned$bin - zstar)/binwidth
 
     ##################################################
-    #        DATA PREP: dummy for zstar (kink)
+    #        DATA PREP: dummy for zstar
     ##################################################
 
-    data_binned$kink <- ifelse(data_binned$bin == zstar,1,0)
+    data_binned$zstar <- ifelse(data_binned$bin == zstar,1,0)
 
     ##################################################
     #  DATA PREP: dummy for extra kinks to control for
@@ -60,7 +60,7 @@ prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     bins_excluded_all <- c()
 
     #-----------------
-    # below kinkpoint
+    # below zstar
     #-----------------
 
     if(bins_excl_l != 0){
@@ -75,7 +75,7 @@ prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     }
 
     #-----------------
-    # above kinkpoint
+    # above zstar
     #-----------------
     if(bins_excl_r != 0){
 
@@ -96,12 +96,12 @@ prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     ##############################################
 
     # make indicator for bunching region
-    #  if bins_excluded_all exist (i.e. we didnt set bunching region to just kink)
-    # sum bins_excludd_all and kink
+    #  if bins_excluded_all exist (i.e. we didnt set bunching region to just zstar)
+    # sum bins_excludd_all and zstar
     if (length(bins_excluded_all) > 0) {
-        data_binned$bunch_region <- rowSums(data_binned[,c("kink",bins_excluded_all)])
+        data_binned$bunch_region <- rowSums(data_binned[,c("zstar",bins_excluded_all)])
     } else {
-        data_binned$bunch_region <- data_binned$kink
+        data_binned$bunch_region <- data_binned$zstar
     }
     ######################################################
     # DATA PREP: INDICATOR FOR BINS ABOVE BUNCHING REGION
@@ -140,7 +140,7 @@ prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     #  EQUATION TO PASS TO LM
     ##############################################
 
-    rhs_vars <- c("kink", extra_fe_vector,
+    rhs_vars <- c("zstar", extra_fe_vector,
                   polynomial_vector,
                   rn_vector,
                   bins_excluded_all)

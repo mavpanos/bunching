@@ -13,8 +13,8 @@ fit_bunching <- function(thedata, themodelformula) {
 
     # estimate couterfactual
     thedata$cf <- stats::predict(model_fit, thedata)
-    # remove kink dummy effect
-    thedata$cf <- thedata$cf - (thedata$kink * coefficients["kink", "Estimate"])
+    # remove zstar dummy effect
+    thedata$cf <- thedata$cf - (thedata$zstar * coefficients["zstar", "Estimate"])
 
     # remove excluded region dummy effects
     bins_excluded_in_reg <- rownames(coefficients)[grepl("bin_excl",rownames(coefficients))]
