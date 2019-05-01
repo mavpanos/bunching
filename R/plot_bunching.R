@@ -14,7 +14,8 @@ plot_bunching <- function(binned_data, cf, zstar,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd,
-                          p_b_xpos, p_b_ypos, p_b_size) {
+                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, domregion_color = NA) {
+
 
     # get upper bound to customize plot region
     zmax <- max(binned_data$bin,na.rm = T)
@@ -30,6 +31,15 @@ plot_bunching <- function(binned_data, cf, zstar,
     vlines <- c(lb, zstar, ub)
     vlines_type <- rep("solid", 3) # make them all solid. if one is different, make dashed
     vlines_type[vlines != zstar] <- "dashed"
+    vlines_color <- rep(p_zstar_color, 3)
+
+    # if it's a notch, add domregion bin marker to vlines
+    if(notch == T) {
+        bin_domregion <- domregion(zstar, t0, t1, binwidth)
+        vlines <- c(vlines, bin_domregion)
+        vlines_type <- c(vlines_type, "dashed")
+        vlines_color <- c(vlines_color, domregion_color)
+    }
 
     # combine b and b_sd to pass to graph
     b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
@@ -43,7 +53,8 @@ plot_bunching <- function(binned_data, cf, zstar,
         # plot main lines, pass size and color options
         geom_line() + scale_size_manual(values = freq_cf_sizes) + scale_colour_manual(values = freq_cf_colors) +
         # plot vertical lines first so that they appear behind plot binpoints
-        geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
+        #geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
+        geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_size) +
         # plot connector point marker for freq line
         geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
         # options for plot theme/titles etc.

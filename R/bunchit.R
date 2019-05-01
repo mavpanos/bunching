@@ -35,6 +35,7 @@
 #' @param t1 marginal/average tax rate above zstar. see notch option.
 #' @param notch whether it is a notch or kink. Default is kink.
 #' @param force_notch whether to enforce manual choice of zu in notch case.
+#' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -46,7 +47,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
                     p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
-                    p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3) {
+                    p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3, domregion_color = "grey40") {
 
     # ------------------------------------------------
     # check that inputs make sense
@@ -206,6 +207,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         }
         # assign final zu_bin to bins_excl_r (used for plotting)
         bins_excl_r <- zu_bin
+
     }
 
     # after fitting is done, extract info (counterfactual, residuals, etc.)
@@ -275,13 +277,17 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (p_theme == "bw_light") {
         p_theme <- "theme_bw() + theme_light()"
     }
+
+    z_dominated <- domregion(zstar, t0,t1, binwidth)
+
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
                    p_theme, p_freq_color, p_cf_color, p_zstar_color,
                    p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                    p_b, b = b_estimate, b_sd = b_sd,
-                   p_b_xpos, p_b_ypos, p_b_size)
+                   p_b_xpos, p_b_ypos, p_b_size, t0, t1, notch, domregion_color)
+
 
 
     output <- list("data" = firstpass_prep$data_binned,

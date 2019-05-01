@@ -7,7 +7,8 @@
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
   p_theme, p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
-  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size)
+  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
+  t0 = NA, t1 = NA, notch = F, domregion_color = NA)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated}
@@ -49,6 +50,12 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
 
 \item{p_b_size}{size of plot's printed bunching estimate}
+
+\item{t0}{marginal/average tax rate below zstar. see notch option.}
+
+\item{t1}{marginal/average tax rate above zstar. see notch option.}
+
+\item{notch}{whether it is a notch or kink. Default is kink.}
 }
 \value{
 A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
