@@ -4,7 +4,7 @@
 \alias{do_correction}
 \title{Implements correction for integration constraint.}
 \usage{
-do_correction(thedata, firstpass_results, max_iterations)
+do_correction(thedata, firstpass_results, max_iterations, T0)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
@@ -12,6 +12,8 @@ do_correction(thedata, firstpass_results, max_iterations)
 \item{firstpass_results}{initial bunching estimates without correction.}
 
 \item{max_iterations}{maximum number of iterations for counterfactual shifting.}
+
+\item{T0}{size of notch (for kink, T0 = 0).}
 }
 \value{
 The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).

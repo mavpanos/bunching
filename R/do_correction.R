@@ -3,13 +3,14 @@
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param firstpass_results initial bunching estimates without correction.
 #' @param max_iterations maximum number of iterations for counterfactual shifting.
+#' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}} \code{\link{fit_bunching}}
 #' @return The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).
 #' @export
 
 
 
-do_correction <- function(thedata, firstpass_results, max_iterations) {
+do_correction <- function(thedata, firstpass_results, max_iterations, T0) {
 
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
@@ -29,7 +30,7 @@ do_correction <- function(thedata, firstpass_results, max_iterations) {
     iteration <- 1
     while(b_diff >= 1 & iteration < max_iterations){
         thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
-        iteration_results <- bunching::fit_bunching(thedata, model_formula)
+        iteration_results <- bunching::fit_bunching(thedata, model_formula, T0)
         bunchers_excess_updated <- iteration_results$bunchers_excess
         cf_bunchers_updated <- iteration_results$cf_bunchers
         c0_updated <- cf_bunchers_updated/bins_bunchers

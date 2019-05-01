@@ -1,12 +1,14 @@
 #' Fit  bunching model and estimate excess mass.
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param themodelformula formula to fit.
+#' @inheritParams bunchit
 #' @return coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
 #' @seealso \code{\link{bunchit}}, \code{\link{prepare_data}}
 #' @export
 
 
-fit_bunching <- function(thedata, themodelformula) {
+fit_bunching <- function(thedata, themodelformula, T0) {
+
     model_fit <- stats::lm(themodelformula,thedata)
     coefficients <- summary(model_fit)$coefficients
     residuals <- stats::residuals(model_fit)
@@ -22,8 +24,26 @@ fit_bunching <- function(thedata, themodelformula) {
         thedata$cf <- thedata$cf - (thedata[[i]] * coefficients[i,"Estimate"] )
     }
 
-    # number of bins in excluded region
-    bins_bunchers <- sum(thedata$bunch_region)
+    # estimate bunching mass by region: outside bunching region, zl to zstar, and (above) zstar to zu
+    # separation of zl_zstar and zstar_zu is useful for notches
+
+    # bins_excl_r doesnt get updated here so must do it manually
+    # get number of bins above zstar through formula since that will get updated for notch iterations
+    bins_zstar_zu <- sum(grepl("bin_excl_r",rownames(coefficients)))
+    bins_zl_zstar <- sum(grepl("bin_excl_l",rownames(coefficients))) + 1 # 1 is for the zstar point
+
+    # get zstar value
+    zstarvalue <- thedata$bin[thedata$zstar == 1]
+    # get binwidth value (difference between binvalue of consecutive rows)
+    binwidthvalue <- thedata$bin[2] - thedata$bin[1]
+    # use these to make indicator for zl_zstar and zstar_zu
+    thedata$zl_zstar <- ifelse((thedata$bin >= zstarvalue - (binwidthvalue * (bins_zl_zstar - 1))) & (thedata$bin <= zstarvalue), 1, 0)
+    thedata$zstar_zu <- ifelse((thedata$bin <= zstarvalue + (binwidthvalue * bins_zstar_zu)) & (thedata$bin > zstarvalue), 1, 0)
+
+    # use these to make indicator by bunching region
+    thedata$bunch_region <- ifelse(thedata$zl_zstar == 1, "zl_zstar",
+                                   ifelse(thedata$zstar_zu == 1, "zstar_zu",
+                                          "outside_bunching"))
 
     # counts by bunching_region:
     bunching_region_count <- thedata %>%
@@ -32,13 +52,41 @@ fit_bunching <- function(thedata, themodelformula) {
                          cf = sum(cf),
                          excess = actual - cf)
 
-    # find c0 (avg per bin counterfactual count in excluded region)
-    bunchers_excess <- as.numeric(bunching_region_count[which(bunching_region_count$bunch_region == 1),"excess"])
-    cf_bunchers <- as.numeric(bunching_region_count[which(bunching_region_count$bunch_region == 1),"cf"])
+
+
+    # get usual Bunching Mass estimates
+    B_zl_zstar <- as.numeric(subset(bunching_region_count, bunch_region == "zl_zstar", select = "excess"))
+    B_zstar_zu <- as.numeric(subset(bunching_region_count, bunch_region == "zstar_zu", select = "excess"))
+    # B_zstar_zu will be NA if we have no bins excluded above zstar. set to 0
+    if(is.na(B_zstar_zu)) {
+        B_zstar_zu <- 0
+    }
+    # get B: total bunching from zl to zu (traditional estimate for kinks)
+    bunchers_excess <- B_zl_zstar + B_zstar_zu
+    # counterfactual bunchers
+    cf_bunchers <- sum(subset(bunching_region_count, bunch_region != "outside_bunching", select = "cf"))
+
+    # number of bins in excluded region
+    bins_bunchers <- sum(thedata$bunch_region %in% c("zl_zstar", "zstar_zu"))
+
+    # average per bin counterfactual
     c0 <- cf_bunchers/bins_bunchers
 
-    # get b
+    # normalised b
     b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
+
+    ################################################################################
+    # if Notch, bunchers are only B_zl_zstar, bins_bunchers are only those <= zstar
+    ################################################################################
+    if(T0>0) {
+        bunchers_excess <- B_zl_zstar
+        # number of bins in excluded region
+        bins_bunchers <- sum(thedata$zl_zstar)
+        # average per bin counterfactual
+        c0 <- cf_bunchers/bins_bunchers
+        # normalised b
+        b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
+    }
 
     # return output we need
     output <- list("coefficients" = coefficients,
@@ -48,6 +96,11 @@ fit_bunching <- function(thedata, themodelformula) {
                    "cf_bunchers" = cf_bunchers,
                    "b_estimate" = b_estimate,
                    "bins_bunchers" = bins_bunchers,
-                   "model_formula" = themodelformula)
+                   "model_formula" = themodelformula,
+                   "B_zl_zstar" = B_zl_zstar,
+                   "B_zstar_zu" = B_zstar_zu)
+
+
+
     return(output)
 }

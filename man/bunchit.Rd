@@ -6,13 +6,13 @@
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
-  correct = T, iter_max = 200, t0, t1, p_title = "",
-  p_xtitle = "z_name", p_ytitle = "Count", p_maxy = NA,
-  p_axis_txt_size = 7, p_axis_val_size = 7, p_theme = "bw_light",
-  p_freq_color = "black", p_cf_color = "maroon",
-  p_zstar_color = "red", p_freq_size = 0.5, p_cf_size = 0.5,
-  p_freq_msize = 1, p_zstar_size = 0.5, p_b = T, p_b_xpos = posx,
-  p_b_ypos = posy, p_b_size = 3)
+  correct = T, iter_max = 200, t0, t1, T0 = 0, force_notch = F,
+  p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
+  p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
+  p_theme = "bw_light", p_freq_color = "black",
+  p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
+  p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5, p_b = T,
+  p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3)
 }
 \arguments{
 \item{z_vector}{the vector of (unbinned) data to be analysed.}
@@ -46,6 +46,10 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 \item{t0}{Marginal tax rate below zstar.}
 
 \item{t1}{Marginal tax rate above zstar.}
+
+\item{T0}{size of notch (for kink, T0 = 0).}
+
+\item{force_notch}{whether to enforce manual choice of zu.}
 
 \item{p_title}{plot title.}
 
