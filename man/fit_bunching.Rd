@@ -4,14 +4,14 @@
 \alias{fit_bunching}
 \title{Fit  bunching model and estimate excess mass.}
 \usage{
-fit_bunching(thedata, themodelformula, T0)
+fit_bunching(thedata, themodelformula, notch)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
 
 \item{themodelformula}{formula to fit.}
 
-\item{T0}{size of notch (for kink, T0 = 0).}
+\item{notch}{whether it is a notch or kink. Default is kink.}
 }
 \value{
 coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.

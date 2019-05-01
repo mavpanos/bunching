@@ -31,16 +31,16 @@
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate
 #' @param p_b_ypos plot's yaxis coordinate of bunching estimate
 #' @param p_b_size size of plot's printed bunching estimate
-#' @param t0 Marginal tax rate below zstar.
-#' @param t1 Marginal tax rate above zstar.
-#' @param T0 size of notch (for kink, T0 = 0).
-#' @param force_notch whether to enforce manual choice of zu.
+#' @param t0 marginal/average tax rate below zstar. see notch option.
+#' @param t1 marginal/average tax rate above zstar. see notch option.
+#' @param notch whether it is a notch or kink. Default is kink.
+#' @param force_notch whether to enforce manual choice of zu in notch case.
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly, bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA,
                     n_boot = 50, correct = T, iter_max = 200,
-                    t0, t1, T0 = 0, force_notch = F,
+                    t0, t1, notch = F, force_notch = F,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                     p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
                     p_theme = "bw_light",  p_freq_color = "black",
@@ -152,25 +152,25 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 2. first pass prep and fit
     # -----------------------------
 
-    # If not a notch (T0 == 0), or a notch but we force user choice of bins_excl_r, fit as usual
+    # If not a notch  or a notch but we force user choice of bins_excl_r, fit as usual
 
-    if ((T0 == 0) | (T0 > 0 & force_notch == T)) {
+    if ((notch == F) | (notch == T & force_notch == T)) {
         # prepare data
         firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
         # fit firstpass model
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, T0)
+        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
 
 
 
 
         # otherwise, do data-driven notch correction
-    } else if ((T0 > 0) & (force_notch == F)) {
+    } else if ((notch == T) & (force_notch == F)) {
         # start with only one bin above zstar
         bins_excl_r <- 1
         firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, T0)
+        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
         # extract bunching mass below and missing mass above zstar
         B_below <- firstpass$B_zl_zstar
         M_above <- -firstpass$B_zstar_zu
@@ -199,7 +199,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             # add next order bin_excl_r to formula
             firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
             # re-fit model using the now expanded zu
-            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, T0)
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
             # get new B below and M above
             B_below <- firstpass$B_zl_zstar
             M_above <- -firstpass$B_zstar_zu
@@ -213,7 +213,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     residuals_for_boot <- firstpass$residuals
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
-    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
     model_fit <- firstpass$coefficients
 
 
@@ -223,10 +223,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     if(correct == F) {
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, T0 = T0)
+                                               correction = correct, correction_iterations = iter_max, notch = notch)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
@@ -240,17 +240,17 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (correct == T) {
         # initial correction to get vector of residuals for bootstrap for later
         firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,
-                                                       max_iterations = iter_max, T0 = T0)
+                                                       max_iterations = iter_max, notch = notch)
         b_estimate <- firstpass_corrected$b_corrected
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
         # we now have the correct residuals. add to our original data in firstpass_prep$data
         # applying correction each time
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, T0 = T0)
+                                               correction = correct, correction_iterations = iter_max, notch = notch)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1)
+        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         B_for_output <- firstpass_corrected$B_corrected
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector

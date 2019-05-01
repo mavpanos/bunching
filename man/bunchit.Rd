@@ -6,7 +6,7 @@
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
-  correct = T, iter_max = 200, t0, t1, T0 = 0, force_notch = F,
+  correct = T, iter_max = 200, t0, t1, notch = F, force_notch = F,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
   p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
   p_theme = "bw_light", p_freq_color = "black",
@@ -43,13 +43,13 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{iter_max}{maximum iterations for integration constraint correction.}
 
-\item{t0}{Marginal tax rate below zstar.}
+\item{t0}{marginal/average tax rate below zstar. see notch option.}
 
-\item{t1}{Marginal tax rate above zstar.}
+\item{t1}{marginal/average tax rate above zstar. see notch option.}
 
-\item{T0}{size of notch (for kink, T0 = 0).}
+\item{notch}{whether it is a notch or kink. Default is kink.}
 
-\item{force_notch}{whether to enforce manual choice of zu.}
+\item{force_notch}{whether to enforce manual choice of zu in notch case.}
 
 \item{p_title}{plot title.}
 

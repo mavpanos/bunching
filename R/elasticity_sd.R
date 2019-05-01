@@ -7,6 +7,6 @@
 #' @return  Standard deviation of elasticity estimates.
 #' @export
 
-elasticity_sd <- function(b_vector, binwidth, zstar, t0, t1) {
-    round(sd(elasticity(b_vector, binwidth, zstar, t0, t1), na.rm = T),3)
+elasticity_sd <- function(b_vector, binwidth, zstar, t0, t1, notch) {
+    round(sd(bunching::elasticity(b_vector, binwidth, zstar, t0, t1, notch), na.rm = T),3)
 }

@@ -10,7 +10,7 @@
 
 
 
-do_correction <- function(thedata, firstpass_results, max_iterations, T0) {
+do_correction <- function(thedata, firstpass_results, max_iterations, notch) {
 
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
@@ -30,7 +30,7 @@ do_correction <- function(thedata, firstpass_results, max_iterations, T0) {
     iteration <- 1
     while(b_diff >= 1 & iteration < max_iterations){
         thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
-        iteration_results <- bunching::fit_bunching(thedata, model_formula, T0)
+        iteration_results <- bunching::fit_bunching(thedata, model_formula, notch)
         bunchers_excess_updated <- iteration_results$bunchers_excess
         cf_bunchers_updated <- iteration_results$cf_bunchers
         c0_updated <- cf_bunchers_updated/bins_bunchers

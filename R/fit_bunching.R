@@ -7,8 +7,9 @@
 #' @export
 
 
-fit_bunching <- function(thedata, themodelformula, T0) {
+fit_bunching <- function(thedata, themodelformula, notch) {
 
+    # fit model, extract coefficients and residuals (for bootstrap later)
     model_fit <- stats::lm(themodelformula,thedata)
     coefficients <- summary(model_fit)$coefficients
     residuals <- stats::residuals(model_fit)
@@ -78,7 +79,7 @@ fit_bunching <- function(thedata, themodelformula, T0) {
     ################################################################################
     # if Notch, bunchers are only B_zl_zstar, bins_bunchers are only those <= zstar
     ################################################################################
-    if(T0>0) {
+    if(notch) {
         bunchers_excess <- B_zl_zstar
         # number of bins in excluded region
         bins_bunchers <- sum(thedata$zl_zstar)

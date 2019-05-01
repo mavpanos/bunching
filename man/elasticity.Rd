@@ -4,7 +4,7 @@
 \alias{elasticity}
 \title{Estimate elasticity from single bunching observation.}
 \usage{
-elasticity(beta, binwidth, zstar, t0, t1)
+elasticity(beta, binwidth, zstar, t0, t1, notch)
 }
 \arguments{
 \item{beta}{normalised excess mass.}
@@ -13,9 +13,11 @@ elasticity(beta, binwidth, zstar, t0, t1)
 
 \item{zstar}{the bunching point.}
 
-\item{t0}{Marginal tax rate below zstar.}
+\item{t0}{marginal/average tax rate below zstar. see notch option.}
 
-\item{t1}{Marginal tax rate above zstar.}
+\item{t1}{marginal/average tax rate above zstar. see notch option.}
+
+\item{notch}{whether it is a notch or kink. Default is kink.}
 }
 \value{
 Elasticity estimate.

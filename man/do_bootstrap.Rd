@@ -5,7 +5,7 @@
 \title{Estimate bootstrapped bunching standard error}
 \usage{
 do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
-  correction_iterations, T0)
+  correction_iterations, notch)
 }
 \arguments{
 \item{firstpass_prep}{(binned) data that includes all variables necessary for fitting the model.}
@@ -18,7 +18,7 @@ do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
 
 \item{correction_iterations}{maximum iterations for integration constraint correction.}
 
-\item{T0}{size of notch (for kink, T0 = 0).}
+\item{notch}{whether it is a notch or kink. Default is kink.}
 }
 \value{
 b_vector, b_sd, B_vector, B_sd
