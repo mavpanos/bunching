@@ -16,7 +16,7 @@ domregion(zstar, t0, t1, binwidth)
 \item{binwidth}{width of each bin.}
 }
 \value{
-The bin above zstar where individual is indifferent between there or at zstar. Used for notch
+The z level and bin  above zstar where individual is indifferent between there or at zstar. Used for notch
 }
 \description{
 Estimate z that demarcates dominated region (in notch settings).

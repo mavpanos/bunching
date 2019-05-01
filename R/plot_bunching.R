@@ -35,7 +35,7 @@ plot_bunching <- function(binned_data, cf, zstar,
 
     # if it's a notch, add domregion bin marker to vlines
     if(notch == T) {
-        bin_domregion <- domregion(zstar, t0, t1, binwidth)
+        bin_domregion <- domregion(zstar, t0, t1, binwidth)$zD
         vlines <- c(vlines, bin_domregion)
         vlines_type <- c(vlines_type, "dashed")
         vlines_color <- c(vlines_color, domregion_color)
