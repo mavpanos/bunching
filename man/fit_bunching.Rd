@@ -4,7 +4,7 @@
 \alias{fit_bunching}
 \title{Fit  bunching model and estimate excess mass.}
 \usage{
-fit_bunching(thedata, themodelformula, notch)
+fit_bunching(thedata, themodelformula, notch, zD_bin)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}

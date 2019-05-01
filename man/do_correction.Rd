@@ -4,7 +4,7 @@
 \alias{do_correction}
 \title{Implements correction for integration constraint.}
 \usage{
-do_correction(thedata, firstpass_results, max_iterations, notch)
+do_correction(thedata, firstpass_results, max_iterations, notch, zD_bin)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}

@@ -7,7 +7,7 @@
 #' @export
 
 
-fit_bunching <- function(thedata, themodelformula, notch) {
+fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
 
     # fit model, extract coefficients and residuals (for bootstrap later)
     model_fit <- stats::lm(themodelformula,thedata)
@@ -76,6 +76,8 @@ fit_bunching <- function(thedata, themodelformula, notch) {
     # normalised b
     b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
 
+    # alpha set to NA if we don't do notch below but need to pass to results
+    alpha <- NA
     ################################################################################
     # if Notch, bunchers are only B_zl_zstar, bins_bunchers are only those <= zstar
     ################################################################################
@@ -87,7 +89,14 @@ fit_bunching <- function(thedata, themodelformula, notch) {
         c0 <- cf_bunchers/bins_bunchers
         # normalised b
         b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
+        # alpha: fraction in dominated region zstar to zD bin
+        domregion_freq <- sum(thedata$freq_orig[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
+        domregion_cf <- sum(thedata$cf[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
+        alpha <- round(domregion_freq/domregion_cf,2)
+
     }
+
+
 
     # return output we need
     output <- list("coefficients" = coefficients,
@@ -99,7 +108,8 @@ fit_bunching <- function(thedata, themodelformula, notch) {
                    "bins_bunchers" = bins_bunchers,
                    "model_formula" = themodelformula,
                    "B_zl_zstar" = B_zl_zstar,
-                   "B_zstar_zu" = B_zstar_zu)
+                   "B_zstar_zu" = B_zstar_zu,
+                   "alpha" = alpha)
 
 
 

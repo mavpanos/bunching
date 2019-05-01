@@ -12,7 +12,7 @@
 #' @export
 
 
-do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction, correction_iterations, notch) {
+do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction, correction_iterations, notch, zD_bin) {
     data_for_boot <- firstpass_prep$data_binned
     model <- firstpass_prep$model_formula
 
@@ -22,28 +22,34 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
         # make this "freq" so we can pass to run_reg which requires "freq ~ ..."
         data_for_boot$freq <- data_for_boot$freq_orig
         # next, re-run first pass on this new series, get residuals out of this
-        booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch)
+        booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
 
         if(correction == F) { # if no need for correction, just take this b
             b_boot <- booted_firstpass$b_estimate
             B_boot <- booted_firstpass$bunchers_excess
+            alpha_boot <- booted_firstpass$alpha
+
         } else if (correction == T) {
             booted_correction <- bunching::do_correction(thedata = data_for_boot, firstpass_results = booted_firstpass,
-                                               max_iterations = correction_iterations, notch = notch)
+                                               max_iterations = correction_iterations, notch = notch, zD_bin = zD_bin)
             b_boot <- booted_correction$b_corrected
             B_boot <- booted_correction$B_corrected
+            alpha_boot <- booted_correction$alpha_corrected
         }
-        b_results <- list("b_boot" = b_boot, "B_boot" = B_boot)
+        b_results <- list("b_boot" = b_boot, "B_boot" = B_boot, "alpha_boot" = alpha_boot)
         return(b_results)
     })
 
     b_boot <- unlist(b_vector["b_boot",])
     B_boot <- unlist(b_vector["B_boot",])
+    alpha_boot <- unlist(b_vector["alpha_boot",])
     b_sd <- round(sd(b_boot, na.rm = T),3)
     B_sd <- round(sd(B_boot, na.rm = T),3)
+    alpha_sd <- round(sd(alpha_boot, na.rm = T),3)
 
     output <- list("b_vector" = b_boot, "b_sd" = b_sd,
-                   "B_vector" = B_boot, "B_sd" = B_sd)
+                   "B_vector" = B_boot, "B_sd" = B_sd,
+                   "alpha_vector" = alpha_boot, "alpha_sd" = alpha_sd)
     return(output)
 }
 

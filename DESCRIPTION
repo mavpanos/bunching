@@ -1,11 +1,11 @@
 Package: bunching
 Type: Package
 Title: Bunching Estimator
-Version: 0.2.0
+Version: 0.3.0
 Author: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Maintainer: Panos Mavrokonstantis <mavpanos@sgmail.com>
-Description: Implements the bunching estimator (current version for kinks).
+Description: Implements the bunching estimator (for kinks and notches).
     Flexible function that allows for round number bunching and presence of nearby bunch points within bandwidth.
     Produces publishable-style plots with lots of functionality on choosing plot options
 URL: http://github.com/mavpanos/bunching

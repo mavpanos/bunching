@@ -152,15 +152,17 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # -----------------------------
     # 2. first pass prep and fit
     # -----------------------------
+    z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
+    zD_bin <- z_dominated$zD_bin
 
-    # If not a notch  or a notch but we force user choice of bins_excl_r, fit as usual
+    # If not a notch, or a notch but we force user choice of bins_excl_r, fit as usual
 
     if ((notch == F) | (notch == T & force_notch == T)) {
         # prepare data
         firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
         # fit firstpass model
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
+        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
 
 
@@ -171,7 +173,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         bins_excl_r <- 1
         firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
+        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
         # extract bunching mass below and missing mass above zstar
         B_below <- firstpass$B_zl_zstar
         M_above <- -firstpass$B_zstar_zu
@@ -200,7 +202,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             # add next order bin_excl_r to formula
             firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
             # re-fit model using the now expanded zu
-            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch)
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
             # get new B below and M above
             B_below <- firstpass$B_zl_zstar
             M_above <- -firstpass$B_zstar_zu
@@ -217,7 +219,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     b_estimate <- firstpass$b_estimate
     e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
     model_fit <- firstpass$coefficients
-
+    alpha <- firstpass$alpha
 
     # -----------------------------------------
     # 3. if no correction needed, do bootstrap
@@ -225,13 +227,15 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     if(correct == F) {
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, notch = notch)
+                                               correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
+        alpha_vector <- boot_results$alpha_vector
+        alpha_sd <- boot_results$alpha_sd
 
     }
 
@@ -242,20 +246,22 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (correct == T) {
         # initial correction to get vector of residuals for bootstrap for later
         firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,
-                                                       max_iterations = iter_max, notch = notch)
+                                                       max_iterations = iter_max, notch = notch, zD_bin = zD_bin)
         b_estimate <- firstpass_corrected$b_corrected
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
         # we now have the correct residuals. add to our original data in firstpass_prep$data
         # applying correction each time
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, notch = notch)
+                                               correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         B_for_output <- firstpass_corrected$B_corrected
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
+        alpha_vector <- boot_results$alpha_vector
+        alpha_sd <- boot_results$alpha_sd
         model_fit <- firstpass_corrected$coefficients
     }
 
@@ -278,7 +284,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         p_theme <- "theme_bw() + theme_light()"
     }
 
-    z_dominated <- domregion(zstar, t0,t1, binwidth)
+    #z_dominated <- domregion(zstar, t0,t1, binwidth)
 
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bins_excl_l, bins_excl_r,
@@ -301,7 +307,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "e" = e_estimate,
                    "e_sd" = e_sd,
                    "plot" = p,
-                   "modelfit" = model_fit)
+                   "modelfit" = model_fit,
+                   "alpha" = alpha,
+                   "alpha_vector" = alpha_vector,
+                   "alpha_sd" = alpha_sd)
     return(output)
 }
 

@@ -10,7 +10,7 @@
 
 
 
-do_correction <- function(thedata, firstpass_results, max_iterations, notch) {
+do_correction <- function(thedata, firstpass_results, max_iterations, notch, zD_bin) {
 
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
@@ -30,7 +30,7 @@ do_correction <- function(thedata, firstpass_results, max_iterations, notch) {
     iteration <- 1
     while(b_diff >= 1 & iteration < max_iterations){
         thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
-        iteration_results <- bunching::fit_bunching(thedata, model_formula, notch)
+        iteration_results <- bunching::fit_bunching(thedata, model_formula, notch, zD_bin)
         bunchers_excess_updated <- iteration_results$bunchers_excess
         cf_bunchers_updated <- iteration_results$cf_bunchers
         c0_updated <- cf_bunchers_updated/bins_bunchers
@@ -53,12 +53,18 @@ do_correction <- function(thedata, firstpass_results, max_iterations, notch) {
     # if we did correction, get last cf (this is the correct one) and assign to cf_graph for graphing
     thedata$cf_density <- iteration_results$cf_density
 
+    # get alpha
+    alpha_corrected <- iteration_results$alpha
+
     # get residuals
     thedata$residuals <- thedata$cf_density - thedata$freq_orig
 
+
+
     # generate output (updated with correction)
     output <- list("data" = thedata, "coefficients" = iteration_results$coefficients,
-                   "b_corrected" = b_corrected, "B_corrected" = B_corrected)
+                   "b_corrected" = b_corrected, "B_corrected" = B_corrected,
+                   "alpha_corrected" = alpha_corrected)
 
     return(output)
 }

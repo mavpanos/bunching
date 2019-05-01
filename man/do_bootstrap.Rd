@@ -5,7 +5,7 @@
 \title{Estimate bootstrapped bunching standard error}
 \usage{
 do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
-  correction_iterations, notch)
+  correction_iterations, notch, zD_bin)
 }
 \arguments{
 \item{firstpass_prep}{(binned) data that includes all variables necessary for fitting the model.}
