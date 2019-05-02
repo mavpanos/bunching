@@ -11,11 +11,12 @@
 
 
 do_correction <- function(thedata, firstpass_results, max_iterations, notch, zD_bin) {
-
+    # get initial buncher value, bins of bunchers and model formula
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
     model_formula <- firstpass_results$model_formula
 
+    # calculate proportional shift upwards for those above zU
     thedata$location_shift_sca <- thedata$bin_above_excluded/
         sum(thedata$freq[thedata$bin_above_excluded == 1]) # total count above excluded region
 

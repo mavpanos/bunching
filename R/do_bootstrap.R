@@ -19,9 +19,9 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
     b_vector <- sapply(seq(1:boot_iterations), function(i) {
         # adjust frequencies using residual
         data_for_boot$freq_orig <- data_for_boot$freq_orig + sample(residuals, replace = T)
-        # make this "freq" so we can pass to run_reg which requires "freq ~ ..."
+        # make this "freq" so we can pass to fit_bunching which requires "freq ~ ..."
         data_for_boot$freq <- data_for_boot$freq_orig
-        # next, re-run first pass on this new series, get residuals out of this
+        # next, re-run first pass on this new series
         booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
 
         if(correction == F) { # if no need for correction, just take this b
@@ -29,9 +29,10 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
             B_boot <- booted_firstpass$bunchers_excess
             alpha_boot <- booted_firstpass$alpha
 
+        # otherwise, do correction, then take b estimate
         } else if (correction == T) {
-            booted_correction <- bunching::do_correction(thedata = data_for_boot, firstpass_results = booted_firstpass,
-                                               max_iterations = correction_iterations, notch = notch, zD_bin = zD_bin)
+            booted_correction <- bunching::do_correction(data_for_boot, booted_firstpass,
+                                                         correction_iterations, notch, zD_bin)
             b_boot <- booted_correction$b_corrected
             B_boot <- booted_correction$B_corrected
             alpha_boot <- booted_correction$alpha_corrected

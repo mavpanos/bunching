@@ -109,7 +109,8 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
                    "model_formula" = themodelformula,
                    "B_zl_zstar" = B_zl_zstar,
                    "B_zstar_zu" = B_zstar_zu,
-                   "alpha" = alpha)
+                   "alpha" = alpha,
+                   "zD_bin" = zD_bin)
 
 
 

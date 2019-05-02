@@ -143,6 +143,14 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
 
+
+
+
+
+
+
+
+
     # -----------------------------
     # 1. bin the data
     # -----------------------------
@@ -152,65 +160,83 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # -----------------------------
     # 2. first pass prep and fit
     # -----------------------------
-    z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
-    zD_bin <- z_dominated$zD_bin
 
-    # If not a notch, or a notch but we force user choice of bins_excl_r, fit as usual
+     # Kink case
 
-    if ((notch == F) | (notch == T & force_notch == T)) {
+    if (notch == F) {
+
         # prepare data
         firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+
         # fit firstpass model
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+
+        zD_bin <- NA
+        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
+                                            notch, zD_bin)
+
+        } else if (notch == T) {
+            # calculate z_dominated for notches
+            z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
+            zD_bin <- z_dominated$zD_bin
+
+            # if we force zu, same procedure as kink
+            if (force_notch == T) {
+                # prepare data
+                firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+                                                              poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                # fit firstpass model
+                firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
 
 
+            } else if (force_notch == F) {
+                # start with only one bin above zstar
+                bins_excl_r <- 1
+                firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+                                                              poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
-        # otherwise, do data-driven notch correction
-    } else if ((notch == T) & (force_notch == F)) {
-        # start with only one bin above zstar
-        bins_excl_r <- 1
-        firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                     poly, bins_excl_l, bins_excl_r, rn, extra_fe)
-        firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
-        # extract bunching mass below and missing mass above zstar
-        B_below <- firstpass$B_zl_zstar
-        M_above <- -firstpass$B_zstar_zu
+                # extract bunching mass below and missing mass above zstar
+                B_below <- firstpass$B_zl_zstar
+                M_above <- -firstpass$B_zstar_zu
 
-        # check that missing above is smaller. if not, suspicious
-        if(M_above > B_below) {
-            stop("Missing mass above zstar is larger than bunching mass below. Are you sure this is a notch?")
+                # check that missing mass above is smaller. if not, stop
+                if(M_above > B_below) {
+                    stop("Missing mass above zstar is larger than bunching mass below. Are you sure this is a notch?")
+                }
+
+                # if(M_above > B_below) == TRUE, we start shifting zu bins up until B = M.
+                # first, must set upper bound on number of iterations.
+                # bins above zstar cannot be more than min of:
+                #   1. available bins
+                #   2. remaining DoF
+                available_bins <- (max(firstpass_prep$data_binned$bin) - zstar)/binwidth
+                DoF_remaining <- nrow(firstpass_prep$data_binned) -  nrow(firstpass$coefficients) - 1
+                notch_iterations_bound <- min(available_bins, DoF_remaining)
+
+                # start with first bin above being bins_excl_r = 1
+                zu_bin <- bins_excl_r
+                while ((B_below > M_above) & (zu_bin < notch_iterations_bound)) {
+                    zu_bin <- zu_bin + 1
+                    # add next bin_excl_r dummy as column to data
+                    newvar <- paste0("bin_excl_r_", zu_bin)
+                    firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
+                    # add next order bin_excl_r to formula
+                    firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
+                    # re-fit model using the now expanded zu
+                    firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+                    # get new B below and M above
+                    B_below <- firstpass$B_zl_zstar
+                    M_above <- -firstpass$B_zstar_zu
+                }
+                # assign final zu_bin to bins_excl_r (used for plotting)
+                bins_excl_r <- zu_bin
+                # update bins_above_excluded to relate to this new bins_excl_r
+                firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin,1,0)
+
+            }
         }
-
-        # if we reach here, we can start shifting zu bins up until B = M.
-        # first, must set upper bound on number of iterations.
-        #   bins above zstar cannot be more than min of:
-        #       1. available bins
-        #       2. remaining DoF
-        available_bins <- (max(firstpass_prep$data_binned$bin) - zstar)/binwidth
-        DoF_remaining <- nrow(firstpass_prep$data_binned) -  nrow(firstpass$coefficients) - 1
-        notch_iterations_bound <- min(available_bins, DoF_remaining)
-
-        # start with first bin above being bins_excl_r = 1
-        zu_bin <- bins_excl_r
-        while ((B_below > M_above) & (zu_bin < notch_iterations_bound)) {
-            zu_bin <- zu_bin + 1
-            # add next bin_excl_r dummy as column to data
-            newvar <- paste0("bin_excl_r_", zu_bin)
-            firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
-            # add next order bin_excl_r to formula
-            firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
-            # re-fit model using the now expanded zu
-            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
-            # get new B below and M above
-            B_below <- firstpass$B_zl_zstar
-            M_above <- -firstpass$B_zstar_zu
-        }
-        # assign final zu_bin to bins_excl_r (used for plotting)
-        bins_excl_r <- zu_bin
-
-    }
 
     # after fitting is done, extract info (counterfactual, residuals, etc.)
     counterfactuals_for_graph <- firstpass$cf_density
@@ -226,8 +252,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # -----------------------------------------
 
     if(correct == F) {
-        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
+        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
+                                               correct, iter_max, notch,zD_bin)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
@@ -240,29 +266,41 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
 
-    # ----------------------------------------------------------
-    # 4. if correction needed, do that first to get residuals
-    # ----------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # 4. if correction needed, do that first to get residuals, then bootstrap
+    # -------------------------------------------------------------------------
     if (correct == T) {
+
         # initial correction to get vector of residuals for bootstrap for later
         firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,
                                                        max_iterations = iter_max, notch = notch, zD_bin = zD_bin)
-        b_estimate <- firstpass_corrected$b_corrected
+
+        # get corrected results for beta, counterfactuals, alpha etc.
+        # b_estimate <- firstpass_corrected$b_corrected
+        # counterfactuals_for_graph <- firstpass_corrected$data$cf_density
+        # residuals_for_boot <- firstpass_corrected$data$residuals
+        # alpha <- firstpass_corrected$alpha
+        # # after corrected fitting is done, extract info (counterfactual, residuals, etc.)
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
+        B_for_output <- firstpass_corrected$B_corrected
+        b_estimate <- firstpass_corrected$b_corrected
+        e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+        model_fit <- firstpass_corrected$coefficients
+        alpha <- firstpass_corrected$alpha_corrected
+
+
         # we now have the correct residuals. add to our original data in firstpass_prep$data
         # applying correction each time
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
                                                correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
-        B_for_output <- firstpass_corrected$B_corrected
+        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth, zstar, t0, t1, notch)
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
         alpha_sd <- boot_results$alpha_sd
-        model_fit <- firstpass_corrected$coefficients
     }
 
 
@@ -271,7 +309,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # ---------------------------------------------
     # get max of binned_data to position b
     zmax <- max(firstpass_prep$data_binned$bin)
-    posx <- zstar + (zmax - zstar)*.7
+    posx <- zstar + (zmax - zstar)*.25
     posy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)*.8
 
     # get name of z_vector to pass as xtitle if chosen
