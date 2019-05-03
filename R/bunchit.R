@@ -279,8 +279,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
 
-
-
     # -----------------------------
     # 1. bin the data
     # -----------------------------
