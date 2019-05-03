@@ -36,6 +36,7 @@
 #' @param notch whether it is a notch or kink. Default is kink.
 #' @param force_notch whether to enforce manual choice of zu in notch case.
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
+#' @param seed seed value for bootstrap (random re-sampling of residuals)
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -47,7 +48,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
                     p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
-                    p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3, domregion_color = "grey40") {
+                    p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3, domregion_color = "grey40", seed = NA) {
 
     # ------------------------------------------------
     # check that inputs make sense
@@ -253,7 +254,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     if(correct == F) {
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
-                                               correct, iter_max, notch,zD_bin)
+                                               correct, iter_max, notch,zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
@@ -272,8 +273,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (correct == T) {
 
         # initial correction to get vector of residuals for bootstrap for later
-        firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned, firstpass_results = firstpass,
-                                                       max_iterations = iter_max, notch = notch, zD_bin = zD_bin)
+        firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned,firstpass,
+                                                       iter_max, notch, zD_bin, seed)
 
         # get corrected results for beta, counterfactuals, alpha etc.
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
@@ -286,8 +287,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
         # we now have the correct residuals. add to our original data in firstpass_prep$data and bootstrap
-        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
-                                               correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
+        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
+                                               correct,iter_max, notch, zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth, zstar, t0, t1, notch)
@@ -302,7 +303,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 5. make plot
     # ---------------------------------------------
 
-    # get max of binned_data to position b
+    # set position of b estimate on plot
     zmin <- min(firstpass_prep$data_binned$bin)
     zmax <- max(firstpass_prep$data_binned$bin)
     if (notch == T) {
@@ -322,7 +323,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         p_theme <- "theme_bw() + theme_light()"
     }
 
-
+    # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bins_excl_l, bins_excl_r,
                    p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,

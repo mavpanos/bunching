@@ -12,11 +12,19 @@
 #' @export
 
 
-do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction, correction_iterations, notch, zD_bin) {
+do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
+                         correction_iterations, notch, zD_bin, seed) {
+    # set seed if chosen
+    if(!is.na(seed)) {
+        set.seed(seed)
+    }
+
+    # retrieve data and model from firstpass_prep
     data_for_boot <- firstpass_prep$data_binned
     model <- firstpass_prep$model_formula
 
-    b_vector <- sapply(seq(1:boot_iterations), function(i) {
+    # get vector of bootstrapped betas
+    boot_results <- sapply(seq(1:boot_iterations), function(i) {
         # adjust frequencies using residual
         data_for_boot$freq_orig <- data_for_boot$freq_orig + sample(residuals, replace = T)
         # make this "freq" so we can pass to fit_bunching which requires "freq ~ ..."
@@ -37,13 +45,13 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
             B_boot <- booted_correction$B_corrected
             alpha_boot <- booted_correction$alpha_corrected
         }
-        b_results <- list("b_boot" = b_boot, "B_boot" = B_boot, "alpha_boot" = alpha_boot)
-        return(b_results)
+        output <- list("b_boot" = b_boot, "B_boot" = B_boot, "alpha_boot" = alpha_boot)
+        return(output)
     })
 
-    b_boot <- unlist(b_vector["b_boot",])
-    B_boot <- unlist(b_vector["B_boot",])
-    alpha_boot <- unlist(b_vector["alpha_boot",])
+    b_boot <- unlist(boot_results["b_boot",])
+    B_boot <- unlist(boot_results["B_boot",])
+    alpha_boot <- unlist(boot_results["alpha_boot",])
     b_sd <- round(sd(b_boot, na.rm = T),3)
     B_sd <- round(sd(B_boot, na.rm = T),3)
     alpha_sd <- round(sd(alpha_boot, na.rm = T),3)
