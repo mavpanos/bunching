@@ -166,11 +166,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (notch == F) {
 
         # prepare data
-        firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+        firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
 
         # fit firstpass model
-
+        # set zD_bin to NA if it's a kink
         zD_bin <- NA
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
                                             notch, zD_bin)
@@ -183,7 +183,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             # if we force zu, same procedure as kink
             if (force_notch == T) {
                 # prepare data
-                firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+                firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
                                                               poly, bins_excl_l, bins_excl_r, rn, extra_fe)
                 # fit firstpass model
                 firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
@@ -193,7 +193,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             } else if (force_notch == F) {
                 # start with only one bin above zstar
                 bins_excl_r <- 1
-                firstpass_prep <- bunching::prep_data_for_reg(binned_data, zstar, binwidth, bins_l, bins_r,
+                firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
                                                               poly, bins_excl_l, bins_excl_r, rn, extra_fe)
                 firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
@@ -276,11 +276,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                        max_iterations = iter_max, notch = notch, zD_bin = zD_bin)
 
         # get corrected results for beta, counterfactuals, alpha etc.
-        # b_estimate <- firstpass_corrected$b_corrected
-        # counterfactuals_for_graph <- firstpass_corrected$data$cf_density
-        # residuals_for_boot <- firstpass_corrected$data$residuals
-        # alpha <- firstpass_corrected$alpha
-        # # after corrected fitting is done, extract info (counterfactual, residuals, etc.)
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
         B_for_output <- firstpass_corrected$B_corrected
@@ -290,8 +285,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         alpha <- firstpass_corrected$alpha_corrected
 
 
-        # we now have the correct residuals. add to our original data in firstpass_prep$data
-        # applying correction each time
+        # we now have the correct residuals. add to our original data in firstpass_prep$data and bootstrap
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, boot_iterations = n_boot,
                                                correction = correct, correction_iterations = iter_max, notch = notch, zD_bin = zD_bin)
         b_sd <- boot_results$b_sd
@@ -307,9 +301,15 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # ---------------------------------------------
     # 5. make plot
     # ---------------------------------------------
+
     # get max of binned_data to position b
+    zmin <- min(firstpass_prep$data_binned$bin)
     zmax <- max(firstpass_prep$data_binned$bin)
-    posx <- zstar + (zmax - zstar)*.25
+    if (notch == T) {
+        posx <- zmin + (zstar - zmin)*.3
+    } else {
+        posx <- zstar + (zmax - zstar)*.7
+    }
     posy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)*.8
 
     # get name of z_vector to pass as xtitle if chosen
@@ -322,7 +322,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         p_theme <- "theme_bw() + theme_light()"
     }
 
-    #z_dominated <- domregion(zstar, t0,t1, binwidth)
 
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                    binwidth, bins_excl_l, bins_excl_r,

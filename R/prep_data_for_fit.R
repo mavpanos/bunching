@@ -5,7 +5,7 @@
 #' @seealso \code{\link{bunchit}}
 #' @export
 
-prep_data_for_reg <- function(data_binned, zstar, binwidth, bins_l, bins_r,
+prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
                          poly, bins_excl_l,  bins_excl_r, rn, extra_fe) {
 
     # checks: if extra kinks do not correspond to a bin, flag it
