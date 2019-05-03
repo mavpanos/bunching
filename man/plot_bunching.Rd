@@ -5,10 +5,11 @@
 \title{Create bunching plot.}
 \usage{
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
-  p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
+  p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
   p_theme, p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
   p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
-  t0 = NA, t1 = NA, notch = F, domregion_color = NA)
+  t0 = NA, t1 = NA, notch = F, domregion_color = NA,
+  domregion_ltype = NA)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated}
@@ -29,6 +30,10 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
+\item{p_axis_title_size}{size of plot's axes' title labels.}
+
+\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+
 \item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
@@ -40,6 +45,8 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_freq_size}{plot's frequency line thickness}
 
 \item{p_cf_size}{plot's counterfactual line thickness}
+
+\item{p_freq_msize}{plot's frequency line marker size}
 
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 

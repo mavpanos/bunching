@@ -18,14 +18,15 @@
 #' @param p_xtitle plot x_axis label.
 #' @param p_ytitle plot y_axis label.
 #' @param p_maxy plot's maximum y_axis value.
-#' @param p_txt_size text size of plot' axes' labels.
+#' @param p_axis_title_size size of plot's axes' title labels.
+#' @param p_axis_val_size size of plot's axes' numeric labels.
 #' @param p_theme plot theme (in ggplot2 format).
 #' @param p_freq_color plot's frequency line color
 #' @param p_cf_color plot's counterfactual line color
 #' @param p_zstar_color plot's bunching region marker lines color
 #' @param p_freq_size plot's frequency line thickness
 #' @param p_cf_size plot's counterfactual line thickness
-#' @param p_cf_msize plot's counterfactual markers' size
+#' @param p_freq_msize plot's frequency line marker size
 #' @param p_zstar_size plot's bunching region marker lines thickness
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate
@@ -44,11 +45,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     n_boot = 50, correct = T, iter_max = 200,
                     t0, t1, notch = F, force_notch = F,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                    p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
+                    p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
                     p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
-                    p_b = T, p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3, domregion_color = "grey40", seed = NA) {
+                    p_b = T, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+                    p_domregion_color = "grey40", seed = NA, p_domregion_ltype="dashed") {
 
     # ------------------------------------------------
     # check that inputs make sense
@@ -100,7 +102,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # excluded bins above zstar cannot be negative
-    if(bins_excl_r < 0 | is.wholenumber(bins_excl_r)) {
+    if(bins_excl_r < 0 | !is.wholenumber(bins_excl_r)) {
         stop("Bins in bunching region above zstar must be a non-negative integer")
     }
 
@@ -122,9 +124,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Error: rn cannot include zero for a round number")
     }
 
-    # are all round numbers integers?
-    if(sum(is.wholenumber(rn)) != length(rn)) {
-     stop("Round number(s) must be integer(s)")
+    # if not NA, are all round numbers integers?
+    if(sum(is.na(rn) == 0) & sum(is.wholenumber(rn) != length(rn))) {
+        stop("Round number(s) must be integer(s)")
     }
 
     # check that no more than two round numbers are given
@@ -203,8 +205,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # is p_maxy numeric and within the plot?
-    if(!is.numeric(p_maxy)) {
-        stop("p_maxy must be numeric")
+    if(!is.na(p_maxy) & !is.numeric(p_maxy)) {
+        stop("p_maxy must be numeric (unless unspecified using NA)")
     }
 
     # is p_theme a string?
@@ -247,24 +249,29 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_b (whether to show bunching estimate on plot) must be TRUE or FALSE")
     }
 
-    # is p_b_xpos numeric and within the range of x?
-    if(!is.numeric(p_b_xpos) | p_b_xpos < data_varmin | p_b_xpos > data_varmax) {
-        stop("p_b_xpos must be numeric and lie within the data's range")
+    # if p_b_xpos is selected by user, is p_b_xpos numeric and within the range of x?
+    if(!is.na(p_b_xpos)) {
+        if(!is.numeric(p_b_xpos) | p_b_xpos < data_varmin | p_b_xpos > data_varmax) {
+            stop("p_b_xpos must be numeric and lie within the data's range")
+        }
     }
 
-    # is p_b_ypos numeric?
-    if(!is.numeric(p_b_ypos)) {
-        stop("p_b_ypos must be numeric")
+    # if p_b_ypos is selected by user, is it numeric?
+    if(!is.na(p_b_xpos)) {
+        if(!is.numeric(p_b_ypos)) {
+            stop("p_b_ypos must be numeric")
+        }
     }
 
-    # is p_txt_size numeric and positive?
-    if(p_txt_size <= 0 | !is.numeric(p_txt_size)) {
-        stop("p_txt_size must be a positive numeric value")
+    # is p_axis_title_size numeric and positive?
+    if(p_axis_title_size <= 0 | !is.numeric(p_axis_title_size)) {
+        stop("p_axis_title_size must be a positive numeric value")
     }
 
-    # is p_cf_msize numeric and positive?
-    if(p_cf_msize <= 0 | !is.numeric(p_txt_size)) {
-        stop("p_cf_msize must be a positive numeric value")
+
+        # is p_freq_msize numeric and positive?
+    if(p_freq_msize <= 0 | !is.numeric(p_freq_msize)) {
+        stop("p_freq_msize must be a positive numeric value")
     }
 
     # is p_domregion_color a string?
@@ -289,13 +296,13 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 2. first pass prep and fit
     # -----------------------------
 
-     # Kink case
+    # Kink case
 
     if (notch == F) {
 
         # prepare data
         firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                     poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
 
         # fit firstpass model
         # set zD_bin to NA if it's a kink
@@ -303,68 +310,68 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
                                             notch, zD_bin)
 
-        } else if (notch == T) {
-            # calculate z_dominated for notches
-            z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
-            zD_bin <- z_dominated$zD_bin
+    } else if (notch == T) {
+        # calculate z_dominated for notches
+        z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
+        zD_bin <- z_dominated$zD_bin
 
-            # if we force zu, same procedure as kink
-            if (force_notch == T) {
-                # prepare data
-                firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                              poly, bins_excl_l, bins_excl_r, rn, extra_fe)
-                # fit firstpass model
+        # if we force zu, same procedure as kink
+        if (force_notch == T) {
+            # prepare data
+            firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
+                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+            # fit firstpass model
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+
+
+
+        } else if (force_notch == F) {
+            # start with only one bin above zstar
+            bins_excl_r <- 1
+            firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
+                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+
+            # extract bunching mass below and missing mass above zstar
+            B_below <- firstpass$B_zl_zstar
+            M_above <- -firstpass$B_zstar_zu
+
+            # check that missing mass above is smaller. if not, stop
+            if(M_above > B_below) {
+                stop("Missing mass above zstar is larger than bunching mass below. Are you sure this is a notch?")
+            }
+
+            # if(M_above > B_below) == TRUE, we start shifting zu bins up until B = M.
+            # first, must set upper bound on number of iterations.
+            # bins above zstar cannot be more than min of:
+            #   1. available bins
+            #   2. remaining DoF
+            available_bins <- (max(firstpass_prep$data_binned$bin) - zstar)/binwidth
+            DoF_remaining <- nrow(firstpass_prep$data_binned) -  nrow(firstpass$coefficients) - 1
+            notch_iterations_bound <- min(available_bins, DoF_remaining)
+
+            # start with first bin above being bins_excl_r = 1
+            zu_bin <- bins_excl_r
+            while ((B_below > M_above) & (zu_bin < notch_iterations_bound)) {
+                zu_bin <- zu_bin + 1
+                # add next bin_excl_r dummy as column to data
+                newvar <- paste0("bin_excl_r_", zu_bin)
+                firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
+                # add next order bin_excl_r to formula
+                firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
+                # re-fit model using the now expanded zu
                 firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
-
-
-
-            } else if (force_notch == F) {
-                # start with only one bin above zstar
-                bins_excl_r <- 1
-                firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                              poly, bins_excl_l, bins_excl_r, rn, extra_fe)
-                firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
-
-                # extract bunching mass below and missing mass above zstar
+                # get new B below and M above
                 B_below <- firstpass$B_zl_zstar
                 M_above <- -firstpass$B_zstar_zu
-
-                # check that missing mass above is smaller. if not, stop
-                if(M_above > B_below) {
-                    stop("Missing mass above zstar is larger than bunching mass below. Are you sure this is a notch?")
-                }
-
-                # if(M_above > B_below) == TRUE, we start shifting zu bins up until B = M.
-                # first, must set upper bound on number of iterations.
-                # bins above zstar cannot be more than min of:
-                #   1. available bins
-                #   2. remaining DoF
-                available_bins <- (max(firstpass_prep$data_binned$bin) - zstar)/binwidth
-                DoF_remaining <- nrow(firstpass_prep$data_binned) -  nrow(firstpass$coefficients) - 1
-                notch_iterations_bound <- min(available_bins, DoF_remaining)
-
-                # start with first bin above being bins_excl_r = 1
-                zu_bin <- bins_excl_r
-                while ((B_below > M_above) & (zu_bin < notch_iterations_bound)) {
-                    zu_bin <- zu_bin + 1
-                    # add next bin_excl_r dummy as column to data
-                    newvar <- paste0("bin_excl_r_", zu_bin)
-                    firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
-                    # add next order bin_excl_r to formula
-                    firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
-                    # re-fit model using the now expanded zu
-                    firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
-                    # get new B below and M above
-                    B_below <- firstpass$B_zl_zstar
-                    M_above <- -firstpass$B_zstar_zu
-                }
-                # assign final zu_bin to bins_excl_r (used for plotting)
-                bins_excl_r <- zu_bin
-                # update bins_above_excluded to relate to this new bins_excl_r
-                firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin,1,0)
-
             }
+            # assign final zu_bin to bins_excl_r (used for plotting)
+            bins_excl_r <- zu_bin
+            # update bins_above_excluded to relate to this new bins_excl_r
+            firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin,1,0)
+
         }
+    }
 
     # after fitting is done, extract info (counterfactual, residuals, etc.)
     counterfactuals_for_graph <- firstpass$cf_density
@@ -401,7 +408,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
         # initial correction to get vector of residuals for bootstrap for later
         firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned,firstpass,
-                                                       iter_max, notch, zD_bin, seed)
+                                                       iter_max, notch, zD_bin)
 
         # get corrected results for beta, counterfactuals, alpha etc.
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
@@ -430,17 +437,24 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 5. make plot
     # ---------------------------------------------
 
-    # set position of b estimate on plot
+    # if p_b_xpos/p_y_xpos not chosen, set them. get data ranges
     zmin <- min(firstpass_prep$data_binned$bin)
     zmax <- max(firstpass_prep$data_binned$bin)
-    if (notch == T) {
-        posx <- zmin + (zstar - zmin)*.3
-    } else {
-        posx <- zstar + (zmax - zstar)*.7
-    }
     maxy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)
-    posy <- maxy * .8
 
+    # x position
+    if(is.na(p_b_xpos)) {
+        if (notch == T) {
+            p_b_xpos <- zmin + (zstar - zmin)*.3
+        } else {
+            p_b_xpos <- zstar + (zmax - zstar)*.7
+        }
+    }
+
+    # y position
+    if(is.na(p_b_ypos)) {
+        p_b_ypos <- maxy * .8
+    }
     # get name of z_vector to pass as xtitle if chosen
     if (p_xtitle == "z_name") {
         p_xtitle <- deparse(substitute(z_vector))
@@ -454,12 +468,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
-                   binwidth, bins_excl_l, bins_excl_r,
-                   p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
-                   p_theme, p_freq_color, p_cf_color, p_zstar_color,
-                   p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                   p_b, b = b_estimate, b_sd = b_sd,
-                   p_b_xpos, p_b_ypos, p_b_size, t0, t1, notch, domregion_color)
+                                 binwidth, bins_excl_l, bins_excl_r,
+                                 p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
+                                 p_theme, p_freq_color, p_cf_color, p_zstar_color,
+                                 p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
+                                 p_b, b = b_estimate, b_sd = b_sd,
+                                 p_b_xpos, p_b_ypos, p_b_size, t0, t1, notch, p_domregion_color, p_domregion_ltype)
 
 
 

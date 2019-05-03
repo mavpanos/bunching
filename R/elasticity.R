@@ -1,4 +1,4 @@
-#' Estimate elasticity from single bunching observation.
+#' Estimate elasticity from single normalised bunching observation.
 
 #'
 #' @param beta normalised excess mass.

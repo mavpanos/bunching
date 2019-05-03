@@ -8,12 +8,13 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
   correct = T, iter_max = 200, t0, t1, notch = F, force_notch = F,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-  p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
+  p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
   p_theme = "bw_light", p_freq_color = "black",
   p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
   p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5, p_b = T,
-  p_b_xpos = posx, p_b_ypos = posy, p_b_size = 3,
-  domregion_color = "grey40", seed = NA)
+  p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+  p_domregion_color = "grey40", seed = NA,
+  p_domregion_ltype = "dashed")
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
@@ -60,6 +61,10 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
+\item{p_axis_title_size}{size of plot's axes' title labels.}
+
+\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+
 \item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
@@ -72,6 +77,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_cf_size}{plot's counterfactual line thickness}
 
+\item{p_freq_msize}{plot's frequency line marker size}
+
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 
 \item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
@@ -82,13 +89,9 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_b_size}{size of plot's printed bunching estimate}
 
-\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
-
-\item{p_txt_size}{text size of plot' axes' labels.}
-
-\item{p_cf_msize}{plot's counterfactual markers' size}
-
 \item{p_domregion_color}{plot's dominated region marker line color (notch case).}
+
+\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 }
 \description{
 Run the bunching estimator

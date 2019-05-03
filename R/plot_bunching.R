@@ -10,11 +10,11 @@
 
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_maxy, p_axis_txt_size, p_axis_val_size,
+                          p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd,
-                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, domregion_color = NA) {
+                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, domregion_color = NA, domregion_ltype = NA) {
 
 
     # get upper bound to customize plot region
@@ -37,7 +37,7 @@ plot_bunching <- function(binned_data, cf, zstar,
     if(notch == T) {
         bin_domregion <- domregion(zstar, t0, t1, binwidth)$zD
         vlines <- c(vlines, bin_domregion)
-        vlines_type <- c(vlines_type, "dashed")
+        vlines_type <- c(vlines_type, domregion_ltype)
         vlines_color <- c(vlines_color, domregion_color)
     }
 
@@ -61,7 +61,7 @@ plot_bunching <- function(binned_data, cf, zstar,
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
         theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
-              text = element_text(size=p_axis_txt_size),
+              text = element_text(size=p_axis_title_size),
               axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
         labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ylim(0,p_maxy) + guides(fill=FALSE, color=FALSE)
 

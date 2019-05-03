@@ -23,7 +23,7 @@ do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
 \item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 }
 \value{
-b_vector, b_sd, B_vector, B_sd
+A list with components...
 }
 \description{
 Estimate bootstrapped bunching standard error

@@ -32,6 +32,8 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
+\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+
 \item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
@@ -39,6 +41,8 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 \item{p_zstar_color}{plot's bunching region marker lines color}
 
 \item{p_freq_size}{plot's frequency line thickness}
+
+\item{p_freq_msize}{plot's frequency line marker size}
 
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 

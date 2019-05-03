@@ -2,7 +2,7 @@
 % Please edit documentation in R/elasticity.R
 \name{elasticity}
 \alias{elasticity}
-\title{Estimate elasticity from single bunching observation.}
+\title{Estimate elasticity from single normalised bunching observation.}
 \usage{
 elasticity(beta, binwidth, zstar, t0, t1, notch)
 }
@@ -23,7 +23,7 @@ elasticity(beta, binwidth, zstar, t0, t1, notch)
 Elasticity estimate.
 }
 \description{
-Estimate elasticity from single bunching observation.
+Estimate elasticity from single normalised bunching observation.
 }
 \seealso{
 \code{\link{bunchit}}

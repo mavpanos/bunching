@@ -6,7 +6,8 @@
 #' @param correction_iterations maximum iterations for integration constraint correction.
 #' @inheritParams bunchit
 #'
-#' @return b_vector, b_sd, B_vector, B_sd
+#' @return A list with components...
+
 
 #' @seealso \code{\link{bunchit}}, \code{\link{prepare_data}}
 #' @export
@@ -32,7 +33,8 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
         # next, re-run first pass on this new series
         booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
 
-        if(correction == F) { # if no need for correction, just take this b
+        # if no need for integration correction, just take this b
+        if(correction == F) {
             b_boot <- booted_firstpass$b_estimate
             B_boot <- booted_firstpass$bunchers_excess
             alpha_boot <- booted_firstpass$alpha
