@@ -272,7 +272,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_domregion_color choice must be a string")
     }
 
-
+    # is seed numeric?
+    if(!is.numeric(seed)) {
+        stop("seed must be numeric")
+    }
 
 
 
