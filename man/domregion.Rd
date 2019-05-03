@@ -7,13 +7,13 @@
 domregion(zstar, t0, t1, binwidth)
 }
 \arguments{
-\item{zstar}{the bunching point.}
+\item{zstar}{a numeric value for the the bunching point.}
 
-\item{t0}{marginal/average tax rate below zstar. see notch option.}
+\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{t1}{marginal/average tax rate above zstar. see notch option.}
+\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{binwidth}{width of each bin.}
+\item{binwidth}{a numeric value for the width of each bin.}
 }
 \value{
 The z level and bin  above zstar where individual is indifferent between there or at zstar. Used for notch

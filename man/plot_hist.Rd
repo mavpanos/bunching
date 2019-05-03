@@ -12,17 +12,17 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_zstar_size = 0.5, p_zstar = T)
 }
 \arguments{
-\item{z_vector}{the vector of (unbinned) data to be analysed.}
+\item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
 
-\item{binv}{zstar location within its bin (min, max or median value). Default is median.}
+\item{binv}{a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.}
 
-\item{zstar}{the bunching point.}
+\item{zstar}{a numeric value for the the bunching point.}
 
-\item{binwidth}{width of each bin.}
+\item{binwidth}{a numeric value for the width of each bin.}
 
-\item{bins_l}{bins to left of zstar to use.}
+\item{bins_l}{number of bins to left of zstar to use in analysis.}
 
-\item{bins_r}{bins to right of zstar to use.}
+\item{bins_r}{number of bins to right of zstar to use in analysis.}
 
 \item{p_title}{plot title.}
 
@@ -32,7 +32,7 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
-\item{p_theme}{plot theme.}
+\item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
 

@@ -18,7 +18,9 @@ do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
 
 \item{correction_iterations}{maximum iterations for integration constraint correction.}
 
-\item{notch}{whether it is a notch or kink. Default is kink.}
+\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+
+\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 }
 \value{
 b_vector, b_sd, B_vector, B_sd

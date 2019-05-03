@@ -16,41 +16,41 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   domregion_color = "grey40", seed = NA)
 }
 \arguments{
-\item{z_vector}{the vector of (unbinned) data to be analysed.}
+\item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
 
-\item{binv}{zstar location within its bin (min, max or median value). Default is median.}
+\item{binv}{a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.}
 
-\item{zstar}{the bunching point.}
+\item{zstar}{a numeric value for the the bunching point.}
 
-\item{binwidth}{width of each bin.}
+\item{binwidth}{a numeric value for the width of each bin.}
 
-\item{bins_l}{bins to left of zstar to use.}
+\item{bins_l}{number of bins to left of zstar to use in analysis.}
 
-\item{bins_r}{bins to right of zstar to use.}
+\item{bins_r}{number of bins to right of zstar to use in analysis.}
 
-\item{poly}{order of polynomial for counterfactual fit.}
+\item{poly}{a numeric value for the order of polynomial for counterfactual fit.}
 
-\item{bins_excl_l}{number of bins left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
 
-\item{bins_excl_r}{number of bins right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
 
-\item{extra_fe}{bin values to control for using fixed effect.}
+\item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
 
-\item{rn}{round number bunching (up to 2 round numbers).}
+\item{rn}{a numeric vector of round numbers (up to 2) to control for.}
 
 \item{n_boot}{number of bootstrapped iterations.}
 
-\item{correct}{whether to implement correction for integration constraint.}
+\item{correct}{if TRUE, implements correction for integration constraint.}
 
 \item{iter_max}{maximum iterations for integration constraint correction.}
 
-\item{t0}{marginal/average tax rate below zstar. see notch option.}
+\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{t1}{marginal/average tax rate above zstar. see notch option.}
+\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{notch}{whether it is a notch or kink. Default is kink.}
+\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 
-\item{force_notch}{whether to enforce manual choice of zu in notch case.}
+\item{force_notch}{if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).}
 
 \item{p_title}{plot title.}
 
@@ -60,7 +60,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
-\item{p_theme}{plot theme.}
+\item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
 
@@ -74,13 +74,15 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 
-\item{p_b}{Should bunching estimate be shown on plot?}
+\item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 
 \item{p_b_xpos}{plot's xaxis coordinate of bunching estimate}
 
 \item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
 
 \item{p_b_size}{size of plot's printed bunching estimate}
+
+\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 
 \item{p_txt_size}{text size of plot' axes' labels.}
 

@@ -10,23 +10,23 @@ prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
 \arguments{
 \item{data_binned}{dataframe of counts per bin}
 
-\item{zstar}{the bunching point.}
+\item{zstar}{a numeric value for the the bunching point.}
 
-\item{binwidth}{width of each bin.}
+\item{binwidth}{a numeric value for the width of each bin.}
 
-\item{bins_l}{bins to left of zstar to use.}
+\item{bins_l}{number of bins to left of zstar to use in analysis.}
 
-\item{bins_r}{bins to right of zstar to use.}
+\item{bins_r}{number of bins to right of zstar to use in analysis.}
 
-\item{poly}{order of polynomial for counterfactual fit.}
+\item{poly}{a numeric value for the order of polynomial for counterfactual fit.}
 
-\item{bins_excl_l}{number of bins left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
 
-\item{bins_excl_r}{number of bins right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
 
-\item{rn}{round number bunching (up to 2 round numbers).}
+\item{rn}{a numeric vector of round numbers (up to 2) to control for.}
 
-\item{extra_fe}{bin values to control for using fixed effect.}
+\item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
 }
 \description{
 Prepare binned data and model for bunching estimation.

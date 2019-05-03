@@ -11,7 +11,7 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 
 \item{themodelformula}{formula to fit.}
 
-\item{notch}{whether it is a notch or kink. Default is kink.}
+\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 }
 \value{
 coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.

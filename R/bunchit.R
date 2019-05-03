@@ -1,25 +1,25 @@
 #' Run the bunching estimator
 #'
-#' @param z_vector the vector of (unbinned) data to be analysed.
-#' @param binv zstar location within its bin (min, max or median value). Default is median.
-#' @param zstar the bunching point.
-#' @param binwidth width of each bin.
-#' @param bins_l bins to left of zstar to use.
-#' @param bins_r bins to right of zstar to use.
-#' @param poly order of polynomial for counterfactual fit.
-#' @param bins_excl_l number of bins left of zstar to include in bunching region.
-#' @param bins_excl_r number of bins right of zstar to include in bunching region.
-#' @param extra_fe bin values to control for using fixed effect.
-#' @param rn round number bunching (up to 2 round numbers).
+#' @param z_vector a numeric vector of (unbinned) data to be analysed.
+#' @param binv a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.
+#' @param zstar a numeric value for the the bunching point.
+#' @param binwidth a numeric value for the width of each bin.
+#' @param bins_l number of bins to left of zstar to use in analysis.
+#' @param bins_r number of bins to right of zstar to use in analysis.
+#' @param poly a numeric value for the order of polynomial for counterfactual fit.
+#' @param bins_excl_l number of bins to left of zstar to include in bunching region.
+#' @param bins_excl_r number of bins to right of zstar to include in bunching region.
+#' @param extra_fe a numeric vector of bin values to control for using fixed effects.
+#' @param rn a numeric vector of round numbers (up to 2) to control for.
 #' @param n_boot number of bootstrapped iterations.
-#' @param correct whether to implement correction for integration constraint.
+#' @param correct if TRUE, implements correction for integration constraint.
 #' @param iter_max maximum iterations for integration constraint correction.
 #' @param p_title plot title.
 #' @param p_xtitle plot x_axis label.
 #' @param p_ytitle plot y_axis label.
 #' @param p_maxy plot's maximum y_axis value.
 #' @param p_txt_size text size of plot' axes' labels.
-#' @param p_theme plot theme.
+#' @param p_theme plot theme (in ggplot2 format).
 #' @param p_freq_color plot's frequency line color
 #' @param p_cf_color plot's counterfactual line color
 #' @param p_zstar_color plot's bunching region marker lines color
@@ -27,16 +27,16 @@
 #' @param p_cf_size plot's counterfactual line thickness
 #' @param p_cf_msize plot's counterfactual markers' size
 #' @param p_zstar_size plot's bunching region marker lines thickness
-#' @param p_b Should bunching estimate be shown on plot?
+#' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate
 #' @param p_b_ypos plot's yaxis coordinate of bunching estimate
 #' @param p_b_size size of plot's printed bunching estimate
-#' @param t0 marginal/average tax rate below zstar. see notch option.
-#' @param t1 marginal/average tax rate above zstar. see notch option.
-#' @param notch whether it is a notch or kink. Default is kink.
-#' @param force_notch whether to enforce manual choice of zu in notch case.
+#' @param t0 numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.
+#' @param t1 numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.
+#' @param notch if TRUE, zstar treated as notch. Default is kink.
+#' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
-#' @param seed seed value for bootstrap (random re-sampling of residuals)
+#' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -73,32 +73,35 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # binwidth: must be positive
     if(binwidth <= 0) {
-        stop("Binwidth must be positive")
+        stop("Binwidth must be positive number")
     }
 
+    # check that bins_l are positive and integers
+    is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+
     # bins_l: must be positive
-    if(bins_l <= 0) {
-        stop("bins_l must be positive")
+    if(bins_l <= 0 | !is.wholenumber(bins_l)) {
+        stop("bins_l must be positive integer")
     }
 
     # bins_r: must be positive
-    if(bins_r <= 0) {
-        stop("bins_r must be positive")
+    if(bins_r <= 0 | !is.wholenumber(bins_r)) {
+        stop("bins_r must be positive integer")
     }
 
     # polynomial order cannot be negative
-    if(poly < 0) {
-        stop("Polynomial order must be positive")
+    if(poly < 0 | !is.wholenumber(poly)) {
+        stop("Polynomial order must a be non-negative integer")
     }
 
     # excluded bins below zstar cannot be negative
-    if(bins_excl_l < 0) {
-        stop("Bins in bunching region below zstar must be a positive integer")
+    if(bins_excl_l < 0 | !is.wholenumber(bins_excl_l)) {
+        stop("Bins in bunching region below zstar must be a non-negative integer")
     }
 
     # excluded bins above zstar cannot be negative
-    if(bins_excl_r < 0) {
-        stop("Bins in bunching region above zstar must be a positive integer")
+    if(bins_excl_r < 0 | is.wholenumber(bins_excl_r)) {
+        stop("Bins in bunching region above zstar must be a non-negative integer")
     }
 
     # is bunching region below zstar too wide?
@@ -118,23 +121,55 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if( 0 %in% rn) {
         stop("Error: rn cannot include zero for a round number")
     }
-    # chec that no more than two round numbers are given
+
+    # are all round numbers integers?
+    if(sum(is.wholenumber(rn)) != length(rn)) {
+     stop("Round number(s) must be integer(s)")
+    }
+
+    # check that no more than two round numbers are given
     if(length(rn) > 2) {
         stop("Error: cannot have more than two unique levels for round number bunching")
     }
+
     # if two round numbers given, check that they are unique
     if(length(rn) == 2 & length(unique(rn)) != 2) {
         stop("Error: the two round numbers cannot be identical")
     }
 
-    # excluded bins above zstar cannot be negative
-    if(n_boot < 0) {
+    # number of bootstrap iterations must be positive integer
+    if(n_boot <= 0 | !is.wholenumber(n_boot)) {
         stop("Bootstrap sample size must be a positive integer")
     }
 
-    # max iteration cannot be negative
-    if(iter_max < 0) {
+    # correct must be TRUE/FALSE
+    if(!is.logical(correct)) {
+        stop("correct can only be TRUE or FALSE")
+    }
+
+    # max iteration for integration correction must be a positive integer
+    if(iter_max <= 0 | !is.wholenumber(iter_max)) {
         stop("Maximum number of iterations in integration corrrection step must be a positive integer")
+    }
+
+    # check that taxrate t0 inputs are numeric
+    if(!is.numeric(t0)) {
+        stop("t0 must be a numeric value")
+    }
+
+    # check that taxrate t1 inputs are numeric
+    if(!is.numeric(t1)) {
+        stop("t0 must be a numeric value")
+    }
+
+    # flag if t0 outside unit circle
+    if(t0 < 0 | t0 > 1) {
+        warning("Are you sure this is the correct value for t0? Note that t0=1 means a 100% tax rate!")
+    }
+
+    # flag if t0 outside unit circle
+    if(t1 < 0 | t1 > 1) {
+        warning("Are you sure this is the correct value for t0? Note that t1=1 means a 100% tax rate!")
     }
 
     # checks of inputs t0 Vs t1
@@ -142,9 +177,100 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Cannot calculate elasticity (t0 cannot equal t1")
     }
 
+    # is notch choice a logical value?
+    if(!is.logical(notch)) {
+        stop("notch can either be TRUE or FALSE (i.e. kink).")
+    }
 
+    # is force_notch choice a logical value?
+    if(!is.logical(force_notch)) {
+        stop("force_notch can either be TRUE or FALSE.")
+    }
 
+    # is p_title a string?
+    if(!is.character(p_title)) {
+        stop("p_title must be a string")
+    }
 
+    # is p_xtitle a string?
+    if(!is.character(p_xtitle)) {
+        stop("p_xtitle must be a string")
+    }
+
+    # is p_ytitle a string?
+    if(!is.character(p_ytitle)) {
+        stop("p_ytitle must be a string")
+    }
+
+    # is p_maxy numeric and within the plot?
+    if(!is.numeric(p_maxy)) {
+        stop("p_maxy must be numeric")
+    }
+
+    # is p_theme a string?
+    if(!is.character(p_theme)) {
+        stop("p_theme must be a string (theme in ggplot2 format")
+    }
+
+    # is p_freq_color a string?
+    if(!is.character(p_freq_color)) {
+        stop("p_freq_color choice must be a string")
+    }
+
+    # is p_cf_color a string?
+    if(!is.character(p_cf_color)) {
+        stop("p_cf_color choice must be a string")
+    }
+
+    # is p_zstar_color a string?
+    if(!is.character(p_zstar_color)) {
+        stop("p_zstar_color choice must be a string")
+    }
+
+    # is p_freq_size numeric?
+    if(!is.numeric(p_freq_size)) {
+        stop("p_freq_size choice must be numeric")
+    }
+
+    # is p_cf_size numeric?
+    if(!is.numeric(p_cf_size)) {
+        stop("p_cf_size choice must be numeric")
+    }
+
+    # is p_zstar_size numeric?
+    if(!is.numeric(p_zstar_size)) {
+        stop("p_zstar_size choice must be numeric")
+    }
+
+    # is p_b a logical?
+    if(!is.logical(p_b)) {
+        stop("p_b (whether to show bunching estimate on plot) must be TRUE or FALSE")
+    }
+
+    # is p_b_xpos numeric and within the range of x?
+    if(!is.numeric(p_b_xpos) | p_b_xpos < data_varmin | p_b_xpos > data_varmax) {
+        stop("p_b_xpos must be numeric and lie within the data's range")
+    }
+
+    # is p_b_ypos numeric?
+    if(!is.numeric(p_b_ypos)) {
+        stop("p_b_ypos must be numeric")
+    }
+
+    # is p_txt_size numeric and positive?
+    if(p_txt_size <= 0 | !is.numeric(p_txt_size)) {
+        stop("p_txt_size must be a positive numeric value")
+    }
+
+    # is p_cf_msize numeric and positive?
+    if(p_cf_msize <= 0 | !is.numeric(p_txt_size)) {
+        stop("p_cf_msize must be a positive numeric value")
+    }
+
+    # is p_domregion_color a string?
+    if(!is.character(p_domregion_color)) {
+        stop("p_domregion_color choice must be a string")
+    }
 
 
 
@@ -311,7 +437,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     } else {
         posx <- zstar + (zmax - zstar)*.7
     }
-    posy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)*.8
+    maxy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)
+    posy <- maxy * .8
 
     # get name of z_vector to pass as xtitle if chosen
     if (p_xtitle == "z_name") {
@@ -322,6 +449,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (p_theme == "bw_light") {
         p_theme <- "theme_bw() + theme_light()"
     }
+
 
     # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,

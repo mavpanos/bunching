@@ -13,13 +13,13 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated}
 
-\item{zstar}{the bunching point.}
+\item{zstar}{a numeric value for the the bunching point.}
 
-\item{binwidth}{width of each bin.}
+\item{binwidth}{a numeric value for the width of each bin.}
 
-\item{bins_excl_l}{number of bins left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
 
-\item{bins_excl_r}{number of bins right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
 
 \item{p_title}{plot title.}
 
@@ -29,7 +29,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_maxy}{plot's maximum y_axis value.}
 
-\item{p_theme}{plot theme.}
+\item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color}
 
@@ -43,7 +43,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_zstar_size}{plot's bunching region marker lines thickness}
 
-\item{p_b}{Should bunching estimate be shown on plot?}
+\item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 
 \item{p_b_xpos}{plot's xaxis coordinate of bunching estimate}
 
@@ -51,11 +51,11 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_b_size}{size of plot's printed bunching estimate}
 
-\item{t0}{marginal/average tax rate below zstar. see notch option.}
+\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{t1}{marginal/average tax rate above zstar. see notch option.}
+\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
 
-\item{notch}{whether it is a notch or kink. Default is kink.}
+\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 }
 \value{
 A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
