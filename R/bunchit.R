@@ -50,7 +50,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_cf_color = "maroon", p_zstar_color = "red",
                     p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
                     p_b = T, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
-                    p_domregion_color = "grey40", seed = NA, p_domregion_ltype="dashed") {
+                    p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
     # ------------------------------------------------
     # check that inputs make sense
