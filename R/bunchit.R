@@ -125,7 +125,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # if not NA, are all round numbers integers?
-    if(sum(is.na(rn) == 0) & sum(is.wholenumber(rn) != length(rn))) {
+    if(sum(is.na(rn)) == 0 & sum(is.wholenumber(rn)) != length(rn)) {
         stop("Round number(s) must be integer(s)")
     }
 
@@ -279,8 +279,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_domregion_color choice must be a string")
     }
 
-    # is seed numeric?
-    if(!is.numeric(seed)) {
+    # if seed not NA, is it numeric?
+    if(!is.na(seed) & !is.numeric(seed)) {
         stop("seed must be numeric")
     }
 

@@ -13,8 +13,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
   p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5, p_b = T,
   p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
-  p_domregion_color = "grey40", seed = NA,
-  p_domregion_ltype = "dashed")
+  p_domregion_color = "blue", seed = NA,
+  p_domregion_ltype = "longdash")
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
