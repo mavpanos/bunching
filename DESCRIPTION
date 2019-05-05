@@ -5,19 +5,15 @@ Version: 0.3.0
 Author: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Maintainer: Panos Mavrokonstantis <mavpanos@sgmail.com>
-Description: Implements the bunching estimator (for kinks and notches).
-    Flexible function that allows for round number bunching and presence of nearby bunch points within bandwidth.
-    Produces publishable-style plots with lots of functionality on choosing plot options
+Description: This package implements the bunching estimator for kinks and notches. 
+        Allows for flexible estimation of counterfactual (e.g. controlling for round number bunching, accounting for other bunching masses within bunching window, fixing bunching point to be minimum, maximum or median value in its bin, etc.). 
+        It produces publication-ready plots in the style followed since Chetty et al. (2011), with lots of functionality to set graph options.
 URL: http://github.com/mavpanos/bunching
 BugReports: https://github.com/mavpanos/bunching/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr,
-    ggplot2,
-    stats,
-    tidyr
-Depends: dplyr,
     ggplot2,
     stats,
     tidyr

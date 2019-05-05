@@ -1,6 +1,7 @@
 #' Fit  bunching model and estimate excess mass.
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param themodelformula formula to fit.
+#' @param zD_bin the bin marking the upper end of the dominated region (notch case).
 #' @inheritParams bunchit
 #' @return coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
 #' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}

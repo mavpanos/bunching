@@ -11,7 +11,7 @@
 plot_hist <- function(z_vector, binv = "median", zstar,
                           binwidth, bins_l, bins_r,
                       p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                      p_maxy = NA, p_axis_txt_size = 7, p_axis_val_size = 7,
+                      p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
                       p_theme = "bw_light",  p_freq_color = "black",
                       p_zstar_color = "red",
                       p_freq_size = .5, p_freq_msize = 1, p_zstar_size = .5, p_zstar = T) {
@@ -35,16 +35,16 @@ plot_hist <- function(z_vector, binv = "median", zstar,
     # show zstar vline if requested
     if(p_zstar) {
         hist_plot <- hist_plot +
-            geom_vline(xintercept=zstar,  linetype = "solid", size = p_zstar_size, colour = p_zstar_color)
+            ggplot2::geom_vline(xintercept=zstar,  linetype = "solid", size = p_zstar_size, colour = p_zstar_color)
     }
     # add bpoint (so it appears in front of vline) and rest of options
-    hist_plot <- hist_plot + geom_point(colour = p_freq_color, size = p_freq_msize) +
+    hist_plot <- hist_plot + ggplot2::geom_point(colour = p_freq_color, size = p_freq_msize) +
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
-        theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
+        ggplot2::theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
-              text = element_text(size=p_axis_txt_size),
-              axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
-        labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ylim(0,p_maxy) + guides(fill=FALSE, color=FALSE)
+              text = element_text(size=p_axis_title_size),
+              axis.text = element_text(size=p_axis_val_size), legend.position = "none") +
+        ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
 
     return(hist_plot)
 

@@ -14,6 +14,8 @@ do_correction(thedata, firstpass_results, max_iterations, notch, zD_bin)
 \item{max_iterations}{maximum number of iterations for counterfactual shifting.}
 
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+
+\item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
 \value{
 The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).

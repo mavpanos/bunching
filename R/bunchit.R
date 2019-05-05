@@ -38,6 +38,7 @@
 #' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
+#' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -358,7 +359,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 newvar <- paste0("bin_excl_r_", zu_bin)
                 firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
                 # add next order bin_excl_r to formula
-                firstpass_prep$model_formula <- as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
+                firstpass_prep$model_formula <- stats::as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
                 # re-fit model using the now expanded zu
                 firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
                 # get new B below and M above

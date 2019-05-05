@@ -5,6 +5,7 @@
 #' @param correction whether to implement correction for integration constraint.
 #' @param correction_iterations maximum iterations for integration constraint correction.
 #' @inheritParams bunchit
+#' @inheritParams fit_bunching
 #'
 #' @return A list with components...
 

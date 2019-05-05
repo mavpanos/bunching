@@ -146,7 +146,7 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
                   bins_excluded_all)
     # some may have "" e.g. extra_fe_vector if NA, so drop these
     rhs_vars <- setdiff(rhs_vars, "")
-    model_formula <- as.formula(paste0("freq", " ~ ", paste(rhs_vars, collapse = " +")))
+    model_formula <- stats::as.formula(paste0("freq", " ~ ", paste(rhs_vars, collapse = " +")))
 
 
 

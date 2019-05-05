@@ -20,6 +20,8 @@ do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
 
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 
+\item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
+
 \item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 }
 \value{
@@ -29,5 +31,5 @@ A list with components...
 Estimate bootstrapped bunching standard error
 }
 \seealso{
-\code{\link{bunchit}}, \code{\link{prepare_data}}
+\code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
 }

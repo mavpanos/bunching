@@ -8,11 +8,13 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
   p_theme, p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
   p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
-  t0 = NA, t1 = NA, notch = F, domregion_color = NA,
-  domregion_ltype = NA)
+  t0 = NA, t1 = NA, notch = F, p_domregion_color = NA,
+  p_domregion_ltype = NA)
 }
 \arguments{
-\item{binned_data}{binned data with frequency and counterfactual estimated}
+\item{binned_data}{binned data with frequency and counterfactual estimated.}
+
+\item{cf}{the counterfactual to be plotted.}
 
 \item{zstar}{a numeric value for the the bunching point.}
 
@@ -52,6 +54,10 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 
+\item{b}{normalised bunching estimate.}
+
+\item{b_sd}{standard deviation of the normalised bunching estimate.}
+
 \item{p_b_xpos}{plot's xaxis coordinate of bunching estimate}
 
 \item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
@@ -63,6 +69,10 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
 
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+
+\item{p_domregion_color}{plot's dominated region marker line color (notch case).}
+
+\item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
 }
 \value{
 A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.

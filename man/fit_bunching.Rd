@@ -12,6 +12,8 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 \item{themodelformula}{formula to fit.}
 
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+
+\item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
 \value{
 coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
@@ -20,5 +22,5 @@ coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, b
 Fit  bunching model and estimate excess mass.
 }
 \seealso{
-\code{\link{bunchit}}, \code{\link{prepare_data}}
+\code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
 }

@@ -4,6 +4,7 @@
 #' @param firstpass_results initial bunching estimates without correction.
 #' @param max_iterations maximum number of iterations for counterfactual shifting.
 #' @inheritParams bunchit
+#' @inheritParams fit_bunching
 #' @seealso \code{\link{bunchit}} \code{\link{fit_bunching}}
 #' @return The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).
 #' @export

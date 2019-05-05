@@ -1,7 +1,10 @@
 #' Create bunching plot.
 
 #'
-#' @param binned_data binned data with frequency and counterfactual estimated
+#' @param binned_data binned data with frequency and counterfactual estimated.
+#' @param b normalised bunching estimate.
+#' @param b_sd standard deviation of the normalised bunching estimate.
+#' @param cf the counterfactual to be plotted.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
 #' @return  A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
@@ -14,7 +17,7 @@ plot_bunching <- function(binned_data, cf, zstar,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd,
-                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, domregion_color = NA, domregion_ltype = NA) {
+                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, p_domregion_color = NA, p_domregion_ltype = NA) {
 
 
     # get upper bound to customize plot region
@@ -37,8 +40,8 @@ plot_bunching <- function(binned_data, cf, zstar,
     if(notch == T) {
         bin_domregion <- domregion(zstar, t0, t1, binwidth)$zD
         vlines <- c(vlines, bin_domregion)
-        vlines_type <- c(vlines_type, domregion_ltype)
-        vlines_color <- c(vlines_color, domregion_color)
+        vlines_type <- c(vlines_type, p_domregion_ltype)
+        vlines_color <- c(vlines_color, p_domregion_color)
     }
 
     # combine b and b_sd to pass to graph
@@ -51,24 +54,24 @@ plot_bunching <- function(binned_data, cf, zstar,
     # the plot
     bunch_plot <- ggplot2::ggplot(df_plot, aes(y = value, x = bin, color = key, size = key)) +
         # plot main lines, pass size and color options
-        geom_line() + scale_size_manual(values = freq_cf_sizes) + scale_colour_manual(values = freq_cf_colors) +
+        ggplot2::geom_line() + ggplot2::scale_size_manual(values = freq_cf_sizes) + ggplot2::scale_colour_manual(values = freq_cf_colors) +
         # plot vertical lines first so that they appear behind plot binpoints
         #geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
-        geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_size) +
+        ggplot2::geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_size) +
         # plot connector point marker for freq line
-        geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
+        ggplot2::geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
         # options for plot theme/titles etc.
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
-        theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
+        ggplot2::theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
               text = element_text(size=p_axis_title_size),
               axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
-        labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ylim(0,p_maxy) + guides(fill=FALSE, color=FALSE)
+        ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
 
     # choice to show b on plot or not
     if(p_b == T) {
         bunch_plot <- bunch_plot +
-            annotate("text", x = p_b_xpos, y = p_b_ypos,
+            ggplot2::annotate("text", x = p_b_xpos, y = p_b_ypos,
                      label = b_estimates, size = p_b_size)
     }
 

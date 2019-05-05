@@ -92,6 +92,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 \item{p_domregion_color}{plot's dominated region marker line color (notch case).}
 
 \item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
+
+\item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
 }
 \description{
 Run the bunching estimator
