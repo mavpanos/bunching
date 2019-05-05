@@ -9,7 +9,7 @@
 #' @return A list with components...
 
 
-#' @seealso \code{\link{bunchit}}, \code{\link{prepare_data}}
+#' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
 #' @export
 
 

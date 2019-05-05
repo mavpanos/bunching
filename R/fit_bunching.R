@@ -3,7 +3,7 @@
 #' @param themodelformula formula to fit.
 #' @inheritParams bunchit
 #' @return coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
-#' @seealso \code{\link{bunchit}}, \code{\link{prepare_data}}
+#' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
 #' @export
 
 
