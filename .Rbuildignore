@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^create_examples$
 ^TODO$
+^\.travis\.yml$
