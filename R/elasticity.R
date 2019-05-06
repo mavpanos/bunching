@@ -9,13 +9,15 @@
 
 elasticity <- function(beta, binwidth, zstar, t0, t1, notch) {
     Dz <- beta*binwidth
+    Dz_over_zstar <- Dz/zstar
     dt <- t1 - t0
+
     if(notch == F) {
         # kink equation
-        e <- -log(1+(Dz/zstar))/log(1-(dt/(1-t0)))
+        e <- -log(1+Dz_over_zstar)/log(1-(dt/(1-t0)))
     } else {
-        # notch equation
-        e <- (Dz/zstar)**2/(dt/(1-t0))
+        # notch equation (approximation from Kleven's 2018 note, equation 5)
+        e <- (1/(2+Dz_over_zstar))*(Dz_over_zstar**2)/(dt/(1-t0))
     }
     return(e)
 }
