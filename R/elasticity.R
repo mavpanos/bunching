@@ -4,7 +4,7 @@
 #' @param beta normalised excess mass.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
-#' @return  Elasticity estimate.
+#' @return  Returns the elasticity. In the kink case it uses the standard log-form. In the notch case, it is the reduced-form approximation in equation (5) of Kleven's 2018 note "Calculating Reduced-Form Elasticities Using Notches".
 #' @export
 
 elasticity <- function(beta, binwidth, zstar, t0, t1, notch) {
