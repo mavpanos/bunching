@@ -95,6 +95,27 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
 }
+\value{
+A list with the following:
+\describe{
+  \item{data}{The binned data used for estimation.}
+  \item{cf}{The estimated counterfactuals.}
+  \item{B}{The estimated excess mass (not normalized).}
+  \item{B_vector}{The vector of bootstrapped B's.}
+  \item{B_sd}{The standard deviation of B_vector.}
+  \item{b}{The estimated excess mass (normalized).}
+  \item{b_vector}{The vector of bootstrapped b's.}
+  \item{b_sd}{The standard deviation of b_vector.}
+  \item{e}{The estimated elasticity.}
+  \item{e_vector}{The vector of bootstrapped elasticities (e).}
+  \item{e_sd}{The standard deviation of e_vector.}
+  \item{alpha}{The estimated fraction of bunchers in dominated region (notch case).}
+  \item{alpha_vector}{The vector of bootstrapped alphas.}
+  \item{alpha_sd}{The standard deviation of alpha_vector.}
+  \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
+  \item{plot}{The bunching plot.}
+}
+}
 \description{
 Run the bunching estimator
 }

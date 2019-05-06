@@ -20,7 +20,7 @@ elasticity(beta, binwidth, zstar, t0, t1, notch)
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 }
 \value{
-Elasticity estimate.
+Returns the elasticity. In the kink case it uses the standard log-form. In the notch case, it is the reduced-form approximation in equation (5) of Kleven's 2018 note "Calculating Reduced-Form Elasticities Using Notches".
 }
 \description{
 Estimate elasticity from single normalised bunching observation.

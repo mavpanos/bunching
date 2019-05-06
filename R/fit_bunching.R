@@ -93,7 +93,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
         # alpha: fraction in dominated region zstar to zD bin
         domregion_freq <- sum(thedata$freq_orig[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
         domregion_cf <- sum(thedata$cf[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
-        alpha <- round(domregion_freq/domregion_cf,2)
+        alpha <- domregion_freq/domregion_cf
 
     }
 

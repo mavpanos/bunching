@@ -39,6 +39,25 @@
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 #' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
+#' @return A list with the following:
+#' \describe{
+#'   \item{data}{The binned data used for estimation.}
+#'   \item{cf}{The estimated counterfactuals.}
+#'   \item{B}{The estimated excess mass (not normalized).}
+#'   \item{B_vector}{The vector of bootstrapped B's.}
+#'   \item{B_sd}{The standard deviation of B_vector.}
+#'   \item{b}{The estimated excess mass (normalized).}
+#'   \item{b_vector}{The vector of bootstrapped b's.}
+#'   \item{b_sd}{The standard deviation of b_vector.}
+#'   \item{e}{The estimated elasticity.}
+#'   \item{e_vector}{The vector of bootstrapped elasticities (e).}
+#'   \item{e_sd}{The standard deviation of e_vector.}
+#'   \item{alpha}{The estimated fraction of bunchers in dominated region (notch case).}
+#'   \item{alpha_vector}{The vector of bootstrapped alphas.}
+#'   \item{alpha_sd}{The standard deviation of alpha_vector.}
+#'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
+#'   \item{plot}{The bunching plot.}
+#' }
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -392,7 +411,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                correct, iter_max, notch,zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+        e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+        e_sd <- round(sd(e_vector),3)
         B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
@@ -426,7 +446,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                correct,iter_max, notch, zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
-        e_sd <- bunching::elasticity_sd(boot_results$b_vector, binwidth, zstar, t0, t1, notch)
+        e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+        e_sd <- round(sd(e_vector),3)
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
@@ -478,19 +499,20 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
 
-    output <- list("data" = firstpass_prep$data_binned,
+    output <- list("plot" = p,
+                   "data" = firstpass_prep$data_binned,
                    "cf" = counterfactuals_for_graph,
-                   "B" = B_for_output,
+                   "model_fit" = model_fit,
+                   "B" = round(B_for_output,3),
                    "B_vector" = B_vector,
                    "B_sd" = B_sd,
                    "b" = b_estimate,
                    "b_vector" = b_vector,
                    "b_sd" = b_sd,
-                   "e" = e_estimate,
+                   "e" = round(e_estimate,3),
+                   "e_vector" = e_vector,
                    "e_sd" = e_sd,
-                   "plot" = p,
-                   "modelfit" = model_fit,
-                   "alpha" = alpha,
+                   "alpha" = round(alpha,3),
                    "alpha_vector" = alpha_vector,
                    "alpha_sd" = alpha_sd)
     return(output)
