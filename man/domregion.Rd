@@ -2,7 +2,7 @@
 % Please edit documentation in R/domregion.R
 \name{domregion}
 \alias{domregion}
-\title{Estimate z that demarcates dominated region (in notch settings).}
+\title{Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).}
 \usage{
 domregion(zstar, t0, t1, binwidth)
 }
@@ -16,8 +16,8 @@ domregion(zstar, t0, t1, binwidth)
 \item{binwidth}{a numeric value for the width of each bin.}
 }
 \value{
-The z level and bin  above zstar where individual is indifferent between there or at zstar. Used for notch
+The level of z, and the bin it is in (above zstar), that demarcates the dominated region (in notch settings only).
 }
 \description{
-Estimate z that demarcates dominated region (in notch settings).
+Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
 }
