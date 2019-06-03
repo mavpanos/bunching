@@ -1,4 +1,4 @@
-#' Run the bunching estimator
+#' Implement the bunching estimator in a kink or notch setting.
 #'
 #' @param z_vector a numeric vector of (unbinned) data to be analysed.
 #' @param binv a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.
@@ -39,8 +39,11 @@
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
-#' @return A list with the following:
-#' \describe{
+
+#' @details bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
+
+#' @return bunchit returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
+#'   \item{plot}{The bunching plot.}
 #'   \item{data}{The binned data used for estimation.}
 #'   \item{cf}{The estimated counterfactuals.}
 #'   \item{B}{The estimated excess mass (not normalized).}
@@ -56,17 +59,16 @@
 #'   \item{alpha_vector}{The vector of bootstrapped alphas.}
 #'   \item{alpha_sd}{The standard deviation of alpha_vector.}
 #'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
-#'   \item{plot}{The bunching plot.}
 #'   \item{zD}{The value demarcating the dominated region (notch case).}
 #'   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
 #'   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
 #'   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
 #'   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
-#' }
 #' @import dplyr
 #' @import ggplot2
 #' @import tidyr
 #' @export
+#' @seealso \code{\link{plot_hist}}
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly, bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA,
