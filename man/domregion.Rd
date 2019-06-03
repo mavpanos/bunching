@@ -2,7 +2,7 @@
 % Please edit documentation in R/domregion.R
 \name{domregion}
 \alias{domregion}
-\title{Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).}
+\title{Dominated Region}
 \usage{
 domregion(zstar, t0, t1, binwidth)
 }
@@ -16,8 +16,13 @@ domregion(zstar, t0, t1, binwidth)
 \item{binwidth}{a numeric value for the width of each bin.}
 }
 \value{
-The level of z, and the bin it is in (above zstar), that demarcates the dominated region (in notch settings only).
+\code{domregion} returns a list with the following objects related to the dominated region (in notch settings only):
+\item{zD}{The level of z that demarcates the upper bound of the dominated region.}
+\item{zD_bin}{The value of the bin which zD falls in.}
 }
 \description{
 Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
+}
+\seealso{
+\code{\link{bunchit}}
 }

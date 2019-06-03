@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_data_for_fit.R
 \name{prep_data_for_fit}
 \alias{prep_data_for_fit}
-\title{Prepare binned data and model for bunching estimation.}
+\title{Data Preparation}
 \usage{
 prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, rn, extra_fe)
@@ -27,6 +27,11 @@ prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
 \item{rn}{a numeric vector of round numbers (up to 2) to control for.}
 
 \item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
+}
+\value{
+\code{data_binned} returns a list with the following:
+\item{data_binned}{The binned data with the extra columns necessary for model fitting.}
+\item{model_formula}{The formula used for model fitting.}
 }
 \description{
 Prepare binned data and model for bunching estimation.

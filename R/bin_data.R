@@ -1,9 +1,13 @@
+#' Bin the raw data
+#'
 #' Create dataframe of binned counts
 
 #'
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
-#' @return  A dataframe with the bin value and counts per bin
+#' @return  \code{bin_data} returns a data frame with two columns:
+#' \item{bin}{The bin value.}
+#' \item{freq}{The count per bin.}
 #' @export
 
 

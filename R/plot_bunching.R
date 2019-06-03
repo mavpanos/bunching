@@ -1,4 +1,6 @@
-#' Create bunching plot.
+#' Bunching Plot
+#'
+#' Creates the bunching plot.
 
 #'
 #' @param binned_data binned data with frequency and counterfactual estimated.
@@ -7,7 +9,7 @@
 #' @param cf the counterfactual to be plotted.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
-#' @return  A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
+#' @return  \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
 #' @export
 
 

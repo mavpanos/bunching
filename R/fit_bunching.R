@@ -1,9 +1,23 @@
+#' Fit Bunching
+#'
 #' Fit  bunching model and estimate excess mass.
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param themodelformula formula to fit.
 #' @param zD_bin the bin marking the upper end of the dominated region (notch case).
 #' @inheritParams bunchit
-#' @return coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
+#' @return \code{fit_bunching} returns a list of the following results:
+#' \item{coefficients}{The coefficients from the fitted model.}
+#' \item{residuals}{The residuals from the fitted model.}
+#' \item{cf_density}{The estimated counterfactual density.}
+#' \item{bunchers_excess}{The estimate of the excess mass (not normalized).}
+#' \item{cf_bunchers}{The counterfactual estimate of counts in the bunching region.}
+#' \item{b_estimate}{The estimate of the normalized excess mass.}
+#' \item{bins_bunchers}{The number of bins in the bunching region.}
+#' \item{model_formula}{The model formula used for fitting.}
+#' \item{B_zl_zstar}{The count of bunchers in the bunching region below and up to zstar.}
+#' \item{B_zstar_zu}{The count of bunchers in the bunching region above zstar.}
+#' \item{alpha}{The estimated fraction of bunchers in the dominated region (only in notch case.)}
+#' \item{zD_bin}{The value of the bin which zD falls in.}
 #' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
 #' @export
 

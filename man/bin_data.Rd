@@ -2,7 +2,7 @@
 % Please edit documentation in R/bin_data.R
 \name{bin_data}
 \alias{bin_data}
-\title{Create dataframe of binned counts}
+\title{Bin the raw data}
 \usage{
 bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 }
@@ -20,7 +20,9 @@ bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 \item{bins_r}{number of bins to right of zstar to use in analysis.}
 }
 \value{
-A dataframe with the bin value and counts per bin
+\code{bin_data} returns a data frame with two columns:
+\item{bin}{The bin value.}
+\item{freq}{The count per bin.}
 }
 \description{
 Create dataframe of binned counts

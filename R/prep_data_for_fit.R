@@ -1,8 +1,13 @@
+#' Data Preparation
+#'
 #' Prepare binned data and model for bunching estimation.
 #'
 #'@param data_binned dataframe of counts per bin
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
+#' @return \code{data_binned} returns a list with the following:
+#' \item{data_binned}{The binned data with the extra columns necessary for model fitting.}
+#' \item{model_formula}{The formula used for model fitting.}
 #' @export
 
 prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,

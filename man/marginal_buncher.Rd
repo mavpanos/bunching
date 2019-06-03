@@ -2,7 +2,7 @@
 % Please edit documentation in R/marginal_buncher.R
 \name{marginal_buncher}
 \alias{marginal_buncher}
-\title{Calculate location (value of running variable) of marginal buncher.}
+\title{Marginal Buncher}
 \usage{
 marginal_buncher(beta, binwidth, zstar)
 }
@@ -14,7 +14,7 @@ marginal_buncher(beta, binwidth, zstar)
 \item{zstar}{a numeric value for the the bunching point.}
 }
 \value{
-Returns the location of the marginal buncher, i.e. zstar + Dzstar
+\code{marginal_buncher} returns the location of the marginal buncher, i.e. zstar + Dzstar.
 }
 \description{
 Calculate location (value of running variable) of marginal buncher.

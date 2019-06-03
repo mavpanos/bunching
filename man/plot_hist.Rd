@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot_hist.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{Create simple binned plot.}
+\title{Plot Histogram}
 \usage{
 plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
   p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
   p_theme = "bw_light", p_freq_color = "black",
   p_zstar_color = "red", p_freq_size = 0.5, p_freq_msize = 1,
-  p_zstar_size = 0.5, p_zstar = T)
+  p_zstar_size = 0.5, p_zstar = TRUE)
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
@@ -38,23 +38,23 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_theme}{plot theme (in ggplot2 format).}
 
-\item{p_freq_color}{plot's frequency line color}
+\item{p_freq_color}{plot's frequency line color.}
 
-\item{p_zstar_color}{plot's bunching region marker lines color}
+\item{p_zstar_color}{plot's bunching region marker lines color.}
 
-\item{p_freq_size}{plot's frequency line thickness}
+\item{p_freq_size}{plot's frequency line thickness.}
 
-\item{p_freq_msize}{plot's frequency line marker size}
+\item{p_freq_msize}{plot's frequency line marker size.}
 
-\item{p_zstar_size}{plot's bunching region marker lines thickness}
+\item{p_zstar_size}{plot's bunching region marker lines thickness.}
 
-\item{p_zstar}{whether to show vertical line for zstar. Default is true.}
+\item{p_zstar}{whether to show vertical line for zstar. Default is TRUE.}
 }
 \value{
-A plot with just the frequency per bin (histogram).
+\code{plot_hist} returns a plot with just the frequency per bin (histogram).
 }
 \description{
-Create simple binned plot.
+Create a simple binned plot for quick exploration without estimating bunching mass.
 }
 \seealso{
 \code{\link{bunchit}}

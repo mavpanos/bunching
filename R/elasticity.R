@@ -1,10 +1,12 @@
-#' Estimate elasticity from single normalised bunching observation.
+#' Elasticity
+#'
+#' Estimate elasticity from single normalized bunching observation.
 
 #'
 #' @param beta normalised excess mass.
 #' @inheritParams bunchit
-#' @seealso \code{\link{bunchit}}
-#' @return  Returns the elasticity. In the kink case it uses the standard log-form. In the notch case, it is the reduced-form approximation in equation (5) of Kleven's 2018 note "Calculating Reduced-Form Elasticities Using Notches".
+#' @seealso \code{\link{bunchit}},  \code{\link{elasticity_sd}}
+#' @return  \code{elasticity} returns the estimated elasticity. In the kink case it uses the standard log-form. In the notch case, it is the reduced-form approximation in equation (5) of Kleven's 2018 note "Calculating Reduced-Form Elasticities Using Notches".
 #' @export
 
 elasticity <- function(beta, binwidth, zstar, t0, t1, notch) {

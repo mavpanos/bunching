@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_bunching.R
 \name{fit_bunching}
 \alias{fit_bunching}
-\title{Fit  bunching model and estimate excess mass.}
+\title{Fit Bunching}
 \usage{
 fit_bunching(thedata, themodelformula, notch, zD_bin)
 }
@@ -16,7 +16,19 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
 \value{
-coefficients, residuals, cf_density, bunchers_excess, cf_bunchers, b_estimate, bins_bunchers, model_formula.
+\code{fit_bunching} returns a list of the following results:
+\item{coefficients}{The coefficients from the fitted model.}
+\item{residuals}{The residuals from the fitted model.}
+\item{cf_density}{The estimated counterfactual density.}
+\item{bunchers_excess}{The estimate of the excess mass (not normalized).}
+\item{cf_bunchers}{The counterfactual estimate of counts in the bunching region.}
+\item{b_estimate}{The estimate of the normalized excess mass.}
+\item{bins_bunchers}{The number of bins in the bunching region.}
+\item{model_formula}{The model formula used for fitting.}
+\item{B_zl_zstar}{The count of bunchers in the bunching region below and up to zstar.}
+\item{B_zstar_zu}{The count of bunchers in the bunching region above zstar.}
+\item{alpha}{The estimated fraction of bunchers in the dominated region (only in notch case.)}
+\item{zD_bin}{The value of the bin which zD falls in.}
 }
 \description{
 Fit  bunching model and estimate excess mass.

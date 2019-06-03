@@ -1,3 +1,5 @@
+#' Bunching Estimator
+#'
 #' Implement the bunching estimator in a kink or notch setting.
 #'
 #' @param z_vector a numeric vector of (unbinned) data to be analysed.
@@ -42,7 +44,7 @@
 
 #' @details bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
 
-#' @return bunchit returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
+#' @return \code{bunchit} returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
 #'   \item{plot}{The bunching plot.}
 #'   \item{data}{The binned data used for estimation.}
 #'   \item{cf}{The estimated counterfactuals.}
@@ -67,8 +69,8 @@
 #' @import dplyr
 #' @import ggplot2
 #' @import tidyr
-#' @export
 #' @seealso \code{\link{plot_hist}}
+#' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly, bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA,
@@ -437,7 +439,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # -----------------------------------------
 
     if(correct == F) {
-        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
+        boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
                                                correct, iter_max, notch, zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
@@ -448,8 +450,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
         alpha_sd <- boot_results$alpha_sd
-        mbuncher_vector <- bunching::marginal_buncher(beta = b_vector, binwidth = binwidth, zstar = zstar)
-        mbuncher_sd <- round(stats::sd(mbuncher_vector),3)
+        mbuncher_vector <- boot_results$marginal_buncher_vector
+        mbuncher_sd <- boot_results$marginal_buncher_sd
 
     }
 
@@ -460,22 +462,22 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (correct == T) {
 
         # initial correction to get vector of residuals for bootstrap for later
-        firstpass_corrected <- bunching::do_correction(firstpass_prep$data_binned,firstpass,
-                                                       iter_max, notch, zD_bin)
+        firstpass_corrected <- bunching::do_correction(zstar, binwidth, firstpass_prep$data_binned,
+                                                       firstpass, iter_max, notch, zD_bin)
 
         # get corrected results for beta, counterfactuals, alpha etc.
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
         residuals_for_boot <- firstpass_corrected$data$residuals
         B_for_output <- firstpass_corrected$B_corrected
         b_estimate <- firstpass_corrected$b_corrected
-        mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar)
+        mbuncher <- firstpass_corrected$marginal_buncher_corrected
         e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         model_fit <- firstpass_corrected$coefficients
         alpha <- firstpass_corrected$alpha_corrected
 
 
         # we now have the correct residuals. add to our original data in firstpass_prep$data and bootstrap
-        boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
+        boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
                                                correct,iter_max, notch, zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
@@ -485,8 +487,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
         alpha_sd <- boot_results$alpha_sd
-        mbuncher_vector <- bunching::marginal_buncher(beta = b_vector, binwidth = binwidth, zstar = zstar)
-        mbuncher_sd <- round(stats::sd(mbuncher_vector),3)
+        mbuncher_vector <- boot_results$marginal_buncher_vector
+        mbuncher_sd <- boot_results$marginal_buncher_sd
     }
 
 

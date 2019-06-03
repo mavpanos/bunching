@@ -2,11 +2,16 @@
 % Please edit documentation in R/do_correction.R
 \name{do_correction}
 \alias{do_correction}
-\title{Implements correction for integration constraint.}
+\title{Integration Constraint Correction}
 \usage{
-do_correction(thedata, firstpass_results, max_iterations, notch, zD_bin)
+do_correction(zstar, binwidth, thedata, firstpass_results, max_iterations,
+  notch, zD_bin)
 }
 \arguments{
+\item{zstar}{a numeric value for the the bunching point.}
+
+\item{binwidth}{a numeric value for the width of each bin.}
+
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
 
 \item{firstpass_results}{initial bunching estimates without correction.}
@@ -18,11 +23,17 @@ do_correction(thedata, firstpass_results, max_iterations, notch, zD_bin)
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
 \value{
-The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).
+do_correction returns a list with the data and estimates after correcting for the integration constraint, as follows:
+\item{data}{The dataset with the corrected frequency and counterfactual.}
+\item{coefficients}{The coefficients of the model fit on the corrected data.}
+\item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
+\item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}
+\item{marginal_buncher_corrected}{The location (z value) of the marginal buncher, corrected for the integration constraint.}
+\item{alpha_corrected}{The estimated fraction of bunchers in the dominated region, corrected for the integration constraint (only in notch case).}
 }
 \description{
-Implements correction for integration constraint.
+Implements the correction for the integration constraint.
 }
 \seealso{
-\code{\link{bunchit}} \code{\link{fit_bunching}}
+\code{\link{bunchit}}, \code{\link{fit_bunching}}
 }

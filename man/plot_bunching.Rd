@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_bunching.R
 \name{plot_bunching}
 \alias{plot_bunching}
-\title{Create bunching plot.}
+\title{Bunching Plot}
 \usage{
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
@@ -38,19 +38,19 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_theme}{plot theme (in ggplot2 format).}
 
-\item{p_freq_color}{plot's frequency line color}
+\item{p_freq_color}{plot's frequency line color.}
 
-\item{p_cf_color}{plot's counterfactual line color}
+\item{p_cf_color}{plot's counterfactual line color.}
 
-\item{p_zstar_color}{plot's bunching region marker lines color}
+\item{p_zstar_color}{plot's bunching region marker lines color.}
 
-\item{p_freq_size}{plot's frequency line thickness}
+\item{p_freq_size}{plot's frequency line thickness.}
 
-\item{p_cf_size}{plot's counterfactual line thickness}
+\item{p_cf_size}{plot's counterfactual line thickness.}
 
-\item{p_freq_msize}{plot's frequency line marker size}
+\item{p_freq_msize}{plot's frequency line marker size.}
 
-\item{p_zstar_size}{plot's bunching region marker lines thickness}
+\item{p_zstar_size}{plot's bunching region marker lines thickness.}
 
 \item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 
@@ -58,11 +58,11 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{b_sd}{standard deviation of the normalised bunching estimate.}
 
-\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate}
+\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate.}
 
-\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
+\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate.}
 
-\item{p_b_size}{size of plot's printed bunching estimate}
+\item{p_b_size}{size of plot's printed bunching estimate.}
 
 \item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
@@ -75,10 +75,10 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
 }
 \value{
-A plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
+\code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
 }
 \description{
-Create bunching plot.
+Creates the bunching plot.
 }
 \seealso{
 \code{\link{bunchit}}

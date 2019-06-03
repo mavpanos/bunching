@@ -1,7 +1,7 @@
 Package: bunching
 Type: Package
 Title: Bunching Estimator
-Version: 0.3.0
+Version: 0.4.0
 Author: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Maintainer: Panos Mavrokonstantis <mavpanos@sgmail.com>

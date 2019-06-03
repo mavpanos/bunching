@@ -1,17 +1,25 @@
-#' Implements correction for integration constraint.
+#' Integration Constraint Correction
+#'
+#' Implements the correction for the integration constraint.
 #'
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param firstpass_results initial bunching estimates without correction.
 #' @param max_iterations maximum number of iterations for counterfactual shifting.
 #' @inheritParams bunchit
 #' @inheritParams fit_bunching
-#' @seealso \code{\link{bunchit}} \code{\link{fit_bunching}}
-#' @return The data used for estimation, and the "corrected" estimates of both the pure excess mass (B_corrected) and the normalised excess mass (b_corrected).
+#' @seealso \code{\link{bunchit}}, \code{\link{fit_bunching}}
+#' @return do_correction returns a list with the data and estimates after correcting for the integration constraint, as follows:
+#' \item{data}{The dataset with the corrected frequency and counterfactual.}
+#' \item{coefficients}{The coefficients of the model fit on the corrected data.}
+#' \item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
+#' \item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}
+#' \item{marginal_buncher_corrected}{The location (z value) of the marginal buncher, corrected for the integration constraint.}
+#' \item{alpha_corrected}{The estimated fraction of bunchers in the dominated region, corrected for the integration constraint (only in notch case).}
 #' @export
 
 
 
-do_correction <- function(thedata, firstpass_results, max_iterations, notch, zD_bin) {
+do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_iterations, notch, zD_bin) {
     # get initial buncher value, bins of bunchers and model formula
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
@@ -58,6 +66,8 @@ do_correction <- function(thedata, firstpass_results, max_iterations, notch, zD_
     # get alpha
     alpha_corrected <- iteration_results$alpha
 
+    # get marginal buncher
+    mbuncher_corrected <- bunching::marginal_buncher(beta = b_corrected, binwidth = binwidth, zstar = zstar)
     # get residuals
     thedata$residuals <- thedata$cf_density - thedata$freq_orig
 
@@ -66,7 +76,7 @@ do_correction <- function(thedata, firstpass_results, max_iterations, notch, zD_
     # generate output (updated with correction)
     output <- list("data" = thedata, "coefficients" = iteration_results$coefficients,
                    "b_corrected" = b_corrected, "B_corrected" = B_corrected,
-                   "alpha_corrected" = alpha_corrected)
+                   "marginal_buncher_corrected" = mbuncher_corrected, "alpha_corrected" = alpha_corrected)
 
     return(output)
 }

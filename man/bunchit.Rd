@@ -2,16 +2,16 @@
 % Please edit documentation in R/bunchit.R
 \name{bunchit}
 \alias{bunchit}
-\title{Run the bunching estimator}
+\title{Bunching Estimator}
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
   correct = TRUE, iter_max = 200, t0, t1, notch = FALSE,
   force_notch = FALSE, p_title = "", p_xtitle = "z_name",
-  p_ytitle = "Count", p_maxy = NA, p_axis_title_size = 7,
-  p_axis_val_size = 7, p_theme = "bw_light", p_freq_color = "black",
+  p_ytitle = "Count", p_axis_title_size = 7, p_axis_val_size = 7,
+  p_maxy = NA, p_theme = "bw_light", p_freq_color = "black",
   p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
-  p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5,
+  p_freq_msize = 1, p_cf_size = 0.5, p_zstar_size = 0.5,
   p_b = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
   p_domregion_color = "blue", seed = NA,
   p_domregion_ltype = "longdash")
@@ -59,35 +59,35 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 
 \item{p_ytitle}{plot y_axis label.}
 
-\item{p_maxy}{plot's maximum y_axis value.}
-
 \item{p_axis_title_size}{size of plot's axes' title labels.}
 
 \item{p_axis_val_size}{size of plot's axes' numeric labels.}
 
+\item{p_maxy}{plot's maximum y_axis value.}
+
 \item{p_theme}{plot theme (in ggplot2 format).}
 
-\item{p_freq_color}{plot's frequency line color}
+\item{p_freq_color}{plot's frequency line color.}
 
-\item{p_cf_color}{plot's counterfactual line color}
+\item{p_cf_color}{plot's counterfactual line color.}
 
-\item{p_zstar_color}{plot's bunching region marker lines color}
+\item{p_zstar_color}{plot's bunching region marker lines color.}
 
-\item{p_freq_size}{plot's frequency line thickness}
+\item{p_freq_size}{plot's frequency line thickness.}
 
-\item{p_cf_size}{plot's counterfactual line thickness}
+\item{p_freq_msize}{plot's frequency line marker size.}
 
-\item{p_freq_msize}{plot's frequency line marker size}
+\item{p_cf_size}{plot's counterfactual line thickness.}
 
-\item{p_zstar_size}{plot's bunching region marker lines thickness}
+\item{p_zstar_size}{plot's bunching region marker lines thickness.}
 
 \item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 
-\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate}
+\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate.}
 
-\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate}
+\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate.}
 
-\item{p_b_size}{size of plot's printed bunching estimate}
+\item{p_b_size}{size of plot's printed bunching estimate.}
 
 \item{p_domregion_color}{plot's dominated region marker line color (notch case).}
 
@@ -96,8 +96,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 \item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
 }
 \value{
-A list with the following:
-\describe{
+\code{bunchit} returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
+  \item{plot}{The bunching plot.}
   \item{data}{The binned data used for estimation.}
   \item{cf}{The estimated counterfactuals.}
   \item{B}{The estimated excess mass (not normalized).}
@@ -113,14 +113,18 @@ A list with the following:
   \item{alpha_vector}{The vector of bootstrapped alphas.}
   \item{alpha_sd}{The standard deviation of alpha_vector.}
   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
-  \item{plot}{The bunching plot.}
   \item{zD}{The value demarcating the dominated region (notch case).}
   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
 }
-}
 \description{
-Run the bunching estimator
+Implement the bunching estimator in a kink or notch setting.
+}
+\details{
+bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
+}
+\seealso{
+\code{\link{plot_hist}}
 }

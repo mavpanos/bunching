@@ -2,12 +2,16 @@
 % Please edit documentation in R/do_bootstrap.R
 \name{do_bootstrap}
 \alias{do_bootstrap}
-\title{Estimate bootstrapped bunching standard error}
+\title{Bootstrap}
 \usage{
-do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
-  correction_iterations, notch, zD_bin, seed)
+do_bootstrap(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
+  correction, correction_iterations, notch, zD_bin, seed)
 }
 \arguments{
+\item{zstar}{a numeric value for the the bunching point.}
+
+\item{binwidth}{a numeric value for the width of each bin.}
+
 \item{firstpass_prep}{(binned) data that includes all variables necessary for fitting the model.}
 
 \item{residuals}{residuals from (first pass) fitted bunchingm model}
@@ -25,10 +29,18 @@ do_bootstrap(firstpass_prep, residuals, boot_iterations, correction,
 \item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 }
 \value{
-A list with components...
+\code{do_bootstrap} returns a list with the following bootstrapped estimates:
+\item{b_vector}{A vector with the bootstrapped normalized excess mass estimates.}
+\item{b_sd}{The standard deviation of the bootstrapped b_vector.}
+\item{B_vector}{A vector with the bootstrapped excess mass estimates (not normalized).}
+\item{B_sd}{The standard deviation of the bootstrapped B_vector.}
+\item{marginal_buncher_vector}{A vector with the bootstrapped estimates of the location (z value) of the marginal buncher.}
+\item{marginal_buncher_sd}{The standard deviation of the bootstrapped marginal_buncher_vector.}
+\item{alpha_vector}{A vector with the bootstrapped estimates of the fraction of bunchers in the dominated region (only in notch case).}
+\item{alpha_vector_sd}{The standard deviation of the bootstrapped alpha_vector.}
 }
 \description{
-Estimate bootstrapped bunching standard error
+Estimate bunching on bootstrapped samples, using residual-based bootstrapping with replacement.
 }
 \seealso{
 \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}

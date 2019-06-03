@@ -1,8 +1,13 @@
+#' Dominated Region
+#'
 #' Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
 
 #'
 #' @inheritParams bunchit
-#' @return  The level of z, and the bin it is in (above zstar), that demarcates the dominated region (in notch settings only).
+#' @return  \code{domregion} returns a list with the following objects related to the dominated region (in notch settings only):
+#' \item{zD}{The level of z that demarcates the upper bound of the dominated region.}
+#' \item{zD_bin}{The value of the bin which zD falls in.}
+#' @seealso \code{\link{bunchit}}
 #' @export
 
 domregion <- function(zstar,t0,t1, binwidth) {
@@ -15,3 +20,6 @@ domregion <- function(zstar,t0,t1, binwidth) {
                    "zD_bin" = zD_bin)
     return(output)
 }
+
+
+#' @seealso \code{\link{bunchit}}
