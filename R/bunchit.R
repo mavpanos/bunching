@@ -330,13 +330,15 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         # fit firstpass model
         # set zD_bin to NA if it's a kink
         zD_bin <- NA
+        zD <- NA
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
                                             notch, zD_bin)
 
     } else if (notch == T) {
         # calculate z_dominated for notches
-        z_dominated <- bunching::domregion(zstar, t0,t1, binwidth)
+        z_dominated <- bunching::domregion(zstar, t0, t1, binwidth)
         zD_bin <- z_dominated$zD_bin
+        zD <- z_dominated$zD
 
         # if we force zu, same procedure as kink
         if (force_notch == T) {
@@ -411,7 +413,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     if(correct == F) {
         boot_results <- bunching::do_bootstrap(firstpass_prep, residuals_for_boot, n_boot,
-                                               correct, iter_max, notch,zD_bin, seed)
+                                               correct, iter_max, notch, zD_bin, seed)
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
@@ -517,7 +519,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "e_sd" = e_sd,
                    "alpha" = round(alpha,3),
                    "alpha_vector" = alpha_vector,
-                   "alpha_sd" = alpha_sd)
+                   "alpha_sd" = alpha_sd,
+                   "zD" = zD,
+                   "zD_bin" = zD_bin)
     return(output)
 }
 
