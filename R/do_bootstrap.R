@@ -55,9 +55,9 @@ do_bootstrap <- function(firstpass_prep, residuals, boot_iterations, correction,
     b_boot <- unlist(boot_results["b_boot",])
     B_boot <- unlist(boot_results["B_boot",])
     alpha_boot <- unlist(boot_results["alpha_boot",])
-    b_sd <- round(sd(b_boot, na.rm = T),3)
-    B_sd <- round(sd(B_boot, na.rm = T),3)
-    alpha_sd <- round(sd(alpha_boot, na.rm = T),3)
+    b_sd <- round(stats::sd(b_boot, na.rm = T),3)
+    B_sd <- round(stats::sd(B_boot, na.rm = T),3)
+    alpha_sd <- round(stats::sd(alpha_boot, na.rm = T),3)
 
     output <- list("b_vector" = b_boot, "b_sd" = b_sd,
                    "B_vector" = B_boot, "B_sd" = B_sd,
