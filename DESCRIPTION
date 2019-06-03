@@ -13,8 +13,8 @@ BugReports: https://github.com/mavpanos/bunching/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr,
+Depends: dplyr,
     ggplot2,
     stats,
-    tidyr
+    tidyr    
 RoxygenNote: 6.1.1.9000
