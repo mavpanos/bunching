@@ -73,10 +73,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     n_boot = 50, correct = TRUE, iter_max = 200,
                     t0, t1, notch = FALSE, force_notch = FALSE,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                    p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
+                    p_axis_title_size = 7, p_axis_val_size = 7, p_maxy = NA,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
-                    p_freq_size = .5, p_cf_size = .5, p_freq_msize = 1, p_zstar_size = .5,
+                    p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
                     p_b = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
@@ -101,9 +101,14 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("zstar (bunching point) is outside of running variable's range of values")
     }
 
+    # zstar cannot be zero (elasticity needs Dz/zstar estimate)
+    if(zstar == 0) {
+        stop("zstar (bunching point) cannot be zero. If this your true bunching point, must re-centre it away from zero.")
+    }
+
     # binwidth: must be positive
     if(binwidth <= 0) {
-        stop("Binwidth must be positive number")
+        stop("Binwidth must be a positive number")
     }
 
     # check that bins_l are positive and integers
@@ -111,27 +116,27 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # bins_l: must be positive
     if(bins_l <= 0 | !is.wholenumber(bins_l)) {
-        stop("bins_l must be positive integer")
+        stop("bins_l must be a positive integer")
     }
 
     # bins_r: must be positive
     if(bins_r <= 0 | !is.wholenumber(bins_r)) {
-        stop("bins_r must be positive integer")
+        stop("bins_r must be a positive integer")
     }
 
     # polynomial order cannot be negative
     if(poly < 0 | !is.wholenumber(poly)) {
-        stop("Polynomial order must a be non-negative integer")
+        stop("Polynomial order must be a non-negative integer")
     }
 
     # excluded bins below zstar cannot be negative
     if(bins_excl_l < 0 | !is.wholenumber(bins_excl_l)) {
-        stop("Bins in bunching region below zstar must be a non-negative integer")
+        stop("Number of bins in bunching region below zstar must be a non-negative integer")
     }
 
     # excluded bins above zstar cannot be negative
     if(bins_excl_r < 0 | !is.wholenumber(bins_excl_r)) {
-        stop("Bins in bunching region above zstar must be a non-negative integer")
+        stop("Number of bins in bunching region above zstar must be a non-negative integer")
     }
 
     # is bunching region below zstar too wide?
@@ -144,12 +149,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Bunching region above zstar too wide")
     }
 
-
-
-
     # check that rn does not include 0
     if( 0 %in% rn) {
-        stop("Error: rn cannot include zero for a round number")
+        stop("Error: rn cannot include zero as a round number")
     }
 
     # if not NA, are all round numbers integers?
@@ -189,7 +191,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # check that taxrate t1 inputs are numeric
     if(!is.numeric(t1)) {
-        stop("t0 must be a numeric value")
+        stop("t1 must be a numeric value")
     }
 
     # flag if t0 outside unit circle
@@ -197,9 +199,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         warning("Are you sure this is the correct value for t0? Note that t0=1 means a 100% tax rate!")
     }
 
-    # flag if t0 outside unit circle
+    # flag if t1 outside unit circle
     if(t1 < 0 | t1 > 1) {
-        warning("Are you sure this is the correct value for t0? Note that t1=1 means a 100% tax rate!")
+        warning("Are you sure this is the correct value for t1? Note that t1=1 means a 100% tax rate!")
     }
 
     # checks of inputs t0 Vs t1
@@ -232,34 +234,50 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_ytitle must be a string")
     }
 
-    # is p_maxy numeric and within the plot?
+    # is p_axis_title_size numeric and positive?
+    if(p_axis_title_size <= 0 | !is.numeric(p_axis_title_size)) {
+        stop("p_axis_title_size must be a positive numeric value")
+    }
+
+    # is p_axis_val_size numeric and positive?
+    if(p_axis_val_size <= 0 | !is.numeric(p_axis_val_size)) {
+        stop("p_axis_val_size must be a positive numeric value")
+    }
+
+    # is p_maxy numeric?
     if(!is.na(p_maxy) & !is.numeric(p_maxy)) {
         stop("p_maxy must be numeric (unless unspecified using NA)")
     }
 
     # is p_theme a string?
     if(!is.character(p_theme)) {
-        stop("p_theme must be a string (theme in ggplot2 format")
+        stop("p_theme must be a string (theme in ggplot2 format), e.g. 'bw_light")
     }
 
     # is p_freq_color a string?
     if(!is.character(p_freq_color)) {
-        stop("p_freq_color choice must be a string")
+        stop("p_freq_color choice must be a string, e.g. 'black'")
     }
 
     # is p_cf_color a string?
     if(!is.character(p_cf_color)) {
-        stop("p_cf_color choice must be a string")
+        stop("p_cf_color choice must be a string, e.g. 'maroon'")
     }
 
     # is p_zstar_color a string?
     if(!is.character(p_zstar_color)) {
-        stop("p_zstar_color choice must be a string")
+        stop("p_zstar_color choice must be a string, e.g. 'red'")
     }
+
 
     # is p_freq_size numeric?
     if(!is.numeric(p_freq_size)) {
         stop("p_freq_size choice must be numeric")
+    }
+
+    # is p_freq_msize numeric and positive?
+    if(p_freq_msize <= 0 | !is.numeric(p_freq_msize)) {
+        stop("p_freq_msize must be a positive numeric value")
     }
 
     # is p_cf_size numeric?
@@ -291,20 +309,19 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         }
     }
 
-    # is p_axis_title_size numeric and positive?
-    if(p_axis_title_size <= 0 | !is.numeric(p_axis_title_size)) {
-        stop("p_axis_title_size must be a positive numeric value")
-    }
-
-
-        # is p_freq_msize numeric and positive?
-    if(p_freq_msize <= 0 | !is.numeric(p_freq_msize)) {
-        stop("p_freq_msize must be a positive numeric value")
+    # is p_b_size numeric and positive?
+    if(p_b_size <= 0 | !is.numeric(p_b_size)) {
+        stop("p_b_size must be a positive numeric value")
     }
 
     # is p_domregion_color a string?
     if(!is.character(p_domregion_color)) {
-        stop("p_domregion_color choice must be a string")
+        stop("p_domregion_color choice must be a string, e.g. 'blue'")
+    }
+
+    # is p_domregion_ltype a string?
+    if(!is.character(p_domregion_ltype)) {
+        stop("p_domregion_ltype choice must be a string, e.g. 'longdash'")
     }
 
     # if seed not NA, is it numeric?
