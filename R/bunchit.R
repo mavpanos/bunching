@@ -58,6 +58,9 @@
 #'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
 #'   \item{plot}{The bunching plot.}
 #' }
+#' @import dplyr
+#' @import ggplot2
+#' @import tidyr
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
@@ -412,7 +415,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
-        e_sd <- round(sd(e_vector),3)
+        e_sd <- round(stats::sd(e_vector),3)
         B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
@@ -447,7 +450,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         b_sd <- boot_results$b_sd
         b_vector <- boot_results$b_vector
         e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
-        e_sd <- round(sd(e_vector),3)
+        e_sd <- round(stats::sd(e_vector),3)
         B_sd <- boot_results$B_sd
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
