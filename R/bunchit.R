@@ -21,24 +21,24 @@
 #' @param p_axis_title_size size of plot's axes' title labels.
 #' @param p_axis_val_size size of plot's axes' numeric labels.
 #' @param p_theme plot theme (in ggplot2 format).
-#' @param p_freq_color plot's frequency line color
-#' @param p_cf_color plot's counterfactual line color
-#' @param p_zstar_color plot's bunching region marker lines color
-#' @param p_freq_size plot's frequency line thickness
-#' @param p_cf_size plot's counterfactual line thickness
-#' @param p_freq_msize plot's frequency line marker size
-#' @param p_zstar_size plot's bunching region marker lines thickness
+#' @param p_freq_color plot's frequency line color.
+#' @param p_cf_color plot's counterfactual line color.
+#' @param p_zstar_color plot's bunching region marker lines color.
+#' @param p_freq_size plot's frequency line thickness.
+#' @param p_cf_size plot's counterfactual line thickness.
+#' @param p_freq_msize plot's frequency line marker size.
+#' @param p_zstar_size plot's bunching region marker lines thickness.
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
-#' @param p_b_xpos plot's xaxis coordinate of bunching estimate
-#' @param p_b_ypos plot's yaxis coordinate of bunching estimate
-#' @param p_b_size size of plot's printed bunching estimate
+#' @param p_b_xpos plot's xaxis coordinate of bunching estimate.
+#' @param p_b_ypos plot's yaxis coordinate of bunching estimate.
+#' @param p_b_size size of plot's printed bunching estimate.
 #' @param t0 numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.
 #' @param t1 numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.
 #' @param notch if TRUE, zstar treated as notch. Default is kink.
 #' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
-#' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 #' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
+#' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 #' @return A list with the following:
 #' \describe{
 #'   \item{data}{The binned data used for estimation.}
