@@ -6,13 +6,13 @@
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
-  correct = T, iter_max = 200, t0, t1, notch = F, force_notch = F,
-  p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-  p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
-  p_theme = "bw_light", p_freq_color = "black",
+  correct = TRUE, iter_max = 200, t0, t1, notch = FALSE,
+  force_notch = FALSE, p_title = "", p_xtitle = "z_name",
+  p_ytitle = "Count", p_maxy = NA, p_axis_title_size = 7,
+  p_axis_val_size = 7, p_theme = "bw_light", p_freq_color = "black",
   p_cf_color = "maroon", p_zstar_color = "red", p_freq_size = 0.5,
-  p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5, p_b = T,
-  p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+  p_cf_size = 0.5, p_freq_msize = 1, p_zstar_size = 0.5,
+  p_b = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
   p_domregion_color = "blue", seed = NA,
   p_domregion_ltype = "longdash")
 }
