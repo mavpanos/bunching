@@ -1,12 +1,12 @@
-#' Estimate z that demarcates dominated region (in notch settings).
+#' Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
 
 #'
 #' @inheritParams bunchit
-#' @return  The z level and bin  above zstar where individual is indifferent between there or at zstar. Used for notch
+#' @return  The level of z, and the bin it is in (above zstar), that demarcates the dominated region (in notch settings only).
 #' @export
 
 domregion <- function(zstar,t0,t1, binwidth) {
-    zD <- round(zstar*(1-t0)/(1-t1),0)
+    zD <- round(zstar*(1-t0)/(1-t1),2)
     zD_bin <- (zD - zstar)/binwidth
     zD <-ceiling(zD)
     zD_bin <- ceiling(zD_bin)
