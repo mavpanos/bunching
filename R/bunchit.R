@@ -57,6 +57,11 @@
 #'   \item{alpha_sd}{The standard deviation of alpha_vector.}
 #'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
 #'   \item{plot}{The bunching plot.}
+#'   \item{zD}{The value demarcating the dominated region (notch case).}
+#'   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
+#'   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
+#'   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
+#'   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
 #' }
 #' @import dplyr
 #' @import ggplot2
@@ -403,6 +408,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     residuals_for_boot <- firstpass$residuals
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
+    mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar)
     e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
@@ -423,6 +429,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
         alpha_sd <- boot_results$alpha_sd
+        mbuncher_vector <- bunching::marginal_buncher(beta = b_vector, binwidth = binwidth, zstar = zstar)
+        mbuncher_sd <- round(stats::sd(mbuncher_vector),3)
 
     }
 
@@ -441,6 +449,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         residuals_for_boot <- firstpass_corrected$data$residuals
         B_for_output <- firstpass_corrected$B_corrected
         b_estimate <- firstpass_corrected$b_corrected
+        mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar)
         e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
         model_fit <- firstpass_corrected$coefficients
         alpha <- firstpass_corrected$alpha_corrected
@@ -457,6 +466,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         B_vector <- boot_results$B_vector
         alpha_vector <- boot_results$alpha_vector
         alpha_sd <- boot_results$alpha_sd
+        mbuncher_vector <- bunching::marginal_buncher(beta = b_vector, binwidth = binwidth, zstar = zstar)
+        mbuncher_sd <- round(stats::sd(mbuncher_vector),3)
     }
 
 
@@ -521,7 +532,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "alpha_vector" = alpha_vector,
                    "alpha_sd" = alpha_sd,
                    "zD" = zD,
-                   "zD_bin" = zD_bin)
+                   "zD_bin" = zD_bin,
+                   "marginal_buncher" = mbuncher,
+                   "marginal_buncher_vector" = mbuncher_vector,
+                   "marginal_buncher_sd" = mbuncher_sd)
     return(output)
 }
 

@@ -114,6 +114,11 @@ A list with the following:
   \item{alpha_sd}{The standard deviation of alpha_vector.}
   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
   \item{plot}{The bunching plot.}
+  \item{zD}{The value demarcating the dominated region (notch case).}
+  \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
+  \item{marginal_buncher}{The location (z value) of the marginal buncher.}
+  \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
+  \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
 }
 }
 \description{
