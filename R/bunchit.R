@@ -562,7 +562,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  p_b, b = b_estimate, b_sd = b_sd, p_b_xpos, p_b_ypos, p_b_size,
                                  t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
 
+    # add some final warnings
 
+    # in case of notch, zD > mbuncher is nonsensical
+    if(zD > mbuncher) {
+        warning("zD (upper bound of dominated region) cannot be beyond marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    }
 
     output <- list("plot" = p,
                    "data" = firstpass_prep$data_binned,
