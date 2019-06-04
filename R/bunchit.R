@@ -173,10 +173,16 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Error: the two round numbers cannot be identical")
     }
 
-    # number of bootstrap iterations must be positive integer
-    if(n_boot <= 0 | !is.wholenumber(n_boot)) {
-        stop("Bootstrap sample size must be a positive integer")
+    # number of bootstrap iterations must be non-negative integer
+    if(n_boot < 0 | !is.wholenumber(n_boot)) {
+        stop("Bootstrap sample size must be a non-negative integer")
     }
+
+    # flag if bootstrap samples less than 100
+    if(n_boot > 0 & n_boot < 100) {
+        warning(paste0("You chose n_boot = ", n_boot, ". Are you sure this is large enough?"))
+    }
+
 
     # correct must be TRUE/FALSE
     if(!is.logical(correct)) {
@@ -434,34 +440,51 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
 
+    # if we don't do correction, bunchers_initial will also be the final B_for_output
+    B_for_output <- bunchers_initial
+
+    # initialise bootstrap results
+    b_sd <- NA
+    b_vector <- NA
+    e_vector <-NA
+    e_sd <- NA
+    B_vector <- NA
+    B_sd <- NA
+    alpha_vector <- NA
+    alpha_sd <- NA
+    mbuncher_vector <- NA
+    mbuncher_sd <- NA
+
     # -----------------------------------------
-    # 3. if no correction needed, do bootstrap
+    # 3. if no correction needed, do bootstrap if asked for
     # -----------------------------------------
 
     if(correct == F) {
-        boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
-                                               correct, iter_max, notch, zD_bin, seed)
-        b_sd <- boot_results$b_sd
-        b_vector <- boot_results$b_vector
-        e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
-        e_sd <- round(stats::sd(e_vector),3)
-        B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
-        B_sd <- boot_results$B_sd
-        B_vector <- boot_results$B_vector
-        alpha_vector <- boot_results$alpha_vector
-        alpha_sd <- boot_results$alpha_sd
-        mbuncher_vector <- boot_results$marginal_buncher_vector
-        mbuncher_sd <- boot_results$marginal_buncher_sd
 
+        if(n_boot > 0) {
+            boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
+                                                   correct, iter_max, notch, zD_bin, seed)
+            b_sd <- boot_results$b_sd
+            b_vector <- boot_results$b_vector
+            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+            e_sd <- round(stats::sd(e_vector),3)
+            #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
+            B_vector <- boot_results$B_vector
+            B_sd <- boot_results$B_sd
+            alpha_vector <- boot_results$alpha_vector
+            alpha_sd <- boot_results$alpha_sd
+            mbuncher_vector <- boot_results$marginal_buncher_vector
+            mbuncher_sd <- boot_results$marginal_buncher_sd
+
+        }
     }
-
 
     # -------------------------------------------------------------------------
     # 4. if correction needed, do that first to get residuals, then bootstrap
     # -------------------------------------------------------------------------
     if (correct == T) {
 
-        # initial correction to get vector of residuals for bootstrap for later
+        # initial correction to get updated estimates, and vector of residuals for bootstrap
         firstpass_corrected <- bunching::do_correction(zstar, binwidth, firstpass_prep$data_binned,
                                                        firstpass, iter_max, notch, zD_bin)
 
@@ -476,19 +499,24 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         alpha <- firstpass_corrected$alpha_corrected
 
 
-        # we now have the correct residuals. add to our original data in firstpass_prep$data and bootstrap
-        boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
-                                               correct,iter_max, notch, zD_bin, seed)
-        b_sd <- boot_results$b_sd
-        b_vector <- boot_results$b_vector
-        e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
-        e_sd <- round(stats::sd(e_vector),3)
-        B_sd <- boot_results$B_sd
-        B_vector <- boot_results$B_vector
-        alpha_vector <- boot_results$alpha_vector
-        alpha_sd <- boot_results$alpha_sd
-        mbuncher_vector <- boot_results$marginal_buncher_vector
-        mbuncher_sd <- boot_results$marginal_buncher_sd
+        # we now have the correct residuals. add to our original data in firstpass_prep$data
+        # and bootstrap if requested
+
+        if(n_boot > 0) {
+            boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
+                                                   correct,iter_max, notch, zD_bin, seed)
+
+            b_vector <- boot_results$b_vector
+            b_sd <- boot_results$b_sd
+            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+            e_sd <- round(stats::sd(e_vector),3)
+            B_vector <- boot_results$B_vector
+            B_sd <- boot_results$B_sd
+            alpha_vector <- boot_results$alpha_vector
+            alpha_sd <- boot_results$alpha_sd
+            mbuncher_vector <- boot_results$marginal_buncher_vector
+            mbuncher_sd <- boot_results$marginal_buncher_sd
+        }
     }
 
 
@@ -531,8 +559,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
                                  p_theme, p_freq_color, p_cf_color, p_zstar_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                                 p_b, b = b_estimate, b_sd = b_sd,
-                                 p_b_xpos, p_b_ypos, p_b_size, t0, t1, notch, p_domregion_color, p_domregion_ltype)
+                                 p_b, b = b_estimate, b_sd = b_sd, p_b_xpos, p_b_ypos, p_b_size,
+                                 t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
 
 
 

@@ -9,7 +9,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_theme, p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
   p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
   t0 = NA, t1 = NA, notch = F, p_domregion_color = NA,
-  p_domregion_ltype = NA)
+  p_domregion_ltype = NA, n_boot)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated.}
@@ -73,6 +73,8 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_domregion_color}{plot's dominated region marker line color (notch case).}
 
 \item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
+
+\item{n_boot}{number of bootstrapped iterations.}
 }
 \value{
 \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.

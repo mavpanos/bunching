@@ -18,8 +18,9 @@ plot_bunching <- function(binned_data, cf, zstar,
                           p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                          p_b, b, b_sd,
-                          p_b_xpos, p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F, p_domregion_color = NA, p_domregion_ltype = NA) {
+                          p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
+                          t0 = NA, t1 = NA, notch = F,
+                          p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
 
 
     # get upper bound to customize plot region
@@ -46,8 +47,12 @@ plot_bunching <- function(binned_data, cf, zstar,
         vlines_color <- c(vlines_color, p_domregion_color)
     }
 
-    # combine b and b_sd to pass to graph
-    b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
+    # combine b and b_sd to pass to graph (if n_boot == 0, only report point estimate)
+    if(n_boot > 0) {
+        b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
+    } else {
+        b_estimates <- paste0("b = ", sprintf("%.3f", b))
+    }
 
     # prepare color vector for main lines
     freq_cf_colors <- c("freq_orig" = p_freq_color, "cf_graph" = p_cf_color)
@@ -65,16 +70,16 @@ plot_bunching <- function(binned_data, cf, zstar,
         # options for plot theme/titles etc.
         eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
         ggplot2::theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
-              panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
-              text = element_text(size=p_axis_title_size),
-              axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
+                       panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
+                       text = element_text(size=p_axis_title_size),
+                       axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
 
     # choice to show b on plot or not
     if(p_b == T) {
         bunch_plot <- bunch_plot +
             ggplot2::annotate("text", x = p_b_xpos, y = p_b_ypos,
-                     label = b_estimates, size = p_b_size)
+                              label = b_estimates, size = p_b_size)
     }
 
     return(bunch_plot)
