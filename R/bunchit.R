@@ -173,6 +173,17 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("Error: the two round numbers cannot be identical")
     }
 
+    # if rn is not NA, are round numbers included in data range?
+    if(sum(is.na(rn)) == 0 & sum(rn > data_varmax) != 0) {
+        stop("rn includes round numbers outside of running variable's range of values")
+    }
+
+    # if rn is not NA,
+    # is data range too small to allow for round numbers? (e.g. data range is 0-400 but rn = 500)
+    if(sum(is.na(rn)) == 0 & sum(rn > (data_varmax-data_varmin))) {
+        stop("rn includes round numbers that are too large for your running variable's range of values. \n Use smaller values")
+    }
+
     # number of bootstrap iterations must be non-negative integer
     if(n_boot < 0 | !is.wholenumber(n_boot)) {
         stop("Bootstrap sample size must be a non-negative integer")
@@ -565,8 +576,13 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # add some final warnings
 
     # in case of notch, zD > mbuncher is nonsensical
-    if(zD > mbuncher) {
-        warning("zD (upper bound of dominated region) cannot be beyond marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    if(notch == TRUE & (zD > mbuncher)) {
+        warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    }
+
+    # in case of notch, zD > bins_excl_r is nonsensical
+    if(notch == TRUE & (zD > bins_excl_r)) {
+        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
     }
 
     output <- list("plot" = p,
