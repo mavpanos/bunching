@@ -10,6 +10,10 @@
 #' @export
 
 marginal_buncher <- function(beta, binwidth, zstar) {
+    if(beta < 0) {
+        stop("Bunching estimate is negative. Are you sure this is a kink/notch? \n
+             Check your choices of zstar, bins_excl_l and bins_excl_r")
+    }
     zstar + (beta*binwidth)
 }
 
