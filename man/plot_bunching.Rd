@@ -7,9 +7,9 @@
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
   p_theme, p_freq_color, p_cf_color, p_zstar_color, p_freq_size, p_cf_size,
-  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
-  t0 = NA, t1 = NA, notch = F, p_domregion_color = NA,
-  p_domregion_ltype = NA, n_boot)
+  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_xpos,
+  p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F,
+  p_domregion_color = NA, p_domregion_ltype = NA, n_boot)
 }
 \arguments{
 \item{binned_data}{binned data with frequency and counterfactual estimated.}
@@ -57,6 +57,12 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{b}{normalised bunching estimate.}
 
 \item{b_sd}{standard deviation of the normalised bunching estimate.}
+
+\item{p_e}{if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.}
+
+\item{e}{elasticity estimate.}
+
+\item{e_sd}{standard deviation of the elasticity estimate.}
 
 \item{p_b_xpos}{plot's xaxis coordinate of bunching estimate.}
 

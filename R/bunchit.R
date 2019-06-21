@@ -31,6 +31,7 @@
 #' @param p_freq_msize plot's frequency line marker size.
 #' @param p_zstar_size plot's bunching region marker lines thickness.
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
+#' @param p_e if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate.
 #' @param p_b_ypos plot's yaxis coordinate of bunching estimate.
 #' @param p_b_size size of plot's printed bunching estimate.
@@ -81,7 +82,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_theme = "bw_light",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
-                    p_b = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+                    p_b = TRUE, p_e = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
     # ------------------------------------------------
@@ -228,6 +229,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # checks of inputs t0 Vs t1
     if(t0 == t1) {
         stop("Cannot calculate elasticity (t0 cannot equal t1")
+    }
+
+    # t1 > 0
+    if(t1 < t0) {
+        stop("t1 must be larger than t0")
     }
 
     # is notch choice a logical value?
@@ -439,6 +445,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin,1,0)
 
         }
+
     }
 
     # after fitting is done, extract info (counterfactual, residuals, etc.)
@@ -450,6 +457,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
+
+
+
 
     # if we don't do correction, bunchers_initial will also be the final B_for_output
     B_for_output <- bunchers_initial
@@ -531,6 +541,41 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
 
+
+    # add checks for estimated values
+    # b_estimate < 0 (implies elasticity < 0, and mbuncher < zstar)
+    if(b_estimate < 0) {
+        warning("b_estimate is less than zero. This implies negative elasticity and marginal buncher below zstar, which cannot be. \n
+             Are you sure this is a notch? Check your choice of zstar, bins_excl_l and bins_excl_r")
+    }
+
+    ##################
+    # notch checks
+    ##################
+    # is alpha within 0-1?
+    if(is.numeric(alpha) & (alpha > 1 | alpha < 0)) {
+        warning("The estimated alpha (fraction in dominated region) is not between 0-1. Are you sure this is a notch?")
+    }
+
+
+    # in case of notch, zD > mbuncher is nonsensical
+    if(!is.na(zD) & (zD > mbuncher)) {
+        warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    }
+
+    # in case of notch, zD > bins_excl_r is nonsensical
+    if(!is.na(zD) & (zD > bins_excl_r)) {
+        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    }
+
+    # add some warnings for notches
+
+    # in case of notch, zD > bins_excl_r is nonsensical
+    if(!is.na(zD) & (zD > bins_excl_r)) {
+        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+    }
+
+
     # ---------------------------------------------
     # 5. make plot
     # ---------------------------------------------
@@ -570,20 +615,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
                                  p_theme, p_freq_color, p_cf_color, p_zstar_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                                 p_b, b = b_estimate, b_sd = b_sd, p_b_xpos, p_b_ypos, p_b_size,
+                                 p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
+                                 p_b_xpos, p_b_ypos, p_b_size,
                                  t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
 
-    # add some final warnings
-
-    # in case of notch, zD > mbuncher is nonsensical
-    if(notch == TRUE & (zD > mbuncher)) {
-        warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
-    }
-
-    # in case of notch, zD > bins_excl_r is nonsensical
-    if(notch == TRUE & (zD > bins_excl_r)) {
-        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
-    }
 
     output <- list("plot" = p,
                    "data" = firstpass_prep$data_binned,

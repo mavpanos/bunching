@@ -6,6 +6,8 @@
 #' @param binned_data binned data with frequency and counterfactual estimated.
 #' @param b normalised bunching estimate.
 #' @param b_sd standard deviation of the normalised bunching estimate.
+#' @param e elasticity estimate.
+#' @param e_sd standard deviation of the elasticity estimate.
 #' @param cf the counterfactual to be plotted.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
@@ -18,7 +20,7 @@ plot_bunching <- function(binned_data, cf, zstar,
                           p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                          p_b, b, b_sd, p_b_xpos, p_b_ypos, p_b_size,
+                          p_b, b, b_sd, p_e, e, e_sd, p_b_xpos, p_b_ypos, p_b_size,
                           t0 = NA, t1 = NA, notch = F,
                           p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
 
@@ -47,12 +49,15 @@ plot_bunching <- function(binned_data, cf, zstar,
         vlines_color <- c(vlines_color, p_domregion_color)
     }
 
-    # combine b and b_sd to pass to graph (if n_boot == 0, only report point estimate)
+    # combine b and b_sd (e and e_sd) to pass to graph (if n_boot == 0, only report point estimate)
     if(n_boot > 0) {
         b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
+        e_estimates <- paste0("e = ", sprintf("%.3f", e), "(", e_sd, ")")
     } else {
         b_estimates <- paste0("b = ", sprintf("%.3f", b))
+        e_estimates <- paste0("e = ", sprintf("%.3f", e))
     }
+
 
     # prepare color vector for main lines
     freq_cf_colors <- c("freq_orig" = p_freq_color, "cf_graph" = p_cf_color)
@@ -75,11 +80,19 @@ plot_bunching <- function(binned_data, cf, zstar,
                        axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
 
-    # choice to show b on plot or not
+    # choice to show b (and e) on plot or not
+
+
     if(p_b == T) {
+        if(p_e == T) {
+            # if both TRUE, add both on separate lines
+            text_to_print <- paste0(b_estimates, "\n", e_estimates)
+        } else { # add only b
+            text_to_print <- b_estimates
+            }
         bunch_plot <- bunch_plot +
             ggplot2::annotate("text", x = p_b_xpos, y = p_b_ypos,
-                              label = b_estimates, size = p_b_size)
+                              label = text_to_print, size = p_b_size)
     }
 
     return(bunch_plot)
