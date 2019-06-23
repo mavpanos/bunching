@@ -19,7 +19,9 @@
 #' @param p_title plot title.
 #' @param p_xtitle plot x_axis label.
 #' @param p_ytitle plot y_axis label.
+#' @param p_miny plot's minimum y_axis value. Default is zero.
 #' @param p_maxy plot's maximum y_axis value.
+#' @param p_ybreaks plot's sequence of values to use for y-axis grid.
 #' @param p_axis_title_size size of plot's axes' title labels.
 #' @param p_axis_val_size size of plot's axes' numeric labels.
 #' @param p_theme plot theme (in ggplot2 format).
@@ -79,7 +81,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     n_boot = 50, correct = TRUE, iter_max = 200,
                     t0, t1, notch = FALSE, force_notch = FALSE,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                    p_axis_title_size = 7, p_axis_val_size = 7, p_maxy = NA,
+                    p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
                     p_theme = "theme_classic()",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
@@ -272,9 +274,20 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_axis_val_size must be a positive numeric value")
     }
 
+    # is p_miny numeric?
+    if(!is.na(p_miny) & !is.numeric(p_miny)) {
+        stop("p_miny must be numeric")
+    }
+
+
     # is p_maxy numeric?
     if(!is.na(p_maxy) & !is.numeric(p_maxy)) {
         stop("p_maxy must be numeric (unless unspecified using NA)")
+    }
+
+    # is p_ybreaks numeric?
+    if(!is.null(p_ybreaks) & !is.numeric(p_ybreaks)) {
+        stop("p_ybreaks must be a numeric sequence (unless unspecified using NULL)")
     }
 
     # is p_theme a string?
@@ -317,6 +330,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if(!is.numeric(p_zstar_size)) {
         stop("p_zstar_size choice must be numeric")
     }
+
+    # is p_grid_major_y_color a string?
+    if(!is.character(p_grid_major_y_color)) {
+        stop("p_grid_major_y_color choice must a string, e.g. 'blue'")
+    }
+
 
     # is p_b a logical?
     if(!is.logical(p_b)) {
@@ -613,7 +632,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                                  binwidth, bins_excl_l, bins_excl_r,
-                                 p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
+                                 p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_axis_title_size, p_axis_val_size,
                                  p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                                  p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,

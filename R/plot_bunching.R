@@ -17,7 +17,7 @@
 
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
+                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_xpos, p_b_ypos, p_b_size,
@@ -88,9 +88,14 @@ plot_bunching <- function(binned_data, cf, zstar,
                        panel.border=element_blank()) +
 
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
-        ggplot2::ylim(0,p_maxy) +
         ggplot2::guides(fill=FALSE, color=FALSE)
 
+    # pass choice of ylim and p_ybreaks
+        if(is.null(p_ybreaks)) {
+            bunch_plot <-  bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
+        } else {
+            bunch_plot <- bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
+        }
     # choice to show b (and e) on plot or not
 
 
