@@ -18,7 +18,7 @@
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
                           p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
-                          p_theme, p_freq_color, p_cf_color, p_zstar_color,
+                          p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_xpos, p_b_ypos, p_b_size,
                           t0 = NA, t1 = NA, notch = F,
@@ -73,12 +73,23 @@ plot_bunching <- function(binned_data, cf, zstar,
         # plot connector point marker for freq line
         ggplot2::geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
         # options for plot theme/titles etc.
-        eval(parse(text = p_theme)) +  #theme_bw() + theme_light() +
-        ggplot2::theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(),
-                       panel.grid.minor.y = element_blank(), plot.title = element_text(hjust=0.5),
+        eval(parse(text = p_theme)) +  # theme_classic()
+
+        ggplot2::theme(panel.grid.major.y = element_line(colour = p_grid_major_y_color),
+                       panel.grid.minor.y = element_blank(),
+                       panel.grid.major.x = element_blank(),
+                       panel.grid.minor.x = element_blank(),
+                       plot.title = element_text(hjust=0.5),
                        text = element_text(size=p_axis_title_size),
-                       axis.text=element_text(size=p_axis_val_size), legend.position = "none") +
-        ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +  ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
+                       axis.text=element_text(size=p_axis_val_size),
+                       legend.position = "none",
+                       panel.background = element_blank(),
+                       panel.grid=element_blank(),
+                       panel.border=element_blank()) +
+
+        ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
+        ggplot2::ylim(0,p_maxy) +
+        ggplot2::guides(fill=FALSE, color=FALSE)
 
     # choice to show b (and e) on plot or not
 

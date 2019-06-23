@@ -26,6 +26,7 @@
 #' @param p_freq_color plot's frequency line color.
 #' @param p_cf_color plot's counterfactual line color.
 #' @param p_zstar_color plot's bunching region marker lines color.
+#' @param p_grid_major_y_color plot's y-axis major grid line color.
 #' @param p_freq_size plot's frequency line thickness.
 #' @param p_cf_size plot's counterfactual line thickness.
 #' @param p_freq_msize plot's frequency line marker size.
@@ -79,8 +80,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     t0, t1, notch = FALSE, force_notch = FALSE,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                     p_axis_title_size = 7, p_axis_val_size = 7, p_maxy = NA,
-                    p_theme = "bw_light",  p_freq_color = "black",
-                    p_cf_color = "maroon", p_zstar_color = "red",
+                    p_theme = "classic",  p_freq_color = "black",
+                    p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
                     p_b = TRUE, p_e = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
@@ -613,7 +614,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                                  binwidth, bins_excl_l, bins_excl_r,
                                  p_title, p_xtitle, p_ytitle, p_maxy, p_axis_title_size, p_axis_val_size,
-                                 p_theme, p_freq_color, p_cf_color, p_zstar_color,
+                                 p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                                  p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
                                  p_b_xpos, p_b_ypos, p_b_size,
