@@ -1,0 +1,45 @@
+---
+title: "Bunching"
+author: Panos Mavrokonstantis
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bunching}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(markdown.HTML.stylesheet = "default.css")
+
+```
+
+```{r setup, echo = F}
+library(bunching)
+```
+
+# The Bunching Estimator
+
+
+
+```{r, echo=FALSE,out.width="45%",  out.height="20%",fig.cap="Distributions Under Linear and Kinked Tax Schedules",fig.show='hold',fig.align='center'}
+knitr::include_graphics(c("jpegs/lineartax_budget.jpg","jpegs/lineartax_density.jpg",
+                          "jpegs/kink_budget.jpg", "jpegs/kink_density.jpg"))
+```
+
+```{r, echo=FALSE,out.width="45%",  out.height="20%",fig.cap="Distributions Under Notched Tax Schedules",fig.show='hold',fig.align='center', fig.subcap=c('First','Second')}
+knitr::include_graphics(c("jpegs/notch_budget.jpg","jpegs/notch_density.jpg"))
+```
+
+# Estimating the Bunching Mass
+
+
+
+$$ c_j \Bigg(1 + \mathbb{1}[j>z_U] \frac{\hat{B^0}}{\sum\limits_{j=z_U + 1}^{\infty} c_j}   \Bigg) = 
+\sum_{i=0}^{p} \beta_i(z_j)^{i}+ \sum_{i=z_L}^{z_U} \gamma_i \mathbb{1}[z_j=i] + v_j $$
+
+
