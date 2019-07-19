@@ -18,3 +18,7 @@ Depends: dplyr (>= 0.8.1),
     stats,
     tidyr (>= 0.8.2)    
 RoxygenNote: 6.1.1.9000
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
