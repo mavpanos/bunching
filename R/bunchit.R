@@ -42,6 +42,7 @@
 #' @param t1 numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.
 #' @param notch if TRUE, zstar treated as notch. Default is kink.
 #' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
+#' @param e_parametric if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
@@ -79,7 +80,7 @@
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly, bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA,
                     n_boot = 50, correct = TRUE, iter_max = 200,
-                    t0, t1, notch = FALSE, force_notch = FALSE,
+                    t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                     p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
                     p_theme = "theme_classic()",  p_freq_color = "black",
@@ -474,7 +475,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
     mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar)
-    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
 
@@ -507,7 +508,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                    correct, iter_max, notch, zD_bin, seed)
             b_sd <- boot_results$b_sd
             b_vector <- boot_results$b_vector
-            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
             e_sd <- round(stats::sd(e_vector),3)
             #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
             B_vector <- boot_results$B_vector
@@ -535,7 +536,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         B_for_output <- firstpass_corrected$B_corrected
         b_estimate <- firstpass_corrected$b_corrected
         mbuncher <- firstpass_corrected$marginal_buncher_corrected
-        e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+        e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
         model_fit <- firstpass_corrected$coefficients
         alpha <- firstpass_corrected$alpha_corrected
 
@@ -549,7 +550,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
             b_vector <- boot_results$b_vector
             b_sd <- boot_results$b_sd
-            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch)
+            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
             e_sd <- round(stats::sd(e_vector),3)
             B_vector <- boot_results$B_vector
             B_sd <- boot_results$B_sd
