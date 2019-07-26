@@ -601,13 +601,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
     }
 
-    # add some warnings for notches
-
-    # in case of notch, zD > bins_excl_r is nonsensical
-    if(!is.na(zD) & (zD > bins_excl_r)) {
-        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
-    }
-
 
     # ---------------------------------------------
     # 5. make plot
