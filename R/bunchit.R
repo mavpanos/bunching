@@ -480,10 +480,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     residuals_for_boot <- firstpass$residuals
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
-    mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar)
     e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
+    mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar, notch = notch, alpha = alpha)
 
 
 
@@ -586,7 +586,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # notch checks
     ##################
     # is alpha within 0-1?
-    if(is.numeric(alpha) & (alpha > 1 | alpha < 0)) {
+    if(is.numeric(alpha)) {
+        if(alpha > 1 | alpha < 0) {
         warning("The estimated alpha (fraction in dominated region) is not between 0-1. Are you sure this is a notch?")
     }
 
@@ -596,8 +597,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
     }
 
-    # in case of notch, zD > bins_excl_r is nonsensical
-    if(!is.na(zD) & (zD > bins_excl_r)) {
+    # in case of notch, zD_bin > bins_excl_r is nonsensical
+    if(!is.na(zD_bin) & (zD_bin > bins_excl_r)) {
         warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
     }
 

@@ -4,7 +4,7 @@
 \alias{marginal_buncher}
 \title{Marginal Buncher}
 \usage{
-marginal_buncher(beta, binwidth, zstar)
+marginal_buncher(beta, binwidth, zstar, notch = F, alpha = NULL)
 }
 \arguments{
 \item{beta}{normalised excess mass.}
@@ -12,6 +12,8 @@ marginal_buncher(beta, binwidth, zstar)
 \item{binwidth}{a numeric value for the width of each bin.}
 
 \item{zstar}{a numeric value for the the bunching point.}
+
+\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 }
 \value{
 \code{marginal_buncher} returns the location of the marginal buncher, i.e. zstar + Dzstar.
