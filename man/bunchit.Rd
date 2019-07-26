@@ -7,9 +7,9 @@
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
   correct = TRUE, iter_max = 200, t0, t1, notch = FALSE,
-  force_notch = FALSE, p_title = "", p_xtitle = "z_name",
-  p_ytitle = "Count", p_axis_title_size = 7, p_axis_val_size = 7,
-  p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
+  force_notch = FALSE, e_parametric = FALSE, p_title = "",
+  p_xtitle = "z_name", p_ytitle = "Count", p_axis_title_size = 7,
+  p_axis_val_size = 7, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
   p_theme = "theme_classic()", p_freq_color = "black",
   p_cf_color = "maroon", p_zstar_color = "red",
   p_grid_major_y_color = "lightgrey", p_freq_size = 0.5,
@@ -54,6 +54,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 
 \item{force_notch}{if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).}
+
+\item{e_parametric}{if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
 
 \item{p_title}{plot title.}
 

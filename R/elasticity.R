@@ -40,7 +40,7 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
             }
 
             # use BB's BBoptim solver to get elasticity
-            e <- hush(BBoptim(0.01, notch_equation,
+            e <- hush(BB::BBoptim(0.01, notch_equation,
                               t0 = t0, t1 = t1, zstar = zstar, dzstar = Dz))
             e <- e$value
         } else {

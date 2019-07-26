@@ -71,6 +71,7 @@
 #'   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
 #'   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
 #'   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
+#' @import BB
 #' @import dplyr
 #' @import ggplot2
 #' @import tidyr

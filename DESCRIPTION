@@ -13,7 +13,8 @@ BugReports: https://github.com/mavpanos/bunching/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: dplyr (>= 0.8.1),
+Depends: BB (>= 2014.10-1),
+    dplyr (>= 0.8.1),
     ggplot2 (>= 3.1.1),
     stats,
     tidyr (>= 0.8.2)    

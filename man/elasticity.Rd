@@ -4,7 +4,7 @@
 \alias{elasticity}
 \title{Elasticity}
 \usage{
-elasticity(beta, binwidth, zstar, t0, t1, notch)
+elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric)
 }
 \arguments{
 \item{beta}{normalised excess mass.}
@@ -18,9 +18,11 @@ elasticity(beta, binwidth, zstar, t0, t1, notch)
 \item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
 
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+
+\item{e_parametric}{if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
 }
 \value{
-\code{elasticity} returns the estimated elasticity. In the kink case it uses the standard log-form. In the notch case, it is the reduced-form approximation in equation (5) of Kleven's 2018 note "Calculating Reduced-Form Elasticities Using Notches".
+\code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.
 }
 \description{
 Estimate elasticity from single normalized bunching observation.
