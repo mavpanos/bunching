@@ -41,10 +41,12 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
 
             # use BB's BBoptim solver to get elasticity
             # catch any errors, and suppress warnings
+            lower_bound <- .00001
+            upper_bound <- 10
             estimate <- tryCatch({
                 suppressWarnings(BB::BBoptim(0.01, notch_equation,
                                              t0 = t0, t1 = t1, zstar = zstar, dzstar = Dz,
-                                             lower = 0.0001, upper = 10))
+                                             lower = lower_bound, upper = upper_bound))
             },
             error=function(error_message) {
                 return(error_message)
@@ -54,7 +56,7 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
             close(f)
 
             # if convergence field exists in output, algorithm ran (maybe converged or not)
-            warning_message <- "The elasticity using the parametric version for notches has no solution, reduced-form estimate is returned instead."
+            warning_message <- "The elasticity estimate based on the parametric version for notches has no solution, reduced-form estimate is returned instead."
 
             if(!"convergence" %in% names(estimate)) {
                 # if it doesn't exist, could not run estimation.
@@ -66,6 +68,13 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
                     warning(warning_message)
                 } else {
                     e <- estimate$par
+                    # if e hit the upper bound allowed, flag it
+                    if(e == upper_bound) {
+                        warning("The elasticity estimate based on the parametric version for notches hit the upper bound of possible solution values. Interpet with caution!")
+                    }
+                    if(e == lower_bound) {
+                        warning("The elasticity estimate based on the parametric version for notches hit the lower bound of possible solution values. Interpet with caution!")
+                    }
                 }
             }
         }
