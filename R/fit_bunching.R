@@ -100,8 +100,8 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
         bunchers_excess <- B_zl_zstar
         # number of bins in excluded region
         bins_bunchers <- sum(thedata$zl_zstar)
-        # average per bin counterfactual
-        c0 <- cf_bunchers/bins_bunchers
+        # in notch case, instead of avg c0 get height of counterfactual at (zstar)
+        c0 <- thedata$cf[thedata$zstar == 1]
         # normalised b
         b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
         # alpha: fraction in dominated region zstar to zD bin
