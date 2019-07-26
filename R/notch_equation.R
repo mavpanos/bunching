@@ -10,6 +10,7 @@
 #' @seealso \code{\link{bunchit}}
 #' @seealso \code{\link{elasticity}}
 #' @export
+
 notch_equation <- function(e, t0, t1, zstar, dzstar) {
     # define some intermediate variable to simplify equation
     one_over_one_plus_dz_over_z <- 1/(1+ (dzstar/zstar))

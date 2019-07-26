@@ -378,6 +378,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("seed must be numeric")
     }
 
+    # is e_parametric logical?
+    if(!is.logical(e_parametric)) {
+        stop("e_parametric can only be TRUE or FALSE")
+    }
+
 
 
     # -----------------------------
@@ -509,7 +514,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                    correct, iter_max, notch, zD_bin, seed)
             b_sd <- boot_results$b_sd
             b_vector <- boot_results$b_vector
-            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+            e_vector <- unlist(lapply(b_vector, function(b) {
+                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+            }))
             e_sd <- round(stats::sd(e_vector),3)
             #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
             B_vector <- boot_results$B_vector
@@ -551,8 +558,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
             b_vector <- boot_results$b_vector
             b_sd <- boot_results$b_sd
-            e_vector <- bunching::elasticity(boot_results$b_vector, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+
+            e_vector <- unlist(lapply(b_vector, function(b) {
+                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+            }))
             e_sd <- round(stats::sd(e_vector),3)
+
             B_vector <- boot_results$B_vector
             B_sd <- boot_results$B_sd
             alpha_vector <- boot_results$alpha_vector

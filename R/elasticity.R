@@ -27,27 +27,54 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
 
 
     } else {
-
         # notch elasticity, parametric and reduced form
 
+        #  first, calculate reduced-form for both cases
+        # we use this if parametri does not converge
+        e <- (1/(2+Dz_over_zstar))*(Dz_over_zstar**2)/(dt/(1-t0))
+
+
         if(e_parametric) {
-            # define function to suppress iterations output from BBoptim
-            hush <- function(code){
-                sink("NUL")
-                tmp = code
-                sink()
-                return(tmp)
-            }
+            # silence iterations' output of BBoptim by sinking messages to tmp file f
+            f = file()
+            sink(file = f)
 
             # use BB's BBoptim solver to get elasticity
-            e <- hush(BB::BBoptim(0.01, notch_equation,
-                              t0 = t0, t1 = t1, zstar = zstar, dzstar = Dz))
-            e <- e$value
-        } else {
-            # notch equation (approximation from Kleven's 2018 note, equation 5)
-            e <- (1/(2+Dz_over_zstar))*(Dz_over_zstar**2)/(dt/(1-t0))
+            # catch any errors, and suppress warnings
+            estimate <- tryCatch({
+                suppressWarnings(BB::BBoptim(0.01, notch_equation,
+                                             t0 = t0, t1 = t1, zstar = zstar, dzstar = Dz,
+                                             lower = 0.0001, upper = 10))
+            },
+            error=function(error_message) {
+                return(error_message)
+            })
+            # switch off silencing, close file
+            sink()
+            close(f)
+
+            # if convergence field exists in output, algorithm ran (maybe converged or not)
+            warning_message <- "The elasticity using the parametric version for notches has no solution, reduced-form estimate is returned instead."
+
+            if(!"convergence" %in% names(estimate)) {
+                # if it doesn't exist, could not run estimation.
+                # return warning and keep reduced-form
+                warning(warning_message)
+            } else {
+                if(estimate$convergence != 0) {
+                    # if estimated but did not converge (non-0 flag) same
+                    warning(warning_message)
+                } else {
+                    e <- estimate$par
+                }
+            }
         }
 
+
+
+
     }
+
+
     return(e)
 }
