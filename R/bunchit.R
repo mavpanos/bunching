@@ -530,7 +530,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # -------------------------------------------------------------------------
-    # 4. if correction needed, do that first to get residuals, then bootstrap
+    # 4. if correction requested, do that first to get residuals, then bootstrap
     # -------------------------------------------------------------------------
     if (correct == T) {
 
