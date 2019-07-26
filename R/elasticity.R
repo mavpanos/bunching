@@ -5,7 +5,7 @@
 #'
 #' @param beta normalised excess mass.
 #' @inheritParams bunchit
-#' @seealso \code{\link{bunchit}},  \code{\link{elasticity_sd}}
+#' @seealso \code{\link{bunchit}}
 #' @return  \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.
 #' @export
 

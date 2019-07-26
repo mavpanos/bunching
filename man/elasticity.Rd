@@ -28,5 +28,5 @@ elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric)
 Estimate elasticity from single normalized bunching observation.
 }
 \seealso{
-\code{\link{bunchit}},  \code{\link{elasticity_sd}}
+\code{\link{bunchit}}
 }

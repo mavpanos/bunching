@@ -4,7 +4,7 @@
 \alias{notch_indifference}
 \title{Indifference Level in Notch Setting}
 \usage{
-notch_indifference(notch_marginal_buncher, t0, t1, elasticity)
+notch_indifference(notch_marginal_buncher, t0, t1, e)
 }
 \arguments{
 \item{notch_marginal_buncher}{location of marginal buncher in notch, i.e. zI for the one initially at zstar + Dzstar.}
@@ -12,6 +12,8 @@ notch_indifference(notch_marginal_buncher, t0, t1, elasticity)
 \item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
 \item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+
+\item{e}{The estimated elasticity (from the parametric version of the notch setting).}
 }
 \value{
 \code{notch_indifference} returns the indifference location of the marginal buncher, i.e. zI.
