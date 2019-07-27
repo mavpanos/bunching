@@ -13,6 +13,7 @@
 #' \item{coefficients}{The coefficients of the model fit on the corrected data.}
 #' \item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
 #' \item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}
+#' \item{c0_corrected}{The counterfactual at zstar, corrected for the integration constraint.}
 #' \item{marginal_buncher_corrected}{The location (z value) of the marginal buncher, corrected for the integration constraint.}
 #' \item{alpha_corrected}{The estimated fraction of bunchers in the dominated region, corrected for the integration constraint (only in notch case).}
 #' @export
@@ -42,9 +43,7 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
         thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
         iteration_results <- bunching::fit_bunching(thedata, model_formula, notch, zD_bin)
         bunchers_excess_updated <- iteration_results$bunchers_excess
-        cf_bunchers_updated <- iteration_results$cf_bunchers
-        c0_updated <- cf_bunchers_updated/bins_bunchers
-
+        c0_updated <- iteration_results$c0
         # add data to excess_updated_df
         res <- c(as.integer(iteration),bunchers_excess_updated)
         excess_updated_df <- rbind(excess_updated_df,res)
@@ -74,9 +73,13 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
 
 
     # generate output (updated with correction)
-    output <- list("data" = thedata, "coefficients" = iteration_results$coefficients,
-                   "b_corrected" = b_corrected, "B_corrected" = B_corrected,
-                   "marginal_buncher_corrected" = mbuncher_corrected, "alpha_corrected" = alpha_corrected)
+    output <- list("data" = thedata,
+                   "coefficients" = iteration_results$coefficients,
+                   "b_corrected" = b_corrected,
+                   "B_corrected" = B_corrected,
+                   "c0_corrected" = c0_updated,
+                   "marginal_buncher_corrected" = mbuncher_corrected,
+                   "alpha_corrected" = alpha_corrected)
 
     return(output)
 }
