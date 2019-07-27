@@ -5,7 +5,7 @@
 #'
 #' @param beta normalised excess mass.
 #' @inheritParams bunchit
-#' @alpha the proportion of individuals in dominated region (in notch setting).
+#' @param alpha the proportion of individuals in dominated region (in notch setting).
 #' @return  \code{marginal_buncher} returns the location of the marginal buncher, i.e. zstar + Dzstar.
 #' @seealso \code{\link{bunchit}}
 #' @export

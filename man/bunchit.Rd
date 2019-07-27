@@ -4,9 +4,9 @@
 \alias{bunchit}
 \title{Bunching Estimator}
 \usage{
-bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
-  bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
-  n_boot = 100, correct = TRUE, iter_max = 200, t0, t1,
+bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
+  poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA,
+  rn = NA, n_boot = 100, correct = TRUE, iter_max = 200, t0, t1,
   notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
   p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0,

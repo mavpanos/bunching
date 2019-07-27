@@ -28,6 +28,7 @@ do_correction returns a list with the data and estimates after correcting for th
 \item{coefficients}{The coefficients of the model fit on the corrected data.}
 \item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
 \item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}
+\item{c0_corrected}{The counterfactual at zstar, corrected for the integration constraint.}
 \item{marginal_buncher_corrected}{The location (z value) of the marginal buncher, corrected for the integration constraint.}
 \item{alpha_corrected}{The estimated fraction of bunchers in the dominated region, corrected for the integration constraint (only in notch case).}
 }
