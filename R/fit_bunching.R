@@ -117,6 +117,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
     output <- list("coefficients" = coefficients,
                    "residuals" = residuals,
                    "cf_density" = thedata$cf,
+                   "c0" = c0,
                    "bunchers_excess" = bunchers_excess,
                    "cf_bunchers" = cf_bunchers,
                    "b_estimate" = b_estimate,

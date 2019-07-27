@@ -5,18 +5,18 @@
 \title{Bunching Estimator}
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
-  bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA, n_boot = 50,
-  correct = TRUE, iter_max = 200, t0, t1, notch = FALSE,
-  force_notch = FALSE, e_parametric = FALSE, p_title = "",
-  p_xtitle = "z_name", p_ytitle = "Count", p_axis_title_size = 7,
-  p_axis_val_size = 7, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
-  p_theme = "theme_classic()", p_freq_color = "black",
-  p_cf_color = "maroon", p_zstar_color = "red",
-  p_grid_major_y_color = "lightgrey", p_freq_size = 0.5,
-  p_freq_msize = 1, p_cf_size = 0.5, p_zstar_size = 0.5,
-  p_b = TRUE, p_e = TRUE, p_b_xpos = NA, p_b_ypos = NA,
-  p_b_size = 3, p_domregion_color = "blue", seed = NA,
-  p_domregion_ltype = "longdash")
+  bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
+  n_boot = 100, correct = TRUE, iter_max = 200, t0, t1,
+  notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
+  p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
+  p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0,
+  p_maxy = NA, p_ybreaks = NULL, p_theme = "theme_classic()",
+  p_freq_color = "black", p_cf_color = "maroon",
+  p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+  p_freq_size = 0.5, p_freq_msize = 1, p_cf_size = 0.5,
+  p_zstar_size = 0.5, p_b = TRUE, p_e = TRUE, p_b_xpos = NA,
+  p_b_ypos = NA, p_b_size = 3, p_domregion_color = "blue",
+  seed = NA, p_domregion_ltype = "longdash")
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
@@ -127,6 +127,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r, poly,
   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
   \item{zD}{The value demarcating the dominated region (notch case).}
   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
+  \item{zU_notch}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
