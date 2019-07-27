@@ -19,7 +19,7 @@ plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
                           p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
-                          p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
+                          p_freq_size, p_cf_size, p_freq_msize, p_zstar_thickness,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_xpos, p_b_ypos, p_b_size,
                           t0 = NA, t1 = NA, notch = F,
                           p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
@@ -68,8 +68,7 @@ plot_bunching <- function(binned_data, cf, zstar,
         # plot main lines, pass size and color options
         ggplot2::geom_line() + ggplot2::scale_size_manual(values = freq_cf_sizes) + ggplot2::scale_colour_manual(values = freq_cf_colors) +
         # plot vertical lines first so that they appear behind plot binpoints
-        #geom_vline(xintercept=vlines,  linetype=vlines_type,  color = p_zstar_color, size=p_zstar_size) +
-        ggplot2::geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_size) +
+        ggplot2::geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_thickness) +
         # plot connector point marker for freq line
         ggplot2::geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
         # options for plot theme/titles etc.

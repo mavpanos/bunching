@@ -32,7 +32,7 @@
 #' @param p_freq_size plot's frequency line thickness.
 #' @param p_cf_size plot's counterfactual line thickness.
 #' @param p_freq_msize plot's frequency line marker size.
-#' @param p_zstar_size plot's bunching region marker lines thickness.
+#' @param p_zstar_thickness plot's bunching region marker lines thickness.
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
 #' @param p_e if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate.
