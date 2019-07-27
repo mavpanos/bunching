@@ -68,6 +68,7 @@
 #'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
 #'   \item{zD}{The value demarcating the dominated region (notch case).}
 #'   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
+#'   \item{zU_notch}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
 #'   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
 #'   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
 #'   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
@@ -79,8 +80,8 @@
 #' @export
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
-                    poly, bins_excl_l, bins_excl_r, extra_fe = NA, rn = NA,
-                    n_boot = 50, correct = TRUE, iter_max = 200,
+                    poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
+                    n_boot = 100, correct = TRUE, iter_max = 200,
                     t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                     p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
@@ -404,9 +405,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                       poly, bins_excl_l, bins_excl_r, rn, extra_fe)
 
         # fit firstpass model
-        # set zD_bin to NA if it's a kink
+        # set alpha, zD_bin to NA if it's a kink
+        alpha <- NA
         zD_bin <- NA
         zD <- NA
+        zU_notch <- NA
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
                                             notch, zD_bin)
 
@@ -415,6 +418,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         z_dominated <- bunching::domregion(zstar, t0, t1, binwidth)
         zD_bin <- z_dominated$zD_bin
         zD <- z_dominated$zD
+        zU_notch <- bins_excl_r
 
         # if we force zu, same procedure as kink
         if (force_notch == T) {
@@ -453,23 +457,41 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
             # start with first bin above being bins_excl_r = 1
             zu_bin <- bins_excl_r
+
+            # create temporary object for firstpass_prep (we will be editing this as we expand the window for zu_bin)
+            tmp_firstpass_prep <- firstpass_prep
+
             while ((B_below > M_above) & (zu_bin < notch_iterations_bound)) {
+                # keep previous zu_bin in case next gives us B > M
+                zu_bin_final <- zu_bin
+                # now try expanding by 1 bin
                 zu_bin <- zu_bin + 1
+
                 # add next bin_excl_r dummy as column to data
                 newvar <- paste0("bin_excl_r_", zu_bin)
-                firstpass_prep$data_binned[[newvar]]  <- ifelse(firstpass_prep$data_binned$z_rel == zu_bin,1,0)
+                tmp_firstpass_prep$data_binned[[newvar]]  <- ifelse(tmp_firstpass_prep$data_binned$z_rel == zu_bin,1,0)
                 # add next order bin_excl_r to formula
-                firstpass_prep$model_formula <- stats::as.formula(paste(Reduce(paste, deparse(firstpass_prep$model_formula)), newvar, sep = " + "))
+                tmp_firstpass_prep$model_formula <- stats::as.formula(paste(Reduce(paste, deparse(tmp_firstpass_prep$model_formula)), newvar, sep = " + "))
                 # re-fit model using the now expanded zu
-                firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+                tmp_firstpass <- bunching::fit_bunching(tmp_firstpass_prep$data_binned, tmp_firstpass_prep$model_formula, notch, zD_bin)
                 # get new B below and M above
-                B_below <- firstpass$B_zl_zstar
-                M_above <- -firstpass$B_zstar_zu
+                B_below <- tmp_firstpass$B_zl_zstar
+                M_above <- -tmp_firstpass$B_zstar_zu
+
+                # if we dont have M being larger, update firstpass with this (last iterations of loop will have M > B)
+                if(B_below > M_above) {
+                    firstpass_prep <- tmp_firstpass_prep
+                    firstpass <- tmp_firstpass
+                    zu_bin_final <- zu_bin
+                }
+
             }
-            # assign final zu_bin to bins_excl_r (used for plotting)
-            bins_excl_r <- zu_bin
-            # update bins_above_excluded to relate to this new bins_excl_r
-            firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin,1,0)
+            # assign final zu_bin_final to bins_excl_r (used for plotting)
+            bins_excl_r <- zu_bin_final
+            # update zU_notch with this (to output)
+            zU_notch <- bins_excl_r
+            # update bins_above_excluded to relate to this new bins_excl_r = zu_bin_final
+            firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin_final,1,0)
 
         }
 
@@ -548,7 +570,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         model_fit <- firstpass_corrected$coefficients
         alpha <- firstpass_corrected$alpha_corrected
 
-
         # we now have the correct residuals. add to our original data in firstpass_prep$data
         # and bootstrap if requested
 
@@ -588,7 +609,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # is alpha within 0-1?
     if(is.numeric(alpha)) {
         if(alpha > 1 | alpha < 0) {
-        warning("The estimated alpha (fraction in dominated region) is not between 0-1. Are you sure this is a notch?")
+            warning("The estimated alpha (fraction in dominated region) is not between 0-1. Are you sure this is a notch?")
+        }
     }
 
 
@@ -665,6 +687,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "alpha_sd" = alpha_sd,
                    "zD" = zD,
                    "zD_bin" = zD_bin,
+                   "zU_notch" = zU_notch,
                    "marginal_buncher" = mbuncher,
                    "marginal_buncher_vector" = mbuncher_vector,
                    "marginal_buncher_sd" = mbuncher_sd)
