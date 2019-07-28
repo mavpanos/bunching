@@ -32,7 +32,7 @@
 #' @param p_freq_size plot's frequency line thickness.
 #' @param p_cf_size plot's counterfactual line thickness.
 #' @param p_freq_msize plot's frequency line marker size.
-#' @param p_zstar_thickness plot's bunching region marker lines thickness.
+#' @param p_zstar_size plot's bunching region marker line thickness.
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
 #' @param p_e if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.
 #' @param p_b_xpos plot's xaxis coordinate of bunching estimate.
@@ -88,7 +88,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_theme = "theme_classic()",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
-                    p_b = TRUE, p_e = TRUE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+                    p_b = FALSE, p_e = FALSE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
     # ------------------------------------------------

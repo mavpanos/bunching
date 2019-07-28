@@ -57,7 +57,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_freq_msize}{plot's frequency line marker size.}
 
-\item{p_zstar_size}{plot's bunching region marker lines thickness.}
+\item{p_zstar_size}{plot's bunching region marker line thickness.}
 
 \item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
 

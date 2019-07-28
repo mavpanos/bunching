@@ -7,9 +7,9 @@
 plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
   p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
-  p_theme = "bw_light", p_freq_color = "black",
-  p_zstar_color = "red", p_freq_size = 0.5, p_freq_msize = 1,
-  p_zstar_size = 0.5, p_zstar = TRUE)
+  p_theme = "theme_classic()", p_grid_major_y_color = "lightgrey",
+  p_freq_color = "black", p_zstar_color = "red", p_freq_size = 0.5,
+  p_freq_msize = 0.5, p_zstar_size = 0.5, p_zstar = TRUE)
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
@@ -38,6 +38,8 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_theme}{plot theme (in ggplot2 format).}
 
+\item{p_grid_major_y_color}{plot's y-axis major grid line color.}
+
 \item{p_freq_color}{plot's frequency line color.}
 
 \item{p_zstar_color}{plot's bunching region marker lines color.}
@@ -46,7 +48,7 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_freq_msize}{plot's frequency line marker size.}
 
-\item{p_zstar_size}{plot's bunching region marker lines thickness.}
+\item{p_zstar_size}{plot's bunching region marker line thickness.}
 
 \item{p_zstar}{whether to show vertical line for zstar. Default is TRUE.}
 }

@@ -16,7 +16,7 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
                       p_maxy = NA, p_axis_title_size = 7, p_axis_val_size = 7,
                       p_theme = "theme_classic()",  p_grid_major_y_color = "lightgrey",
                       p_freq_color = "black", p_zstar_color = "red",
-                      p_freq_size = .5, p_freq_msize = .5, p_zstar_thickness = .5, p_zstar = TRUE) {
+                      p_freq_size = .5, p_freq_msize = .5, p_zstar_size = .5, p_zstar = TRUE) {
 
     # turn data into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
@@ -31,7 +31,7 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     # show zstar vline if requested through p_zstar
     if(p_zstar) {
         hist_plot <- hist_plot +
-            ggplot2::geom_vline(xintercept=zstar,  linetype = "solid", size = p_zstar_thickness, colour = p_zstar_color)
+            ggplot2::geom_vline(xintercept=zstar,  linetype = "solid", size = p_zstar_size, colour = p_zstar_color)
     }
     # add bpoint (so it appears in front of vline) and rest of options
     hist_plot <- hist_plot + ggplot2::geom_point(colour = p_freq_color, size = p_freq_msize) +
