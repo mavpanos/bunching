@@ -116,7 +116,7 @@
 #' kink3 <- bunchit(z_vector = kink3_vector, zstar = bpoint, binwidth = 50,
 #' bins_l = 20, bins_r = 20, poly = 6,
 #' bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE, p_e = TRUE,
-#' p_freq_msize = 1.5, p_b_ypos = 880, rn = c(250,500))
+#' p_freq_msize = 1.5, p_b_e_ypos = 880, rn = c(250,500))
 #' kink3$plot
 #'
 #' # Example 4: Notch
