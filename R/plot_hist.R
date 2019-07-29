@@ -4,7 +4,7 @@
 
 #' @param p_zstar whether to show vertical line for zstar. Default is TRUE.
 #' @inheritParams bunchit
-#' @return  \code{plot_hist} returns a plot with just the frequency per bin (histogram).
+#' @return  \code{plot_hist} returns a plot of the density without estimating a counterfactual.
 
 #' @seealso \code{\link{bunchit}}
 #'
