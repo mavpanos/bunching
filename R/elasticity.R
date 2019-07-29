@@ -54,7 +54,7 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_par
             close(f)
 
             # if convergence field exists in output, algorithm ran (maybe converged or not)
-            warning_message <- "The elasticity estimate based on the parametric version for notches has no solution, reduced-form estimate is returned instead."
+            warning_message <- "The elasticity estimate based on the parametric version for notches has no solution, returning the reduced-form estimate."
 
             if(!"convergence" %in% names(estimate)) {
                 # if it doesn't exist, could not run estimation.
@@ -68,10 +68,10 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_par
                     e <- estimate$par
                     # if e hit the upper bound allowed, flag it
                     if(abs(e-e_parametric_ub) < 1e-05) {
-                        warning("The elasticity estimate based on the parametric version for notches hit the upper bound of possible solution values. \n Interpet with caution!")
+                        warning("The elasticity estimate based on the parametric version for notches hit the upper bound of possible solution values. \n Interpet with caution! \n Consider setting e_parametric = FALSE, or increase e_parametric_ub.")
                     }
                     if(abs(e-e_parametric_lb) < 1e-05) {
-                        warning("The elasticity estimate based on the parametric version for notches hit the lower bound of possible solution values. \n Interpet with caution!")
+                        warning("The elasticity estimate based on the parametric version for notches hit the lower bound of possible solution values. \n Interpet with caution! \n Consider setting e_parametric = FALSE, or decrease e_parametric_lb.")
                     }
                 }
             }
