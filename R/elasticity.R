@@ -9,7 +9,7 @@
 #' @return  \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.
 #' @export
 
-elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
+elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_parametric_lb, e_parametric_ub) {
 
     # define some quantities to simplify equations
     Dz <- beta*binwidth
@@ -41,12 +41,10 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
 
             # use BB's BBoptim solver to get elasticity
             # catch any errors, and suppress warnings
-            lower_bound <- .00001
-            upper_bound <- 10
             estimate <- tryCatch({
                 suppressWarnings(BB::BBoptim(0.01, notch_equation,
                                              t0 = t0, t1 = t1, zstar = zstar, dzstar = Dz,
-                                             lower = lower_bound, upper = upper_bound))
+                                             lower = e_parametric_lb, upper = e_parametric_ub))
             },
             error=function(error_message) {
                 return(error_message)
@@ -69,11 +67,11 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric) {
                 } else {
                     e <- estimate$par
                     # if e hit the upper bound allowed, flag it
-                    if(e == upper_bound) {
-                        warning("The elasticity estimate based on the parametric version for notches hit the upper bound of possible solution values. Interpet with caution!")
+                    if(abs(e-e_parametric_ub) < 1e-05) {
+                        warning("The elasticity estimate based on the parametric version for notches hit the upper bound of possible solution values. \n Interpet with caution!")
                     }
-                    if(e == lower_bound) {
-                        warning("The elasticity estimate based on the parametric version for notches hit the lower bound of possible solution values. Interpet with caution!")
+                    if(abs(e-e_parametric_lb) < 1e-05) {
+                        warning("The elasticity estimate based on the parametric version for notches hit the lower bound of possible solution values. \n Interpet with caution!")
                     }
                 }
             }

@@ -4,7 +4,8 @@
 \alias{elasticity}
 \title{Elasticity}
 \usage{
-elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric)
+elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric,
+  e_parametric_lb, e_parametric_ub)
 }
 \arguments{
 \item{beta}{normalised excess mass.}
@@ -20,6 +21,10 @@ elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric)
 \item{notch}{if TRUE, zstar treated as notch. Default is kink.}
 
 \item{e_parametric}{if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
+
+\item{e_parametric_lb}{lower bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
+
+\item{e_parametric_ub}{upper bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
 }
 \value{
 \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.

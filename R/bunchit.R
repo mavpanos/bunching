@@ -43,6 +43,8 @@
 #' @param notch if TRUE, zstar treated as notch. Default is kink.
 #' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
 #' @param e_parametric if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).
+#' @param e_parametric_lb lower bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).
+#' @param e_parametric_ub upper bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).
 #' @param p_domregion_color plot's dominated region marker line color (notch case).
 #' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
@@ -127,7 +129,7 @@
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
                     n_boot = 100, correct = TRUE, iter_max = 200,
-                    t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
+                    t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 0.0001, e_parametric_ub = 3,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                     p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
                     p_theme = "theme_classic()",  p_freq_color = "black",
@@ -547,7 +549,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     residuals_for_boot <- firstpass$residuals
     bunchers_initial <- firstpass$bunchers_excess
     b_estimate <- firstpass$b_estimate
-    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+    e_estimate <- bunching::elasticity(beta = b_estimate, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch,
+                                       e_parametric = e_parametric, e_parametric_lb = e_parametric_lb, e_parametric_ub = e_parametric_ub)
     model_fit <- firstpass$coefficients
     alpha <- firstpass$alpha
     mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar, notch = notch, alpha = alpha)
@@ -582,7 +585,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             b_sd <- boot_results$b_sd
             b_vector <- boot_results$b_vector
             e_vector <- unlist(lapply(b_vector, function(b) {
-                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch,
+                                     e_parametric = e_parametric, e_parametric_lb = e_parametric_lb, e_parametric_ub = e_parametric_ub)
             }))
             e_sd <- round(stats::sd(e_vector),3)
             #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
@@ -626,7 +630,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             b_sd <- boot_results$b_sd
 
             e_vector <- unlist(lapply(b_vector, function(b) {
-                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch, e_parametric = e_parametric)
+                bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch,
+                                     e_parametric = e_parametric,  e_parametric_lb = e_parametric_ub, e_parametric_ub = e_parametric_ub)
             }))
             e_sd <- round(stats::sd(e_vector),3)
 
