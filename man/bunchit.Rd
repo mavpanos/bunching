@@ -9,7 +9,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   rn = NA, n_boot = 100, correct = TRUE, iter_max = 200, t0, t1,
   notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-  p_axis_title_size = 7, p_axis_val_size = 7, p_miny = 0,
+  p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0,
   p_maxy = NA, p_ybreaks = NULL, p_theme = "theme_classic()",
   p_freq_color = "black", p_cf_color = "maroon",
   p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
@@ -137,6 +137,49 @@ Implement the bunching estimator in a kink or notch setting.
 }
 \details{
 bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
+}
+\examples{
+# Load the example data before running the examples.
+data(bunching_data)
+
+# Example 1: Kink with integration constraint correction
+kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000,
+binwidth = 50, bins_l = 20, bins_r = 20, poly = 4,
+bins_excl_l = 0, bins_excl_r = 0, t0 = 0, t1 = .2, p_b = TRUE)
+kink1$plot
+
+# Example 2: Kink with further bunching at other level in bandwidth
+kink2_vector <- c(bunching_data$kink_vector, rep(10200,540))
+kink2 <- bunchit(kink2_vector, zstar = 10000, binwidth = 50,
+bins_l = 40, bins_r = 40, poly = 6,
+bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE,
+extra_fe = 10200)
+kink2$plot
+
+# Example 3: Kink with round number bunching
+rn1 <- 500;  rn2 <- 250
+bpoint <- 10000
+kink3_vector <- c(bunching_data$kink_vector,
+                  rep(bpoint + rn1, 270),
+                  rep(bpoint + 2*rn1,230),
+                  rep(bpoint - rn1,260),
+                  rep(bpoint - 2*rn1,275),
+                  rep(bpoint + rn2, 130),
+                  rep(bpoint + 3*rn2,140),
+                  rep(bpoint - rn2,120),
+                  rep(bpoint - 3*rn2,135))
+
+kink3 <- bunchit(z_vector = kink3_vector, zstar = bpoint, binwidth = 50,
+bins_l = 20, bins_r = 20, poly = 6,
+bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE, p_e = TRUE,
+p_freq_msize = 1.5, p_b_ypos = 880, rn = c(250,500))
+kink3$plot
+
+# Example 4: Notch
+notch <- bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
+bins_l = 40, bins_r = 40, poly = 5, bins_excl_l = 0,
+t0=0.18, t1=.25, correct = FALSE, notch = TRUE)
+notch$plot
 }
 \seealso{
 \code{\link{plot_hist}}
