@@ -30,7 +30,7 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_ytitle}{plot y_axis label.}
 
-\item{p_maxy}{plot's maximum y_axis value.}
+\item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
 \item{p_axis_title_size}{size of plot's axes' title labels.}
 

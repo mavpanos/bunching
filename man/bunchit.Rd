@@ -9,15 +9,15 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   rn = NA, n_boot = 100, correct = TRUE, iter_max = 200, t0, t1,
   notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
   e_parametric_lb = 1e-04, e_parametric_ub = 3, p_title = "",
-  p_xtitle = "z_name", p_ytitle = "Count", p_axis_title_size = 9,
-  p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
-  p_theme = "theme_classic()", p_freq_color = "black",
-  p_cf_color = "maroon", p_zstar_color = "red",
-  p_grid_major_y_color = "lightgrey", p_freq_size = 0.5,
-  p_freq_msize = 1, p_cf_size = 0.5, p_zstar_size = 0.5,
-  p_b = FALSE, p_e = FALSE, p_b_xpos = NA, p_b_ypos = NA,
-  p_b_size = 3, p_domregion_color = "blue", seed = NA,
-  p_domregion_ltype = "longdash")
+  p_xtitle = "z_name", p_ytitle = "Count", p_title_size = 9,
+  p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0,
+  p_maxy = NA, p_ybreaks = NA, p_theme = "theme_classic()",
+  p_freq_color = "black", p_cf_color = "maroon",
+  p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+  p_freq_size = 0.5, p_freq_msize = 1, p_cf_size = 0.5,
+  p_zstar_size = 0.5, p_b = FALSE, p_e = FALSE, p_b_e_xpos = NA,
+  p_b_e_ypos = NA, p_b_e_size = 3, p_domregion_color = "blue",
+  seed = NA, p_domregion_ltype = "longdash")
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
@@ -68,15 +68,17 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_ytitle}{plot y_axis label.}
 
+\item{p_title_size}{size of plot's title.}
+
 \item{p_axis_title_size}{size of plot's axes' title labels.}
 
 \item{p_axis_val_size}{size of plot's axes' numeric labels.}
 
 \item{p_miny}{plot's minimum y_axis value. Default is zero.}
 
-\item{p_maxy}{plot's maximum y_axis value.}
+\item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
-\item{p_ybreaks}{plot's sequence of values to use for y-axis grid.}
+\item{p_ybreaks}{the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.}
 
 \item{p_theme}{plot theme (in ggplot2 format).}
 
@@ -100,11 +102,11 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_e}{if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.}
 
-\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate.}
+\item{p_b_e_xpos}{plot's xaxis coordinate of bunching/elasticity estimate.}
 
-\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate.}
+\item{p_b_e_ypos}{plot's yaxis coordinate of bunching/elasticity estimate.}
 
-\item{p_b_size}{size of plot's printed bunching estimate.}
+\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate.}
 
 \item{p_domregion_color}{plot's dominated region marker line color (notch case).}
 

@@ -20,8 +20,9 @@
 #' @param p_xtitle plot x_axis label.
 #' @param p_ytitle plot y_axis label.
 #' @param p_miny plot's minimum y_axis value. Default is zero.
-#' @param p_maxy plot's maximum y_axis value.
-#' @param p_ybreaks plot's sequence of values to use for y-axis grid.
+#' @param p_maxy plot's maximum y_axis value. Default is optimized internally.
+#' @param p_ybreaks the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.
+#' @param p_title_size size of plot's title.
 #' @param p_axis_title_size size of plot's axes' title labels.
 #' @param p_axis_val_size size of plot's axes' numeric labels.
 #' @param p_theme plot theme (in ggplot2 format).
@@ -35,9 +36,9 @@
 #' @param p_zstar_size plot's bunching region marker line thickness.
 #' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
 #' @param p_e if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.
-#' @param p_b_xpos plot's xaxis coordinate of bunching estimate.
-#' @param p_b_ypos plot's yaxis coordinate of bunching estimate.
-#' @param p_b_size size of plot's printed bunching estimate.
+#' @param p_b_e_xpos plot's xaxis coordinate of bunching/elasticity estimate.
+#' @param p_b_e_ypos plot's yaxis coordinate of bunching/elasticity estimate.
+#' @param p_b_e_size size of plot's printed bunching/elasticity estimate.
 #' @param t0 numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.
 #' @param t1 numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.
 #' @param notch if TRUE, zstar treated as notch. Default is kink.
@@ -130,12 +131,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
                     n_boot = 100, correct = TRUE, iter_max = 200,
                     t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 0.0001, e_parametric_ub = 3,
-                    p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                    p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NULL,
+                    p_title = "", p_xtitle = "z_name", p_ytitle = "Count", p_title_size = 9,
+                    p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
                     p_theme = "theme_classic()",  p_freq_color = "black",
                     p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
-                    p_b = FALSE, p_e = FALSE, p_b_xpos = NA, p_b_ypos = NA, p_b_size = 3,
+                    p_b = FALSE, p_e = FALSE, p_b_e_xpos = NA, p_b_e_ypos = NA, p_b_e_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
     # ------------------------------------------------
@@ -314,6 +315,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_ytitle must be a string")
     }
 
+    # is p_title_size numeric and positive?
+    if(p_title_size <= 0 | !is.numeric(p_title_size)) {
+        stop("p_title_size must be a positive numeric value")
+    }
+
     # is p_axis_title_size numeric and positive?
     if(p_axis_title_size <= 0 | !is.numeric(p_axis_title_size)) {
         stop("p_axis_title_size must be a positive numeric value")
@@ -335,10 +341,20 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_maxy must be numeric (unless unspecified using NA)")
     }
 
-    # is p_ybreaks numeric?
-    if(!is.null(p_ybreaks) & !is.numeric(p_ybreaks)) {
-        stop("p_ybreaks must be a numeric sequence (unless unspecified using NULL)")
+    # are all ements in p_ybreaks numeric (if specified, otherwise NA)
+    # if more than one entered, check that all are
+    if(length(p_ybreaks) > 1) {
+        # if at least one has NA, stop
+        if(length(p_ybreaks[is.na(p_ybreaks)]) > 0) {
+            stop("When specified, p_ybreaks must only contain numeric values")
+        }
+    } else {
+        # if only of length 1
+        if(!is.na(p_ybreaks) | !is.numeric(p_ybreaks)) {
+            stop("p_ybreaks can only be numeric, or NA (the default)")
+        }
     }
+
 
     # is p_theme a string?
     if(!is.character(p_theme)) {
@@ -392,23 +408,23 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_b (whether to show bunching estimate on plot) must be TRUE or FALSE")
     }
 
-    # if p_b_xpos is selected by user, is p_b_xpos numeric and within the range of x?
-    if(!is.na(p_b_xpos)) {
-        if(!is.numeric(p_b_xpos) | p_b_xpos < data_varmin | p_b_xpos > data_varmax) {
-            stop("p_b_xpos must be numeric and lie within the data's range")
+    # if p_b_e_xpos is selected by user, is p_b_e_xpos numeric and within the range of x?
+    if(!is.na(p_b_e_xpos)) {
+        if(!is.numeric(p_b_e_xpos) | p_b_e_xpos < data_varmin | p_b_e_xpos > data_varmax) {
+            stop("p_b_e_xpos must be numeric and lie within the data's range")
         }
     }
 
-    # if p_b_ypos is selected by user, is it numeric?
-    if(!is.na(p_b_xpos)) {
-        if(!is.numeric(p_b_ypos)) {
-            stop("p_b_ypos must be numeric")
+    # if p_b_e_ypos is selected by user, is it numeric?
+    if(!is.na(p_b_e_ypos)) {
+        if(!is.numeric(p_b_e_ypos)) {
+            stop("p_b_e_ypos must be numeric")
         }
     }
 
-    # is p_b_size numeric and positive?
-    if(p_b_size <= 0 | !is.numeric(p_b_size)) {
-        stop("p_b_size must be a positive numeric value")
+    # is p_b_e_size numeric and positive?
+    if(p_b_e_size <= 0 | !is.numeric(p_b_e_size)) {
+        stop("p_b_e_size must be a positive numeric value")
     }
 
     # is p_domregion_color a string?
@@ -431,7 +447,20 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("e_parametric can only be TRUE or FALSE")
     }
 
+    # is e_parametric_lb numeric?
+    if(!is.numeric(e_parametric_lb)) {
+        stop("e_parametric_lb must be numeric")
+    }
 
+    # is e_parametric_ub numeric?
+    if(!is.numeric(e_parametric_ub)) {
+        stop("e_parametric_ub must be numeric")
+    }
+
+    # is e_parametric_ub > e_parametric_lb?
+    if(e_parametric_ub <= e_parametric_lb) {
+        stop("e_parametric_ub must be larger than e_parametric_lb")
+    }
 
     # -----------------------------
     # 1. bin the data
@@ -679,43 +708,38 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 5. make plot
     # ---------------------------------------------
 
-    # if p_b_xpos/p_y_xpos not chosen, set them. get data ranges
+    # if p_b_e_xpos/p_y_e_xpos not chosen, set them. get data ranges
     zmin <- min(firstpass_prep$data_binned$bin)
     zmax <- max(firstpass_prep$data_binned$bin)
     maxy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)
 
-    # x position
-    if(is.na(p_b_xpos)) {
+    # bunching/elasticity estimates' x position
+    if(is.na(p_b_e_xpos)) {
         if (notch == T) {
-            p_b_xpos <- zmin + (zstar - zmin)*.3
+            p_b_e_xpos <- zmin + (zstar - zmin)*.3
         } else {
-            p_b_xpos <- zstar + (zmax - zstar)*.7
+            p_b_e_xpos <- zstar + (zmax - zstar)*.7
         }
     }
 
     # y position
-    if(is.na(p_b_ypos)) {
-        p_b_ypos <- maxy * .8
+    if(is.na(p_b_e_ypos)) {
+        p_b_e_ypos <- maxy * .8
     }
     # get name of z_vector to pass as xtitle if chosen
     if (p_xtitle == "z_name") {
         p_xtitle <- deparse(substitute(z_vector))
     }
 
-    # theme
-    if (p_theme == "bw_light") {
-        p_theme <- "theme_bw() + theme_light()"
-    }
-
 
     # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                                  binwidth, bins_excl_l, bins_excl_r,
-                                 p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_axis_title_size, p_axis_val_size,
+                                 p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
                                  p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                                  p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
-                                 p_b_xpos, p_b_ypos, p_b_size,
+                                 p_b_e_xpos, p_b_e_ypos, p_b_e_size,
                                  t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
 
 

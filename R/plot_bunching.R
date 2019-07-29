@@ -17,10 +17,10 @@
 
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_axis_title_size, p_axis_val_size,
+                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
                           p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                          p_b, b, b_sd, p_e, e, e_sd, p_b_xpos, p_b_ypos, p_b_size,
+                          p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos, p_b_e_ypos, p_b_e_size,
                           t0 = NA, t1 = NA, notch = F,
                           p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
 
@@ -78,7 +78,7 @@ plot_bunching <- function(binned_data, cf, zstar,
                        panel.grid.minor.y = element_blank(),
                        panel.grid.major.x = element_blank(),
                        panel.grid.minor.x = element_blank(),
-                       plot.title = element_text(hjust=0.5),
+                       plot.title = element_text(hjust=0.5, size = p_title_size),
                        text = element_text(size=p_axis_title_size),
                        axis.text=element_text(size=p_axis_val_size),
                        legend.position = "none",
@@ -90,7 +90,7 @@ plot_bunching <- function(binned_data, cf, zstar,
         ggplot2::guides(fill=FALSE, color=FALSE)
 
     # pass choice of ylim and p_ybreaks
-        if(is.null(p_ybreaks)) {
+        if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
             bunch_plot <-  bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
         } else {
             bunch_plot <- bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
@@ -106,8 +106,8 @@ plot_bunching <- function(binned_data, cf, zstar,
             text_to_print <- b_estimates
             }
         bunch_plot <- bunch_plot +
-            ggplot2::annotate("text", x = p_b_xpos, y = p_b_ypos,
-                              label = text_to_print, size = p_b_size)
+            ggplot2::annotate("text", x = p_b_e_xpos, y = p_b_e_ypos,
+                              label = text_to_print, size = p_b_e_size)
     }
 
     return(bunch_plot)

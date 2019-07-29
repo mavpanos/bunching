@@ -5,11 +5,11 @@
 \title{Bunching Plot}
 \usage{
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
-  p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks,
+  p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size,
   p_axis_title_size, p_axis_val_size, p_theme, p_freq_color, p_cf_color,
   p_zstar_color, p_grid_major_y_color, p_freq_size, p_cf_size,
-  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_xpos,
-  p_b_ypos, p_b_size, t0 = NA, t1 = NA, notch = F,
+  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos,
+  p_b_e_ypos, p_b_e_size, t0 = NA, t1 = NA, notch = F,
   p_domregion_color = NA, p_domregion_ltype = NA, n_boot)
 }
 \arguments{
@@ -33,9 +33,11 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_miny}{plot's minimum y_axis value. Default is zero.}
 
-\item{p_maxy}{plot's maximum y_axis value.}
+\item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
-\item{p_ybreaks}{plot's sequence of values to use for y-axis grid.}
+\item{p_ybreaks}{the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.}
+
+\item{p_title_size}{size of plot's title.}
 
 \item{p_axis_title_size}{size of plot's axes' title labels.}
 
@@ -71,11 +73,11 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{e_sd}{standard deviation of the elasticity estimate.}
 
-\item{p_b_xpos}{plot's xaxis coordinate of bunching estimate.}
+\item{p_b_e_xpos}{plot's xaxis coordinate of bunching/elasticity estimate.}
 
-\item{p_b_ypos}{plot's yaxis coordinate of bunching estimate.}
+\item{p_b_e_ypos}{plot's yaxis coordinate of bunching/elasticity estimate.}
 
-\item{p_b_size}{size of plot's printed bunching estimate.}
+\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate.}
 
 \item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
 
