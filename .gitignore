@@ -8,3 +8,4 @@ other
 inst/doc
 vignettes/jpegs
 vignettes
+data/create_example_data.R

@@ -4,3 +4,4 @@
 ^TODO$
 ^\.travis\.yml$
 ^LICENSE\.md$
+^data-raw$

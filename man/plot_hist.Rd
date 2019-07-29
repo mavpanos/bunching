@@ -58,6 +58,15 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 \description{
 Create a simple binned plot for quick exploration without estimating bunching mass.
 }
+\examples{
+
+# visualize a distribution
+data(bunching_data)
+plot_hist(z_vector = bunching_data$kink_vector,
+binv = "median", zstar = 10000,
+binwidth = 50, bins_l = 40, bins_r = 40)
+
+}
 \seealso{
 \code{\link{bunchit}}
 }

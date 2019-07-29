@@ -7,4 +7,6 @@
 #'   \item{kink_vector}{simulated earnings vector, suitable for examples of bunching at kinks}.
 #'   \item{notch_vector}{simulated earnings vector, suitable for examples of bunching at notches}.
 #' }
+#' @seealso \code{\link{bunching}}, \code{\link{bunchit}}
+
 "bunching_data"

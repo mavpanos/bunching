@@ -4,8 +4,18 @@
 
 #' @param p_zstar whether to show vertical line for zstar. Default is TRUE.
 #' @inheritParams bunchit
-#' @seealso \code{\link{bunchit}}
 #' @return  \code{plot_hist} returns a plot with just the frequency per bin (histogram).
+
+#' @seealso \code{\link{bunchit}}
+#'
+#' @examples
+#'
+#' # visualize a distribution
+#' data(bunching_data)
+#' plot_hist(z_vector = bunching_data$kink_vector,
+#' binv = "median", zstar = 10000,
+#' binwidth = 50, bins_l = 40, bins_r = 40)
+#'
 #' @export
 
 
