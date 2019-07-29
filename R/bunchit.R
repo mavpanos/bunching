@@ -256,6 +256,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("correct can only be TRUE or FALSE")
     }
 
+    # correct_above_zu must be TRUE/FALSE
+    if(!is.logical(correct_above_zu)) {
+        stop("correct_above_zu can only be TRUE or FALSE")
+    }
+
     # max iteration for integration correction must be a positive integer
     if(iter_max <= 0 | !is.wholenumber(iter_max)) {
         stop("Maximum number of iterations in integration corrrection step must be a positive integer")
