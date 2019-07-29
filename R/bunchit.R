@@ -14,7 +14,8 @@
 #' @param extra_fe a numeric vector of bin values to control for using fixed effects.
 #' @param rn a numeric vector of round numbers (up to 2) to control for.
 #' @param n_boot number of bootstrapped iterations.
-#' @param correct if TRUE, implements correction for integration constraint.
+#' @param correct implements correction for integration constraint. Default is TRUE.
+#' @param correct_above_zu should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).
 #' @param iter_max maximum iterations for integration constraint correction.
 #' @param p_title plot title.
 #' @param p_xtitle plot x_axis label.
@@ -129,7 +130,7 @@
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
-                    n_boot = 100, correct = TRUE, iter_max = 200,
+                    n_boot = 100, correct = TRUE, correct_above_zu = FALSE, iter_max = 200,
                     t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 0.0001, e_parametric_ub = 3,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count", p_title_size = 9,
                     p_axis_title_size = 9, p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
@@ -478,7 +479,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
         # prepare data
         firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                                                      poly, bins_excl_l, bins_excl_r, rn, extra_fe,
+                                                      correct_above_zu)
 
         # fit firstpass model
         # set alpha, zD_bin to NA if it's a kink
@@ -500,7 +502,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         if (force_notch == T) {
             # prepare data
             firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe,
+                                                          correct_above_zu)
             # fit firstpass model
             firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
@@ -510,7 +513,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             # start with only one bin above zstar
             bins_excl_r <- 1
             firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
-                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe)
+                                                          poly, bins_excl_l, bins_excl_r, rn, extra_fe,
+                                                          correct_above_zu)
             firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
 
             # extract bunching mass below and missing mass above zstar
@@ -566,9 +570,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             bins_excl_r <- zu_bin_final
             # update zU_notch with this (to output)
             zU_notch <- bins_excl_r
+            # if we chose to correction_above_zu ==T, i.e. shift only above zu,
             # update bins_above_excluded to relate to this new bins_excl_r = zu_bin_final
-            firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin_final,1,0)
-
+            if(correct_above_zu) {
+                firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin_final,1,0)
+            }
         }
 
     }

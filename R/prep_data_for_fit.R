@@ -11,7 +11,7 @@
 #' @export
 
 prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
-                         poly, bins_excl_l,  bins_excl_r, rn, extra_fe) {
+                         poly, bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
 
     # checks: if extra kinks do not correspond to a bin, flag it
     if(sum(!is.na(extra_fe) > 0) & (length(extra_fe) != sum(extra_fe %in% data_binned$bin))) {
@@ -111,10 +111,14 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     ######################################################
     # DATA PREP: INDICATOR FOR BINS ABOVE BUNCHING REGION
     ######################################################
-    # create dummy for those right of (above) excluded bunching region
+    if(correct_above_zu) {
+    # create dummy for those right of (above) excluded bunching region/zstar
     ul <- zstar + binwidth * bins_excl_r
     data_binned$bin_above_excluded <- ifelse(data_binned$bin > ul,1,0)
-
+    } else {
+        # else make this all bins above zstar
+        data_binned$bin_above_excluded <- ifelse(data_binned$bin > zstar,1,0)
+    }
 
     ##############################################
     # DATA PREP: ROUND NUMBER BUNCHING

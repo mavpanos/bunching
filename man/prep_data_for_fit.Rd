@@ -5,7 +5,7 @@
 \title{Data Preparation}
 \usage{
 prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
-  bins_excl_l, bins_excl_r, rn, extra_fe)
+  bins_excl_l, bins_excl_r, rn, extra_fe, correction_above_zu)
 }
 \arguments{
 \item{data_binned}{dataframe of counts per bin}
