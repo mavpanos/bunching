@@ -127,7 +127,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
   \item{zD}{The value demarcating the dominated region (notch case).}
   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
-  \item{zU_notch}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
+  \item{zU_bin}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}

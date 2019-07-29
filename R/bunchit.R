@@ -68,7 +68,7 @@
 #'   \item{model_fit}{The model fit on the actual (i.e. not bootstrapped) data.}
 #'   \item{zD}{The value demarcating the dominated region (notch case).}
 #'   \item{zD_bin}{The bin above zstar demarcating the dominated region (notch case).}
-#'   \item{zU_notch}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
+#'   \item{zU_bin}{The location of zU (upper range of excluded region) as estimated from notch setting by setting force_notch = FALSE.}
 #'   \item{marginal_buncher}{The location (z value) of the marginal buncher.}
 #'   \item{marginal_buncher_vector}{The vector of bootstrapped marginal_buncher values.}
 #'   \item{marginal_buncher_sd}{The standard deviation of marginal_buncher_vector.}
@@ -732,7 +732,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                    "alpha_sd" = alpha_sd,
                    "zD" = zD,
                    "zD_bin" = zD_bin,
-                   "zU_notch" = zU_notch,
+                   "zU_bin" = zU_notch,
                    "marginal_buncher" = mbuncher,
                    "marginal_buncher_vector" = mbuncher_vector,
                    "marginal_buncher_sd" = mbuncher_sd)
