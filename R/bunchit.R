@@ -349,8 +349,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             stop("When specified, p_ybreaks must only contain numeric values")
         }
     } else {
-        # if only of length 1
-        if(!is.na(p_ybreaks) | !is.numeric(p_ybreaks)) {
+        # if only of length 1, and not NA nor numeric,
+        if(!is.na(p_ybreaks) & !is.numeric(p_ybreaks)) {
             stop("p_ybreaks can only be numeric, or NA (the default)")
         }
     }
