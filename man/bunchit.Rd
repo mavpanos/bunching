@@ -6,12 +6,12 @@
 \usage{
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA,
-  rn = NA, n_boot = 100, correct = TRUE,
-  correction_above_zu = FALSE, iter_max = 200, t0, t1, notch = FALSE,
-  force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 1e-04,
-  e_parametric_ub = 3, p_title = "", p_xtitle = "z_name",
-  p_ytitle = "Count", p_title_size = 9, p_axis_title_size = 9,
-  p_axis_val_size = 7.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
+  rn = NA, n_boot = 100, correct = TRUE, correct_above_zu = FALSE,
+  iter_max = 200, t0, t1, notch = FALSE, force_notch = FALSE,
+  e_parametric = FALSE, e_parametric_lb = 1e-04, e_parametric_ub = 3,
+  p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
+  p_title_size = 9, p_axis_title_size = 9, p_axis_val_size = 7.5,
+  p_miny = 0, p_maxy = NA, p_ybreaks = NA,
   p_theme = "theme_classic()", p_freq_color = "black",
   p_cf_color = "maroon", p_zstar_color = "red",
   p_grid_major_y_color = "lightgrey", p_freq_size = 0.5,
@@ -45,7 +45,9 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{n_boot}{number of bootstrapped iterations.}
 
-\item{correct}{if TRUE, implements correction for integration constraint.}
+\item{correct}{implements correction for integration constraint. Default is TRUE.}
+
+\item{correct_above_zu}{should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
 
 \item{iter_max}{maximum iterations for integration constraint correction.}
 
@@ -180,7 +182,7 @@ kink3_vector <- c(bunching_data$kink_vector,
 kink3 <- bunchit(z_vector = kink3_vector, zstar = bpoint, binwidth = 50,
 bins_l = 20, bins_r = 20, poly = 6,
 bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE, p_e = TRUE,
-p_freq_msize = 1.5, p_b_ypos = 880, rn = c(250,500))
+p_freq_msize = 1.5, p_b_e_ypos = 880, rn = c(250,500))
 kink3$plot
 
 # Example 4: Notch

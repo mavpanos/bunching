@@ -5,7 +5,7 @@
 \title{Data Preparation}
 \usage{
 prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
-  bins_excl_l, bins_excl_r, rn, extra_fe, correction_above_zu)
+  bins_excl_l, bins_excl_r, rn, extra_fe, correct_above_zu)
 }
 \arguments{
 \item{data_binned}{dataframe of counts per bin}
@@ -27,6 +27,8 @@ prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
 \item{rn}{a numeric vector of round numbers (up to 2) to control for.}
 
 \item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
+
+\item{correct_above_zu}{should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
 }
 \value{
 \code{data_binned} returns a list with the following:

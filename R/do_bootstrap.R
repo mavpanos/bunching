@@ -69,10 +69,10 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
     B_boot <- unlist(boot_results["B_boot",])
     alpha_boot <- unlist(boot_results["alpha_boot",])
     mbuncher_boot <- unlist(boot_results["mbuncher_boot",])
-    b_sd <- round(stats::sd(b_boot, na.rm = T),3)
-    B_sd <- round(stats::sd(B_boot, na.rm = T),3)
-    alpha_sd <- round(stats::sd(alpha_boot, na.rm = T),3)
-    mbuncher_sd <- round(stats::sd(mbuncher_boot, na.rm = T),3)
+    b_sd <- stats::sd(b_boot, na.rm = T)
+    B_sd <- stats::sd(B_boot, na.rm = T)
+    alpha_sd <- stats::sd(alpha_boot, na.rm = T)
+    mbuncher_sd <- stats::sd(mbuncher_boot, na.rm = T)
 
     output <- list("b_vector" = b_boot, "b_sd" = b_sd,
                    "B_vector" = B_boot, "B_sd" = B_sd,

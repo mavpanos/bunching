@@ -51,11 +51,11 @@ plot_bunching <- function(binned_data, cf, zstar,
 
     # combine b and b_sd (e and e_sd) to pass to graph (if n_boot == 0, only report point estimate)
     if(n_boot > 0) {
-        b_estimates <- paste0("b = ", sprintf("%.3f", b), "(", b_sd, ")")
-        e_estimates <- paste0("e = ", sprintf("%.3f", e), "(", e_sd, ")")
+        b_estimates <- paste0("b = ", round(b,3), "(", round(b_sd,3),  ")")
+        e_estimates <- paste0("e = ", round(e,3), "(", round(e_sd, 3),  ")")
     } else {
-        b_estimates <- paste0("b = ", sprintf("%.3f", b))
-        e_estimates <- paste0("e = ", sprintf("%.3f", e))
+        b_estimates <- paste0("b = ", round(b,3))
+        e_estimates <- paste0("e = ", round(e,3))
     }
 
 

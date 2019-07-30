@@ -628,7 +628,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch,
                                      e_parametric = e_parametric, e_parametric_lb = e_parametric_lb, e_parametric_ub = e_parametric_ub)
             }))
-            e_sd <- round(stats::sd(e_vector),3)
+            e_sd <- stats::sd(e_vector)
             #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
             B_vector <- boot_results$B_vector
             B_sd <- boot_results$B_sd
@@ -673,7 +673,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 bunching::elasticity(b, binwidth = binwidth, zstar = zstar, t0 = t0, t1 = t1, notch = notch,
                                      e_parametric = e_parametric,  e_parametric_lb = e_parametric_ub, e_parametric_ub = e_parametric_ub)
             }))
-            e_sd <- round(stats::sd(e_vector),3)
+            e_sd <- stats::sd(e_vector)
 
             B_vector <- boot_results$B_vector
             B_sd <- boot_results$B_sd
@@ -753,29 +753,30 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  p_b_e_xpos, p_b_e_ypos, p_b_e_size,
                                  t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
 
+    round_dp <- 3
 
     output <- list("plot" = p,
                    "data" = firstpass_prep$data_binned,
                    "cf" = counterfactuals_for_graph,
                    "model_fit" = model_fit,
-                   "B" = round(B_for_output,3),
-                   "B_vector" = B_vector,
-                   "B_sd" = B_sd,
-                   "b" = b_estimate,
-                   "b_vector" = b_vector,
-                   "b_sd" = b_sd,
-                   "e" = round(e_estimate,3),
-                   "e_vector" = e_vector,
-                   "e_sd" = e_sd,
-                   "alpha" = round(alpha,3),
+                   "B" = round(B_for_output,round_dp),
+                   "B_vector" = round(B_vector,round_dp),
+                   "B_sd" = round(B_sd,round_dp),
+                   "b" = round(b_estimate,round_dp),
+                   "b_vector" = round(b_vector,round_dp),
+                   "b_sd" = round(b_sd,round_dp),
+                   "e" = round(e_estimate,round_dp),
+                   "e_vector" = round(e_vector,round_dp),
+                   "e_sd" = round(e_sd,round_dp),
+                   "alpha" = round(alpha,round_dp),
                    "alpha_vector" = alpha_vector,
-                   "alpha_sd" = alpha_sd,
-                   "zD" = zD,
+                   "alpha_sd" = round(alpha_sd,round_dp),
+                   "zD" = round(zD,round_dp),
                    "zD_bin" = zD_bin,
                    "zU_bin" = zU_notch,
-                   "marginal_buncher" = mbuncher,
-                   "marginal_buncher_vector" = mbuncher_vector,
-                   "marginal_buncher_sd" = mbuncher_sd)
+                   "marginal_buncher" = round(mbuncher,round_dp),
+                   "marginal_buncher_vector" = round(mbuncher_vector,round_dp),
+                   "marginal_buncher_sd" = round(mbuncher_sd,round_dp))
     return(output)
 }
 

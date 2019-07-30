@@ -55,7 +55,7 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     }
 
     # b_corrected
-    b_corrected <- as.numeric(sprintf("%.3f", bunchers_excess_updated/c0_updated))
+    b_corrected <- bunchers_excess_updated/c0_updated
 
     # B corrected (excess mass without normalisation)
     B_corrected <- bunchers_excess_updated
@@ -66,7 +66,8 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     alpha_corrected <- iteration_results$alpha
 
     # get marginal buncher
-    mbuncher_corrected <- bunching::marginal_buncher(beta = b_corrected, binwidth = binwidth, zstar = zstar)
+    mbuncher_corrected <- bunching::marginal_buncher(beta = b_corrected, binwidth = binwidth, zstar = zstar,
+                                                     notch = notch, alpha = alpha_corrected)
     # get residuals
     thedata$residuals <- thedata$cf_density - thedata$freq_orig
 
