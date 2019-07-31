@@ -6,7 +6,7 @@
 \usage{
 plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size,
-  p_axis_title_size, p_axis_val_size, p_theme, p_freq_color, p_cf_color,
+  p_axis_title_size, p_axis_val_size, p_freq_color, p_cf_color,
   p_zstar_color, p_grid_major_y_color, p_freq_size, p_cf_size,
   p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos,
   p_b_e_ypos, p_b_e_size, t0 = NA, t1 = NA, notch = F,
@@ -42,8 +42,6 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_axis_title_size}{size of plot's axes' title labels.}
 
 \item{p_axis_val_size}{size of plot's axes' numeric labels.}
-
-\item{p_theme}{plot theme (in ggplot2 format).}
 
 \item{p_freq_color}{plot's frequency line color.}
 

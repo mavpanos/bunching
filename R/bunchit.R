@@ -26,7 +26,6 @@
 #' @param p_title_size size of plot's title.
 #' @param p_axis_title_size size of plot's axes' title labels.
 #' @param p_axis_val_size size of plot's axes' numeric labels.
-#' @param p_theme plot theme (in ggplot2 format).
 #' @param p_freq_color plot's frequency line color.
 #' @param p_cf_color plot's counterfactual line color.
 #' @param p_zstar_color plot's bunching region marker lines color.
@@ -87,23 +86,31 @@
 #' data(bunching_data)
 #'
 #' # Example 1: Kink with integration constraint correction
-#' kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000,
-#' binwidth = 50, bins_l = 20, bins_r = 20, poly = 4,
-#' bins_excl_l = 0, bins_excl_r = 0, t0 = 0, t1 = .2, p_b = TRUE)
+#' kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth = 50,
+#'                  bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2, p_b = TRUE)
 #' kink1$plot
 #'
-#' # Example 2: Kink with further bunching at other level in bandwidth
-#' kink2_vector <- c(bunching_data$kink_vector, rep(10200,540))
-#' kink2 <- bunchit(kink2_vector, zstar = 10000, binwidth = 50,
-#' bins_l = 40, bins_r = 40, poly = 6,
-#' bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE,
-#' extra_fe = 10200)
+#' # Example 2: Kink with diffuse bunching
+#' bpoint <- 10000; binwidth <- 50
+#' kink2_vector <- c(bunching_data$kink_vector,
+#'                  rep(bpoint - binwidth,80), rep(bpoint - 2*binwidth,190),
+#'                  rep(bpoint + binwidth,80), rep(bpoint + 2*binwidth,80))
+#' kink2 <- bunchit(z_vector = kink2_vector, zstar = 10000, binwidth = 50,
+#'                  bins_l = 20, bins_r = 20, poly = 4,  t0 = 0, t1 = .2,
+#'                  bins_excl_l = 2, bins_excl_r = 2, correct = FALSE, p_b = TRUE)
 #' kink2$plot
 #'
-#' # Example 3: Kink with round number bunching
+#' # Example 3: Kink with further bunching at other level in bandwidth
+#' kink3_vector <- c(bunching_data$kink_vector, rep(10200,540))
+#' kink3 <- bunchit(kink3_vector, zstar = 10000, binwidth = 50,
+#'                  bins_l = 40, bins_r = 40, poly = 6, t0 = 0, t1 = .2,
+#'                  correct = FALSE, p_b=TRUE, extra_fe = 10200)
+#' kink3$plot
+#'
+#' # Example 4: Kink with round number bunching
 #' rn1 <- 500;  rn2 <- 250
 #' bpoint <- 10000
-#' kink3_vector <- c(bunching_data$kink_vector,
+#' kink4_vector <- c(bunching_data$kink_vector,
 #'                   rep(bpoint + rn1, 270),
 #'                   rep(bpoint + 2*rn1,230),
 #'                   rep(bpoint - rn1,260),
@@ -112,17 +119,16 @@
 #'                   rep(bpoint + 3*rn2,140),
 #'                   rep(bpoint - rn2,120),
 #'                   rep(bpoint - 3*rn2,135))
+#' kink4 <- bunchit(z_vector = kink4_vector, zstar = bpoint, binwidth = 50,
+#'                  bins_l = 20, bins_r = 20, poly = 6, t0 = 0, t1 = .2,
+#'                  correct = FALSE, p_b=TRUE, p_e = TRUE, p_freq_msize = 1.5,
+#'                  p_b_e_ypos = 880, rn = c(250,500))
+#' kink4$plot
 #'
-#' kink3 <- bunchit(z_vector = kink3_vector, zstar = bpoint, binwidth = 50,
-#' bins_l = 20, bins_r = 20, poly = 6,
-#' bins_excl_l = 0, bins_excl_r = 0, t0=0, t1=.2, correct = FALSE, p_b=TRUE, p_e = TRUE,
-#' p_freq_msize = 1.5, p_b_e_ypos = 880, rn = c(250,500))
-#' kink3$plot
-#'
-#' # Example 4: Notch
+#' # Example 5: Notch
 #' notch <- bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
-#' bins_l = 40, bins_r = 40, poly = 5, bins_excl_l = 0,
-#' t0=0.18, t1=.25, correct = FALSE, notch = TRUE)
+#'                  bins_l = 40, bins_r = 40, poly = 5, t0 = 0.18, t1 = .25,
+#'                  correct = FALSE, notch = TRUE,p_b = TRUE, p_b_e_xpos = 8900)
 #' notch$plot
 
 
@@ -134,8 +140,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 0.0001, e_parametric_ub = 3,
                     p_title = "", p_xtitle = "z_name", p_ytitle = "Count", p_title_size = 11,
                     p_axis_title_size = 10, p_axis_val_size = 8.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
-                    p_theme = "theme_classic()",  p_freq_color = "black",
-                    p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+                    p_freq_color = "black", p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
                     p_b = FALSE, p_e = FALSE, p_b_e_xpos = NA, p_b_e_ypos = NA, p_b_e_size = 3,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
@@ -361,11 +366,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         }
     }
 
-
-    # is p_theme a string?
-    if(!is.character(p_theme)) {
-        stop("p_theme must be a string (theme in ggplot2 format), e.g. 'bw_light")
-    }
 
     # is p_freq_color a string?
     if(!is.character(p_freq_color)) {
@@ -706,12 +706,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # in case of notch, zD > mbuncher is nonsensical
     if(!is.na(zD) & (zD > mbuncher)) {
-        warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+        warning("estimated zD (upper bound of dominated region) is larger than estimated marginal buncher's counterfactual z level \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, force_notch, correct and correct_above_zu.")
     }
 
     # in case of notch, zD_bin > bins_excl_r is nonsensical
     if(!is.na(zD_bin) & (zD_bin > bins_excl_r)) {
-        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, and force_notch.")
+        warning("estimated zD (upper bound of dominated region) is larger than bins_excl_r (upper bound of bunching region) \n Are you sure this is a notch? \n If yes, check your input choices for t0, t1, force_notch, correct and correct_above_zu.")
     }
 
 
@@ -747,7 +747,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
                                  binwidth, bins_excl_l, bins_excl_r,
                                  p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
-                                 p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
+                                 p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                                  p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                                  p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
                                  p_b_e_xpos, p_b_e_ypos, p_b_e_size,

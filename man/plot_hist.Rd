@@ -39,8 +39,6 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_axis_val_size}{size of plot's axes' numeric labels.}
 
-\item{p_theme}{plot theme (in ggplot2 format).}
-
 \item{p_grid_major_y_color}{plot's y-axis major grid line color.}
 
 \item{p_freq_color}{plot's frequency line color.}

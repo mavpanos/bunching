@@ -18,7 +18,7 @@
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
                           p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
-                          p_theme, p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
+                          p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos, p_b_e_ypos, p_b_e_size,
                           t0 = NA, t1 = NA, notch = F,
@@ -71,8 +71,7 @@ plot_bunching <- function(binned_data, cf, zstar,
         ggplot2::geom_vline(xintercept=vlines,  linetype=vlines_type,  color = vlines_color, size=p_zstar_size) +
         # plot connector point marker for freq line
         ggplot2::geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
-        # options for plot theme/titles etc.
-        eval(parse(text = p_theme)) +  # theme_classic()
+        theme_classic() + #eval(parse(text = p_theme))
 
         ggplot2::theme(panel.grid.major.y = element_line(colour = p_grid_major_y_color),
                        panel.grid.minor.y = element_blank(),
