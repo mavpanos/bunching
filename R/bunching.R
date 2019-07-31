@@ -11,6 +11,7 @@
 #'
 #' \code{bunching} has two main functions:
 #' \describe{
+#' {\figure{logo.png}{options: align='right'}
 #'   \item{\code{\link{bunchit}}}{is the main function that runs all the analysis.}
 #'   \item{\code{\link{plot_hist}}}{is a tool for exploratory visualization prior to estimating bunching. It can be used to
 #'   decide how to choose the appropriate binwidth, bandwidth, the number around the bunching point to include in the bunching region, the polynomial order,
