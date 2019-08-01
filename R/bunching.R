@@ -1,5 +1,5 @@
 #' bunching: Analyze bunching at a kink or notch
-#'\figure{logo.png}{options: aligh = "bottom"}
+#'\figure{bunching_logo.png}{options: align = "right"}
 #'
 #' The \code{bunching} package implements the bunching estimator in settings with kinks or notches.
 #' Given a numeric vector, it allows you to estimate bunching at a particular location in the vector's distribution, and returns a rich set of results.
