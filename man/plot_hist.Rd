@@ -7,10 +7,9 @@
 plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
   p_maxy = NA, p_title_size = 11, p_axis_title_size = 10,
-  p_axis_val_size = 8.5, p_theme = "theme_classic()",
-  p_grid_major_y_color = "lightgrey", p_freq_color = "black",
-  p_zstar_color = "red", p_freq_size = 0.5, p_freq_msize = 1,
-  p_zstar_size = 0.5, p_zstar = TRUE)
+  p_axis_val_size = 8.5, p_grid_major_y_color = "lightgrey",
+  p_freq_color = "black", p_zstar_color = "red", p_freq_size = 0.5,
+  p_freq_msize = 1, p_zstar_size = 0.5, p_zstar = TRUE)
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data to be analysed.}

@@ -4,7 +4,8 @@
 \name{bunching}
 \alias{bunching}
 \alias{bunching-package}
-\title{bunching: Analyze bunching at a kink or notch}
+\title{bunching: Analyze bunching at a kink or notch
+\figure{logo.png}{options: aligh = "bottom"}}
 \description{
 The \code{bunching} package implements the bunching estimator in settings with kinks or notches.
 Given a numeric vector, it allows you to estimate bunching at a particular location in the vector's distribution, and returns a rich set of results.
@@ -18,6 +19,7 @@ Finally, it produces bunching plots in the style of Chetty et al. (2011) with lo
 
 \code{bunching} has two main functions:
 \describe{
+
   \item{\code{\link{bunchit}}}{is the main function that runs all the analysis.}
   \item{\code{\link{plot_hist}}}{is a tool for exploratory visualization prior to estimating bunching. It can be used to
   decide how to choose the appropriate binwidth, bandwidth, the number around the bunching point to include in the bunching region, the polynomial order,
@@ -26,5 +28,5 @@ Finally, it produces bunching plots in the style of Chetty et al. (2011) with lo
 }
 
 \seealso{
-\code{\link{bunching}}, \code{\link{bunchit}}, \code{\link{plot_hist}}
+\code{\link{bunchit}}, \code{\link{plot_hist}}
 }

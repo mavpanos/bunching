@@ -24,7 +24,7 @@
 plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                       p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
                       p_maxy = NA, p_title_size = 11, p_axis_title_size = 10, p_axis_val_size = 8.5,
-                      p_theme = "theme_classic()",  p_grid_major_y_color = "lightgrey",
+                      p_grid_major_y_color = "lightgrey",
                       p_freq_color = "black", p_zstar_color = "red",
                       p_freq_size = .5, p_freq_msize = 1, p_zstar_size = .5, p_zstar = TRUE) {
 
@@ -45,7 +45,7 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     }
     # add bpoint (so it appears in front of vline) and rest of options
     hist_plot <- hist_plot + ggplot2::geom_point(colour = p_freq_color, size = p_freq_msize) +
-        eval(parse(text = p_theme)) +  # e.g. theme_bw() + theme_light()
+        theme_classic() +
         theme(panel.grid.major.y = element_line(colour = p_grid_major_y_color),
               panel.grid.minor.y = element_blank(),
               panel.grid.major.x = element_blank(),

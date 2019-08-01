@@ -1,4 +1,5 @@
 #' bunching: Analyze bunching at a kink or notch
+#'\figure{logo.png}{options: aligh = "bottom"}
 #'
 #' The \code{bunching} package implements the bunching estimator in settings with kinks or notches.
 #' Given a numeric vector, it allows you to estimate bunching at a particular location in the vector's distribution, and returns a rich set of results.
@@ -11,14 +12,14 @@
 #'
 #' \code{bunching} has two main functions:
 #' \describe{
-#' {\figure{logo.png}{options: align='right'}
+#'
 #'   \item{\code{\link{bunchit}}}{is the main function that runs all the analysis.}
 #'   \item{\code{\link{plot_hist}}}{is a tool for exploratory visualization prior to estimating bunching. It can be used to
 #'   decide how to choose the appropriate binwidth, bandwidth, the number around the bunching point to include in the bunching region, the polynomial order,
 #'   whether to control for round numbers and other fixed effects in the bandwidth.}
 #'}
 #'
-#' @seealso \code{\link{bunching}}, \code{\link{bunchit}}, \code{\link{plot_hist}}
+#' @seealso \code{\link{bunchit}}, \code{\link{plot_hist}}
 #'
 #' @docType package
 #' @name bunching

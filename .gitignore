@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 create_examples.R
+create_sticker.R
 TODO
 other
 inst/doc
