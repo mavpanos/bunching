@@ -151,28 +151,28 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # data must be a dataframe
     if(is.numeric(z_vector) == F) {
-        stop("Running variable must be a numeric vector")
+        stop("z_vector must be a numeric vector")
     }
 
     # binv: is it one of the 3 allowed ones?
     if(binv %in% c("min", "max", "median") == F) {
-        stop("binv can only be one of 'min', 'max', 'median' ")
+        stop("binv can only be one of 'min', 'max', 'median'")
     }
 
     # zstar: is it within range? get max and min of variable
     data_varmax <- max(z_vector, na.rm = T)
     data_varmin <- min(z_vector, na.rm = T)
     if(zstar > data_varmax |  zstar < data_varmin) {
-        stop("zstar (bunching point) is outside of running variable's range of values")
+        stop("zstar is outside of z_vector's range of values")
     }
 
     # zstar cannot be zero (elasticity needs Dz/zstar estimate)
     if(zstar == 0) {
-        stop("zstar (bunching point) cannot be zero. If this your true bunching point, must re-centre it away from zero.")
+        stop("zstar cannot be zero. If this your true bunching point, must re-centre it away from zero")
     }
 
-    # binwidth: must be positive
-    if(binwidth <= 0) {
+    # binwidth: must be positive, numeric
+    if(binwidth <= 0 | !is.numeric(binwidth)) {
         stop("Binwidth must be a positive number")
     }
 
@@ -189,9 +189,9 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("bins_r must be a positive integer")
     }
 
-    # polynomial order cannot be negative
+    # polynomial order cannot be negative or not a whole number
     if(poly < 0 | !is.wholenumber(poly)) {
-        stop("Polynomial order must be a non-negative integer")
+        stop("poly must be a non-negative integer")
     }
 
     # excluded bins below zstar cannot be negative
@@ -206,17 +206,17 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # is bunching region below zstar too wide?
     if(bins_excl_l >= bins_l - 5) {
-        stop("Bunching region below zstar too wide")
+        stop("Bunching region below zstar too wide. Increase bins_l relative to bins_excl_l")
     }
 
     # is bunching region above zstar too wide?
     if(bins_excl_r >= bins_r - 5) {
-        stop("Bunching region above zstar too wide")
+        stop("Bunching region above zstar too wide. Increase bins_r relative to bins_excl_r")
     }
 
     # check that rn does not include 0
     if( 0 %in% rn) {
-        stop("Error: rn cannot include zero as a round number")
+        stop("rn cannot include zero as a round number")
     }
 
     # if not NA, are all round numbers integers?
@@ -226,49 +226,49 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # check that no more than two round numbers are given
     if(length(rn) > 2) {
-        stop("Error: cannot have more than two unique levels for round number bunching")
+        stop("rn cannot include more than two unique levels for round number bunching")
     }
 
     # if two round numbers given, check that they are unique
     if(length(rn) == 2 & length(unique(rn)) != 2) {
-        stop("Error: the two round numbers cannot be identical")
+        stop("the two round numbers in rn cannot be identical")
     }
 
     # if rn is not NA, are round numbers included in data range?
     if(sum(is.na(rn)) == 0 & sum(rn > data_varmax) != 0) {
-        stop("rn includes round numbers outside of running variable's range of values")
+        stop("rn includes round numbers outside of z_vector's range of values")
     }
 
     # if rn is not NA,
     # is data range too small to allow for round numbers? (e.g. data range is 0-400 but rn = 500)
     if(sum(is.na(rn)) == 0 & sum(rn > (data_varmax-data_varmin))) {
-        stop("rn includes round numbers that are too large for your running variable's range of values. \n Use smaller values")
+        stop("rn includes round numbers that are too large for z_vector's range of values. \n Use smaller values or increase bins_l and bins_r")
     }
 
     # number of bootstrap iterations must be non-negative integer
     if(n_boot < 0 | !is.wholenumber(n_boot)) {
-        stop("Bootstrap sample size must be a non-negative integer")
+        stop("bootstrap sample size n_boot must be a non-negative integer")
     }
 
     # flag if bootstrap samples less than 100
     if(n_boot > 0 & n_boot < 100) {
-        warning(paste0("You chose n_boot = ", n_boot, ". Are you sure this is large enough?"))
+        warning(paste0("Are you sure your choice for the bootstrap sample size n_boot is large enough?"))
     }
 
 
     # correct must be TRUE/FALSE
     if(!is.logical(correct)) {
-        stop("correct can only be TRUE or FALSE")
+        stop("correct (for integration constraint) can only be TRUE or FALSE")
     }
 
     # correct_above_zu must be TRUE/FALSE
     if(!is.logical(correct_above_zu)) {
-        stop("correct_above_zu can only be TRUE or FALSE")
+        stop("correct_above_zu (for integration constraint in notch setting) can only be TRUE or FALSE")
     }
 
     # max iteration for integration correction must be a positive integer
     if(iter_max <= 0 | !is.wholenumber(iter_max)) {
-        stop("Maximum number of iterations in integration corrrection step must be a positive integer")
+        stop("Maximum number of iterations (for integration constraint) iter_max must be a positive integer")
     }
 
     # check that taxrate t0 inputs are numeric
@@ -283,15 +283,15 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # flag if t0 outside unit circle
     if(t0 < 0 | t0 > 1) {
-        warning("Are you sure this is the correct value for t0? Note that t0=1 means a 100% tax rate!")
+        warning("Are you sure this is the correct value for t0? \n Note that t0 = 0 means a 0% and t0 = 1 a 100% tax rate!")
     }
 
     # flag if t1 outside unit circle
     if(t1 < 0 | t1 > 1) {
-        warning("Are you sure this is the correct value for t1? Note that t1=1 means a 100% tax rate!")
+        warning("Are you sure this is the correct value for t1? \n Note that t1 = 0 means a 0% and t1 = 1 a 100% tax rate!")
     }
 
-    # checks of inputs t0 Vs t1
+    # are t0 and t1 different?
     if(t0 == t1) {
         stop("Cannot calculate elasticity (t0 cannot equal t1")
     }
@@ -303,12 +303,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # is notch choice a logical value?
     if(!is.logical(notch)) {
-        stop("notch can either be TRUE or FALSE (i.e. kink).")
+        stop("notch can either be TRUE or FALSE (i.e. kink)")
     }
 
     # is force_notch choice a logical value?
     if(!is.logical(force_notch)) {
-        stop("force_notch can either be TRUE or FALSE.")
+        stop("force_notch can either be TRUE or FALSE")
     }
 
     # is p_title a string?
@@ -343,49 +343,53 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # is p_miny numeric?
     if(!is.na(p_miny) & !is.numeric(p_miny)) {
-        stop("p_miny must be numeric")
+        stop("plot's minimum y-value p_miny must be numeric")
     }
 
 
     # is p_maxy numeric?
     if(!is.na(p_maxy) & !is.numeric(p_maxy)) {
-        stop("p_maxy must be numeric (unless unspecified using NA)")
+        stop("plot's maximum y-value p_miny must be numeric")
     }
 
-    # are all ements in p_ybreaks numeric (if specified, otherwise NA)
-    # if more than one entered, check that all are
+    # is p_maxy > p_miny?
+    if(!is.na(p_maxy) &  (p_maxy < p_miny)) {
+        stop("p_maxy cannot be smaller than p_miny")
+    }
+
+    # are all elements in p_ybreaks numeric (if specified, otherwise NA)
+    # if more than one entered, check that all are numeric
     if(length(p_ybreaks) > 1) {
         # if at least one has NA, stop
-        if(length(p_ybreaks[is.na(p_ybreaks)]) > 0) {
-            stop("When specified, p_ybreaks must only contain numeric values")
+        if(length(p_ybreaks[is.character(p_ybreaks) | is.na(p_ybreaks)]) > 0) {
+            stop("p_ybreaks must only contain numeric values")
         }
     } else {
         # if only of length 1, and not NA nor numeric,
         if(!is.na(p_ybreaks) & !is.numeric(p_ybreaks)) {
-            stop("p_ybreaks can only be numeric, or NA (the default)")
+            stop("p_ybreaks must only contain numeric values")
         }
     }
 
-
     # is p_freq_color a string?
     if(!is.character(p_freq_color)) {
-        stop("p_freq_color choice must be a string, e.g. 'black'")
+        stop("p_freq_color must be a string, e.g. 'black'")
     }
 
     # is p_cf_color a string?
     if(!is.character(p_cf_color)) {
-        stop("p_cf_color choice must be a string, e.g. 'maroon'")
+        stop("p_cf_color must be a string, e.g. 'maroon'")
     }
 
     # is p_zstar_color a string?
     if(!is.character(p_zstar_color)) {
-        stop("p_zstar_color choice must be a string, e.g. 'red'")
+        stop("p_zstar_color must be a string, e.g. 'red'")
     }
 
 
     # is p_freq_size numeric?
     if(!is.numeric(p_freq_size)) {
-        stop("p_freq_size choice must be numeric")
+        stop("p_freq_size must be numeric")
     }
 
     # is p_freq_msize numeric and positive?
@@ -394,18 +398,18 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # is p_cf_size numeric?
-    if(!is.numeric(p_cf_size)) {
-        stop("p_cf_size choice must be numeric")
+    if(p_cf_size <= 0 | !is.numeric(p_cf_size)) {
+        stop("p_cf_size must be a positive numeric value")
     }
 
     # is p_zstar_size numeric?
-    if(!is.numeric(p_zstar_size)) {
-        stop("p_zstar_size choice must be numeric")
+    if(p_zstar_size <= 0 | !is.numeric(p_zstar_size)) {
+        stop("p_zstar_size must be a positive numeric value")
     }
 
     # is p_grid_major_y_color a string?
     if(!is.character(p_grid_major_y_color)) {
-        stop("p_grid_major_y_color choice must a string, e.g. 'blue'")
+        stop("p_grid_major_y_color must a string, e.g. 'blue'")
     }
 
 
@@ -417,7 +421,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # if p_b_e_xpos is selected by user, is p_b_e_xpos numeric and within the range of x?
     if(!is.na(p_b_e_xpos)) {
         if(!is.numeric(p_b_e_xpos) | p_b_e_xpos < data_varmin | p_b_e_xpos > data_varmax) {
-            stop("p_b_e_xpos must be numeric and lie within the data's range")
+            stop("p_b_e_xpos must be numeric and lie within z_vector's range")
         }
     }
 
