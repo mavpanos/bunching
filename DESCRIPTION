@@ -22,5 +22,6 @@ Depends: BB (>= 2014.10-1),
 RoxygenNote: 6.1.1.9000
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
