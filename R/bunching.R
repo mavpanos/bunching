@@ -1,6 +1,7 @@
 #' bunching: Analyze bunching at a kink or notch
-#'\figure{bunching_logo.png}{options: align = "right"}
 #'
+#'\figure{bunching_logo.png}{options: align = "right" height="140"}
+
 #' The \code{bunching} package implements the bunching estimator in settings with kinks or notches.
 #' Given a numeric vector, it allows you to estimate bunching at a particular location in the vector's distribution, and returns a rich set of results.
 #' Important features include functionality for controlling for (different levels of) round numbers, controlling for other bunching points in the bunching bandwidth,
@@ -8,6 +9,7 @@
 #' and estimates elasticities using both reduced-form and parametric specifications.
 #' Finally, it produces bunching plots in the style of Chetty et al. (2011) with lots of functionality for editing the plot's appearance.
 #'
+
 #' @section Main functions:
 #'
 #' \code{bunching} has two main functions:
