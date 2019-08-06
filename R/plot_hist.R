@@ -14,7 +14,7 @@
 #' data(bunching_data)
 #' plot_hist(z_vector = bunching_data$kink_vector,
 #' binv = "median", zstar = 10000,
-#' binwidth = 50, bins_l = 40, bins_r = 40)
+#' binwidth = 50, bins_l = 40, bins_r = 40)$plot
 #'
 #' @export
 
@@ -169,7 +169,9 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     # ------------------------------------------------
     # convert vector into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
-
+    #drop extra freq and z columns (uneccesary for hist)
+    binned_data$freq <- NULL
+    binned_data$z <- NULL
     # ------------------------------------------------
     #               2. make plot
     # ------------------------------------------------
@@ -211,8 +213,8 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
         hist_plot <- hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
     }
 
-    return(hist_plot)
-
+    return(list(hist_data = binned_data,
+                plot = hist_plot))
 }
 
 

@@ -479,6 +479,14 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # convert vector into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 
+    # --------------------------------------------
+    # checks: if extra kinks do not correspond
+    #           to a bin, flag it
+    # --------------------------------------------
+    if(sum(!is.na(extra_fe) > 0) & (length(extra_fe) != sum(extra_fe %in% binned_data$bin))) {
+        warning("Warning: extra_fe do not correspond to any bin value. \n Consider using the plot_hist() function and check the returned data's bin values")
+    }
+
     # ------------------------------------------------
     #           2. first pass prep and fit
     # ------------------------------------------------

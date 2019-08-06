@@ -185,7 +185,7 @@ test_that("invalid extra_fe correctly caught", {
     expect_warning(bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
                       bins_l = 40, bins_r = 40, t0 = 0.18, t1 = 0.25, notch = TRUE,
                       correct = FALSE, n_boot = 0, extra_fe = 11075),
-                   "Warning: extra FE(s) not a valid bin value", fixed = TRUE)
+                   "Warning: extra_fe do not correspond to any bin value. \n Consider using the plot_hist() function and check the returned data's bin values", fixed = TRUE)
 })
 
 

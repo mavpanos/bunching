@@ -14,14 +14,6 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
                               poly, bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
 
     # --------------------------------------------
-    # checks: if extra kinks do not correspond
-    #           to a bin, flag it
-    # --------------------------------------------
-    if(sum(!is.na(extra_fe) > 0) & (length(extra_fe) != sum(extra_fe %in% data_binned$bin))) {
-        print("Warning: extra FE(s) not a valid bin value")
-    }
-
-    # --------------------------------------------
     # bin relative to zstar
     # --------------------------------------------
     data_binned$z_rel = (data_binned$bin - zstar)/binwidth
