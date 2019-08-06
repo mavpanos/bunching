@@ -154,14 +154,14 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     }
 
     # is p_zstar logical?
-    if(!is.logical(p_zstar) {
+    if(!is.logical(p_zstar)) {
         stop("p_zstar can only be TRUE or FALSE")
-    })
+    }
 
-        # is p_zstar_size numeric?
-        if(p_zstar_size <= 0 | !is.numeric(p_zstar_size)) {
-            stop("p_zstar_size must be a positive numeric value")
-        }
+    # is p_zstar_size numeric?
+    if(p_zstar_size <= 0 | !is.numeric(p_zstar_size)) {
+        stop("p_zstar_size must be a positive numeric value")
+    }
 
 
     # ------------------------------------------------

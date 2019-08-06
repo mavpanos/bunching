@@ -174,10 +174,20 @@ test_that("non-parametric elasticity in notch setting is correct", {
 # test that parametric elasticity for notches fails correctly (hits lower bound)
 test_that("parametric elasticity correctly hits lower bound when no solution", {
     notch4 <- suppressWarnings(bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
-                      bins_l = 40, bins_r = 40, t0 = 0.9, t1 = 0.95, notch = TRUE,
-                      correct = FALSE, n_boot = 0, e_parametric = TRUE))
+                                       bins_l = 40, bins_r = 40, t0 = 0.9, t1 = 0.95, notch = TRUE,
+                                       correct = FALSE, n_boot = 0, e_parametric = TRUE))
     expect_equal(notch4$e, 0)
 })
+
+
+# test if invalid extra_fe correctly caught
+test_that("invalid extra_fe correctly caught", {
+    expect_warning(bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
+                      bins_l = 40, bins_r = 40, t0 = 0.18, t1 = 0.25, notch = TRUE,
+                      correct = FALSE, n_boot = 0, extra_fe = 11075),
+                   "Warning: extra FE(s) not a valid bin value", fixed = TRUE)
+})
+
 
 
 # cleanup
