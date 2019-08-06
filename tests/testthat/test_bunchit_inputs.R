@@ -1,4 +1,4 @@
-context("test_parameter_inputs")
+context("test_bunchit_inputs")
 
 # load the data
 data("bunching_data")
@@ -45,10 +45,6 @@ test_that("main parameter inputs are correctly specified", {
                          bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2))
 
     expect_error(bunchit(z_vector = as.character(bunching_data$kink_vector), zstar = 10000, binwidth = 50,
-                         bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2))
-
-    # z_vector is numeric
-    expect_error(bunchit(z_vector = c(1, NA), zstar = 10000, binwidth = 50,
                          bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2))
 
     # binv is not min/max/median

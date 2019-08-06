@@ -69,7 +69,7 @@ Create a simple binned plot for quick exploration without estimating bunching ma
 data(bunching_data)
 plot_hist(z_vector = bunching_data$kink_vector,
 binv = "median", zstar = 10000,
-binwidth = 50, bins_l = 40, bins_r = 40)
+binwidth = 50, bins_l = 40, bins_r = 40)$plot
 
 }
 \seealso{
