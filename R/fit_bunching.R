@@ -68,8 +68,6 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
                          cf = sum(cf),
                          excess = actual - cf)
 
-
-
     # get usual Bunching Mass estimates
     B_zl_zstar <- as.numeric(subset(bunching_region_count, bunch_region == "zl_zstar", select = "excess"))
     B_zstar_zu <- as.numeric(subset(bunching_region_count, bunch_region == "zstar_zu", select = "excess"))
@@ -93,9 +91,12 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
 
     # alpha set to NA if we don't do notch below but need to pass to results
     alpha <- NA
-    ################################################################################
-    # if Notch, bunchers are only B_zl_zstar, bins_bunchers are only those <= zstar
-    ################################################################################
+
+    # --------------------------------------------------------------------
+    #           if a notch, bunchers are only B_zl_zstar,
+    #           bins_bunchers are only those <= zstar
+    # --------------------------------------------------------------------
+
     if(notch) {
         bunchers_excess <- B_zl_zstar
         # number of bins in excluded region
@@ -111,8 +112,6 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
 
     }
 
-
-
     # return output we need
     output <- list("coefficients" = coefficients,
                    "residuals" = residuals,
@@ -127,8 +126,6 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
                    "B_zstar_zu" = B_zstar_zu,
                    "alpha" = alpha,
                    "zD_bin" = zD_bin)
-
-
 
     return(output)
 }

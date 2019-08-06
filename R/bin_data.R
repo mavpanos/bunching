@@ -14,7 +14,7 @@
 bin_data <- function(z_vector, binv, zstar, binwidth, bins_l, bins_r) {
 
     # --------------------------------------------------------------------
-    #         generate bin cutoffs based on choice of binv
+    #         1. generate bin cutoffs based on choice of binv
     # --------------------------------------------------------------------
 
     # first, get max and min value of running variable, calculate bin number each value belongs to
@@ -37,9 +37,9 @@ bin_data <- function(z_vector, binv, zstar, binwidth, bins_l, bins_r) {
         thebin[which(thebin == max(thebin, na.rm = T))] <- NA
     }
 
-    # ------------------------------------------------
-    #         generate counts per bin
-    # ------------------------------------------------
+    # --------------------------------------------------------------------
+    #                   2. generate counts per bin
+    # --------------------------------------------------------------------
     # turn into dataframe
     thedata <- data.frame("z" = z_vector, "bin" = thebin)
     thedata <- thedata %>%

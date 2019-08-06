@@ -11,30 +11,29 @@
 #' @export
 
 prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
-                         poly, bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
+                              poly, bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
 
-    # checks: if extra kinks do not correspond to a bin, flag it
+    # --------------------------------------------
+    # checks: if extra kinks do not correspond
+    #           to a bin, flag it
+    # --------------------------------------------
     if(sum(!is.na(extra_fe) > 0) & (length(extra_fe) != sum(extra_fe %in% data_binned$bin))) {
         print("Warning: extra FE(s) not a valid bin value")
     }
 
-
-    ##################################################
-    #        DATA PREP: bin relative to zstar
-    ##################################################
-
+    # --------------------------------------------
+    # bin relative to zstar
+    # --------------------------------------------
     data_binned$z_rel = (data_binned$bin - zstar)/binwidth
 
-    ##################################################
-    #        DATA PREP: dummy for zstar
-    ##################################################
-
+    # --------------------------------------------
+    # dummy for zstar
+    # --------------------------------------------
     data_binned$zstar <- ifelse(data_binned$bin == zstar,1,0)
 
-    ##################################################
-    #  DATA PREP: dummy for extra kinks to control for
-    ##################################################
-
+    # --------------------------------------------
+    # dummy for extra kinks to control for
+    # --------------------------------------------
     if(sum(!is.na(extra_fe)) > 0) { # default is extra_fe = NA
         # store names of extra_fe_vectors
         extra_fe_vector <- c()
@@ -46,10 +45,10 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     } else {
         extra_fe_vector <- ""
     }
-    ##################################################
-    #   DATA PREP: polynomials
-    ##################################################
 
+    # --------------------------------------------
+    # polynomials
+    # --------------------------------------------
     polynomial_vector <- c()
     # generate polynomials in z_rel
     for(i in seq(poly)){
@@ -58,16 +57,14 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
         polynomial_vector <- c(polynomial_vector, poly_varname)
     }
 
-    ##################################################
-    # DATA PREP: dummies for excluded region
-    ##################################################
-
+    # --------------------------------------------
+    # dummies for excluded region
+    # --------------------------------------------
     bins_excluded_all <- c()
 
     #-----------------
     # below zstar
     #-----------------
-
     if(bins_excl_l != 0){
         bins_excl_l_vector <- c()
         for(i in seq(bins_excl_l)) {
@@ -96,11 +93,9 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
         bins_excluded_all <- c(bins_excluded_all,bins_excl_r_vector)
     }
 
-    ##############################################
-    # DATA PREP: INDICATOR FOR BUNCHING REGION
-    ##############################################
-
-    # make indicator for bunching region
+    # --------------------------------------------
+    # indicator for bunching region
+    # --------------------------------------------
     #  if bins_excluded_all exist (i.e. we didnt set bunching region to just zstar)
     # sum bins_excludd_all and zstar
     if (length(bins_excluded_all) > 0) {
@@ -108,22 +103,22 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     } else {
         data_binned$bunch_region <- data_binned$zstar
     }
-    ######################################################
-    # DATA PREP: INDICATOR FOR BINS ABOVE BUNCHING REGION
-    ######################################################
+
+    # --------------------------------------------
+    # indicator for bins above bunching region
+    # --------------------------------------------
     if(correct_above_zu) {
-    # create dummy for those right of (above) excluded bunching region/zstar
-    ul <- zstar + binwidth * bins_excl_r
-    data_binned$bin_above_excluded <- ifelse(data_binned$bin > ul,1,0)
+        # create dummy for those right of (above) excluded bunching region/zstar
+        ul <- zstar + binwidth * bins_excl_r
+        data_binned$bin_above_excluded <- ifelse(data_binned$bin > ul,1,0)
     } else {
         # else make this all bins above zstar
         data_binned$bin_above_excluded <- ifelse(data_binned$bin > zstar,1,0)
     }
 
-    ##############################################
-    # DATA PREP: ROUND NUMBER BUNCHING
-    ##############################################
-
+    # --------------------------------------------
+    # round number bunching indicators
+    # --------------------------------------------
     if(sum(!is.na(rn)) > 0) {
         # make dummies for round numbers and store variable names
         # first, sort them (useful for fixing colinearity below)
@@ -144,10 +139,9 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
         rn_vector <- ""
     }
 
-
-    ##############################################
-    #  EQUATION TO PASS TO LM
-    ##############################################
+    # --------------------------------------------
+    #  equation to pass to lm
+    # --------------------------------------------
 
     rhs_vars <- c("zstar", extra_fe_vector,
                   polynomial_vector,

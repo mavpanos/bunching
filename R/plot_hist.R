@@ -23,16 +23,18 @@
 
 plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                       p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                      p_miny = 0, p_maxy = NA, p_ybreaks = NA, p_title_size = 11,
-                      p_axis_title_size = 10, p_axis_val_size = 8.5,
+                      p_title_size = 11, p_axis_title_size = 10, p_axis_val_size = 8.5,
+                      p_miny = 0, p_maxy = NA, p_ybreaks = NA,
                       p_grid_major_y_color = "lightgrey",
                       p_freq_color = "black", p_zstar_color = "red",
                       p_freq_size = .5, p_freq_msize = 1, p_zstar_size = .5, p_zstar = TRUE) {
 
-    # check inputs
+    # ------------------------------------------------
+    #               0. check inputs
+    # ------------------------------------------------
 
     # z_vector must be numeric
-    if(is.numeric(z_vector) == F) {
+    if(!is.numeric(z_vector)) {
         stop("z_vector must be a numeric vector")
     }
 
@@ -67,15 +69,111 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     }
 
 
+    # is p_title a string?
+    if(!is.character(p_title)) {
+        stop("p_title must be a string")
+    }
+
+    # is p_xtitle a string?
+    if(!is.character(p_xtitle)) {
+        stop("p_xtitle must be a string")
+    }
+
+    # is p_ytitle a string?
+    if(!is.character(p_ytitle)) {
+        stop("p_ytitle must be a string")
+    }
+
+    # is p_title_size numeric and positive?
+    if(p_title_size <= 0 | !is.numeric(p_title_size)) {
+        stop("p_title_size must be a positive numeric value")
+    }
+
+    # is p_axis_title_size numeric and positive?
+    if(p_axis_title_size <= 0 | !is.numeric(p_axis_title_size)) {
+        stop("p_axis_title_size must be a positive numeric value")
+    }
+
+    # is p_axis_val_size numeric and positive?
+    if(p_axis_val_size <= 0 | !is.numeric(p_axis_val_size)) {
+        stop("p_axis_val_size must be a positive numeric value")
+    }
+
+    # is p_miny numeric?
+    if(!is.na(p_miny) & !is.numeric(p_miny)) {
+        stop("plot's minimum y-value p_miny must be numeric")
+    }
+
+    # is p_maxy numeric?
+    if(!is.na(p_maxy) & !is.numeric(p_maxy)) {
+        stop("plot's maximum y-value p_miny must be numeric")
+    }
+
+    # is p_maxy > p_miny?
+    if(!is.na(p_maxy) &  (p_maxy < p_miny)) {
+        stop("p_maxy cannot be smaller than p_miny")
+    }
+
+    # are all elements in p_ybreaks numeric (if specified, otherwise NA)
+    # if more than one entered, check that all are numeric
+    if(length(p_ybreaks) > 1) {
+        # if at least one has NA, stop
+        if(length(p_ybreaks[is.character(p_ybreaks) | is.na(p_ybreaks)]) > 0) {
+            stop("p_ybreaks must only contain numeric values")
+        }
+    } else {
+        # if only of length 1, and not NA nor numeric,
+        if(!is.na(p_ybreaks) & !is.numeric(p_ybreaks)) {
+            stop("p_ybreaks must only contain numeric values")
+        }
+    }
+
+    # is p_grid_major_y_color a string?
+    if(!is.character(p_grid_major_y_color)) {
+        stop("p_grid_major_y_color must a string, e.g. 'blue'")
+    }
+
+    # is p_freq_color a string?
+    if(!is.character(p_freq_color)) {
+        stop("p_freq_color must be a string, e.g. 'black'")
+    }
+
+    # is p_zstar_color a string?
+    if(!is.character(p_zstar_color)) {
+        stop("p_zstar_color must be a string, e.g. 'red'")
+    }
+
+    # is p_freq_size numeric?
+    if(!is.numeric(p_freq_size)) {
+        stop("p_freq_size must be numeric")
+    }
+
+    # is p_freq_msize numeric and positive?
+    if(p_freq_msize <= 0 | !is.numeric(p_freq_msize)) {
+        stop("p_freq_msize must be a positive numeric value")
+    }
+
+    # is p_zstar logical?
+    if(!is.logical(p_zstar) {
+        stop("p_zstar can only be TRUE or FALSE")
+    })
+
+        # is p_zstar_size numeric?
+        if(p_zstar_size <= 0 | !is.numeric(p_zstar_size)) {
+            stop("p_zstar_size must be a positive numeric value")
+        }
 
 
-
-
-
-
-
-    # turn data into dataframe of binned counts
+    # ------------------------------------------------
+    #               1. bin the data
+    # ------------------------------------------------
+    # convert vector into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
+
+    # ------------------------------------------------
+    #               2. make plot
+    # ------------------------------------------------
+
 
     # get name of z_vector to pass as xtitle if chosen
     if (p_xtitle == "z_name") {

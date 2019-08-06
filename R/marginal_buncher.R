@@ -16,7 +16,7 @@ marginal_buncher <- function(beta, binwidth, zstar, notch = F, alpha = NULL) {
         zstar + (beta*binwidth)
     } else {
         # notch specification
-    zstar + (beta*binwidth)/(1-alpha)
+        zstar + (beta*binwidth)/(1-alpha)
     }
 }
 

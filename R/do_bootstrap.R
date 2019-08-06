@@ -51,7 +51,7 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
             alpha_boot <- booted_firstpass$alpha
             mbuncher_boot <- bunching::marginal_buncher(beta = b_boot, binwidth = binwidth, zstar = zstar)
 
-        # otherwise, do correction, then take b estimate
+            # otherwise, do correction, then take b estimate
         } else if (correction == T) {
             booted_correction <- bunching::do_correction(zstar, binwidth, data_for_boot, booted_firstpass,
                                                          correction_iterations, notch, zD_bin)

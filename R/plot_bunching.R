@@ -24,7 +24,6 @@ plot_bunching <- function(binned_data, cf, zstar,
                           t0 = NA, t1 = NA, notch = F,
                           p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
 
-
     # get upper bound to customize plot region
     zmax <- max(binned_data$bin,na.rm = T)
 
@@ -58,7 +57,6 @@ plot_bunching <- function(binned_data, cf, zstar,
         e_estimates <- paste0("e = ", round(e,3))
     }
 
-
     # prepare color vector for main lines
     freq_cf_colors <- c("freq_orig" = p_freq_color, "cf_graph" = p_cf_color)
     freq_cf_sizes <- c("freq_orig" = p_freq_size, "cf_graph" = p_cf_size)
@@ -72,7 +70,6 @@ plot_bunching <- function(binned_data, cf, zstar,
         # plot connector point marker for freq line
         ggplot2::geom_point(data = df_plot[df_plot$key == "freq_orig",], size = p_freq_msize) +
         theme_classic() + #eval(parse(text = p_theme))
-
         ggplot2::theme(panel.grid.major.y = element_line(colour = p_grid_major_y_color),
                        panel.grid.minor.y = element_blank(),
                        panel.grid.major.x = element_blank(),
@@ -84,26 +81,24 @@ plot_bunching <- function(binned_data, cf, zstar,
                        panel.background = element_blank(),
                        panel.grid=element_blank(),
                        panel.border=element_blank()) +
-
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
         ggplot2::guides(fill=FALSE, color=FALSE)
 
     # pass choice of ylim and p_ybreaks
-        if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
-            bunch_plot <-  bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
-        } else {
-            bunch_plot <- bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
-        }
+    if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
+        bunch_plot <-  bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
+    } else {
+        bunch_plot <- bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
+    }
+
     # choice to show b (and e) on plot or not
-
-
     if(p_b == T) {
         if(p_e == T) {
             # if both TRUE, add both on separate lines
             text_to_print <- paste0(b_estimates, "\n", e_estimates)
         } else { # add only b
             text_to_print <- b_estimates
-            }
+        }
         bunch_plot <- bunch_plot +
             ggplot2::annotate("text", x = p_b_e_xpos, y = p_b_e_ypos,
                               label = text_to_print, size = p_b_e_size)

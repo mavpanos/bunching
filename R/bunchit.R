@@ -146,11 +146,11 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     p_domregion_color = "blue", seed = NA, p_domregion_ltype="longdash") {
 
     # ------------------------------------------------
-    # check that inputs make sense
+    #           0. check inputs
     # ------------------------------------------------
 
     # z_vector must be numeric
-    if(is.numeric(z_vector) == F) {
+    if(!is.numeric(z_vector)) {
         stop("z_vector must be a numeric vector")
     }
 
@@ -472,15 +472,16 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("e_parametric_ub must be larger than e_parametric_lb")
     }
 
-    # -----------------------------
-    # 1. bin the data
-    # -----------------------------
-    # turn data into dataframe of binned counts
+
+    # ------------------------------------------------
+    #               1. bin the data
+    # ------------------------------------------------
+    # convert vector into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 
-    # -----------------------------
-    # 2. first pass prep and fit
-    # -----------------------------
+    # ------------------------------------------------
+    #           2. first pass prep and fit
+    # ------------------------------------------------
 
     # Kink case
 
@@ -599,9 +600,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     alpha <- firstpass$alpha
     mbuncher <- bunching::marginal_buncher(beta = b_estimate, binwidth = binwidth, zstar = zstar, notch = notch, alpha = alpha)
 
-
-
-
     # if we don't do correction, bunchers_initial will also be the final B_for_output
     B_for_output <- bunchers_initial
 
@@ -617,9 +615,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     mbuncher_vector <- NA
     mbuncher_sd <- NA
 
-    # -----------------------------------------
-    # 3. if no correction needed, do bootstrap if asked for
-    # -----------------------------------------
+    # ------------------------------------------------
+    #   3. if no correction needed, do bootstrap
+    #               if requested
+    # ------------------------------------------------
 
     if(correct == F) {
 
@@ -644,9 +643,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         }
     }
 
-    # -------------------------------------------------------------------------
-    # 4. if correction requested, do that first to get residuals, then bootstrap
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------
+    # 4. if correction requested, do that first
+    #       to get residuals, then bootstrap
+    # ------------------------------------------------
     if (correct == T) {
 
         # initial correction to get updated estimates, and vector of residuals for bootstrap
@@ -697,9 +697,10 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
              Are you sure this is a notch? Check your choice of zstar, bins_excl_l and bins_excl_r")
     }
 
-    ##################
-    # notch checks
-    ##################
+    # ------------------------------------------------
+    #   5. do some checks for notches' estimates
+    # ------------------------------------------------
+
     # is alpha within 0-1?
     if(is.numeric(alpha)) {
         if(alpha > 1 | alpha < 0) {
@@ -720,7 +721,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
     # ---------------------------------------------
-    # 5. make plot
+    #               6. make plot
     # ---------------------------------------------
 
     # if p_b_e_xpos/p_y_e_xpos not chosen, set them. get data ranges
@@ -745,7 +746,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if (p_xtitle == "z_name") {
         p_xtitle <- deparse(substitute(z_vector))
     }
-
 
     # plot!
     p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
