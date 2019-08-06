@@ -13,16 +13,17 @@ the package include functionality to control for (different levels of)
 round-number bunching or other bunching masses within the estimation
 bandwidth, options to split bins by placing the bunching point as the
 minimum, median or maximum in its bin (for robustness analysis), and
-estimates of both parametric and reduced-form versions of elasticities
-associated with the bunching mass. It also provides an exploratory
-viusalization function to speed up pre-analysis, and produces plots in
-the Chetty et al. (2011) style with lots of options on editing the plot
-appearance. Further, it returns bootstrapped vectors of estimates of all
-the main estimable parameters (bunching mass, elasticity, marginal
-buncher, dominated region, fraction in dominated region in notch
-setting, etc.) which can be used for further analysis,
-e.g. incorporation into structural models that rely on bunching
-moments.
+produces estimates of both parametric and reduced-form versions of
+elasticities associated with the bunching mass. It also returns
+(residual-based) bootstrapped vectors of estimates of all the main
+estimable parameters (bunching mass, elasticity, marginal buncher,
+dominated region, fraction in dominated region in notch setting, etc.)
+which can be used for further analysis, e.g. incorporation into
+structural models that rely on bunching moments. The package also
+provides an exploratory viusalization function to speed up pre-analysis,
+and produces plots in the Chetty et al. (2011) style with lots of
+options on editing the plot
+appearance.
 
 ## Installation
 
