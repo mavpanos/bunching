@@ -1,9 +1,9 @@
 #' Marginal Buncher
 #'
-#' Calculate location (value of running variable) of marginal buncher.
+#' Calculate location (value of z_vector) of marginal buncher.
 
 #'
-#' @param beta normalised excess mass.
+#' @param beta normalized excess mass.
 #' @inheritParams bunchit
 #' @param alpha the proportion of individuals in dominated region (in notch setting).
 #' @return  \code{marginal_buncher} returns the location of the marginal buncher, i.e. zstar + Dzstar.

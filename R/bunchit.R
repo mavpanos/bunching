@@ -2,55 +2,55 @@
 #'
 #' Implement the bunching estimator in a kink or notch setting.
 #'
-#' @param z_vector a numeric vector of (unbinned) data to be analysed.
+#' @param z_vector a numeric vector of (unbinned) data.
 #' @param binv a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.
 #' @param zstar a numeric value for the the bunching point.
 #' @param binwidth a numeric value for the width of each bin.
 #' @param bins_l number of bins to left of zstar to use in analysis.
 #' @param bins_r number of bins to right of zstar to use in analysis.
-#' @param poly a numeric value for the order of polynomial for counterfactual fit.
-#' @param bins_excl_l number of bins to left of zstar to include in bunching region.
-#' @param bins_excl_r number of bins to right of zstar to include in bunching region.
-#' @param extra_fe a numeric vector of bin values to control for using fixed effects.
-#' @param rn a numeric vector of round numbers (up to 2) to control for.
-#' @param n_boot number of bootstrapped iterations.
+#' @param poly a numeric value for the order of polynomial for counterfactual fit. Default is 9.
+#' @param bins_excl_l number of bins to left of zstar to include in bunching region. Default is 0.
+#' @param bins_excl_r number of bins to right of zstar to include in bunching region. Default is 0.
+#' @param extra_fe a numeric vector of bin values to control for using fixed effects. Default includes no controls.
+#' @param rn a numeric vector of (up to 2) round numbers to control for. Default includes no controls.
+#' @param n_boot number of bootstrapped iterations. Default is 100.
 #' @param correct implements correction for integration constraint. Default is TRUE.
-#' @param correct_above_zu should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).
-#' @param iter_max maximum iterations for integration constraint correction.
-#' @param p_title plot title.
-#' @param p_xtitle plot x_axis label.
-#' @param p_ytitle plot y_axis label.
-#' @param p_miny plot's minimum y_axis value. Default is zero.
+#' @param correct_above_zu if integration constraint correction is implemented, should counterfactual be shifted only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).
+#' @param iter_max maximum iterations for integration constraint correction. Default is 200.
+#' @param p_title plot's title. Default is empty.
+#' @param p_xtitle plot's x_axis label. Default is the name of z_vector.
+#' @param p_ytitle plot's y_axis label. Default is "Count".
+#' @param p_miny plot's minimum y_axis value. Default is 0.
 #' @param p_maxy plot's maximum y_axis value. Default is optimized internally.
-#' @param p_ybreaks the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.
-#' @param p_title_size size of plot's title.
-#' @param p_axis_title_size size of plot's axes' title labels.
-#' @param p_axis_val_size size of plot's axes' numeric labels.
-#' @param p_freq_color plot's frequency line color.
-#' @param p_cf_color plot's counterfactual line color.
-#' @param p_zstar_color plot's bunching region marker lines color.
-#' @param p_grid_major_y_color plot's y-axis major grid line color.
-#' @param p_freq_size plot's frequency line thickness.
-#' @param p_cf_size plot's counterfactual line thickness.
-#' @param p_freq_msize plot's frequency line marker size.
-#' @param p_zstar_size plot's bunching region marker line thickness.
-#' @param p_b if TRUE, plot also includes bunching estimate. Default is TRUE.
-#' @param p_e if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.
-#' @param p_b_e_xpos plot's xaxis coordinate of bunching/elasticity estimate.
-#' @param p_b_e_ypos plot's yaxis coordinate of bunching/elasticity estimate.
-#' @param p_b_e_size size of plot's printed bunching/elasticity estimate.
-#' @param t0 numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.
-#' @param t1 numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.
-#' @param notch if TRUE, zstar treated as notch. Default is kink.
-#' @param force_notch if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).
-#' @param e_parametric if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).
-#' @param e_parametric_lb lower bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).
-#' @param e_parametric_ub upper bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).
-#' @param p_domregion_color plot's dominated region marker line color (notch case).
-#' @param p_domregion_ltype a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).
+#' @param p_ybreaks a numeric vector of y-axis values at which to add horizontal line markers in plot. Default is optimized internally.
+#' @param p_title_size size of plot's title. Default is 11.
+#' @param p_axis_title_size size of plot's axes' title labels. Default is 10.
+#' @param p_axis_val_size size of plot's axes' numeric labels. Default is 8.5.
+#' @param p_freq_color plot's frequency line color. Default is "black".
+#' @param p_cf_color plot's counterfactual line color. Default is "maroon".
+#' @param p_zstar_color plot's bunching region marker lines color. Default is "red".
+#' @param p_grid_major_y_color plot's y-axis major grid line color. Default is "lightgrey".
+#' @param p_freq_size plot's frequency line thickness. Default is 0.5.
+#' @param p_cf_size plot's counterfactual line thickness. Default is 0.5.
+#' @param p_freq_msize plot's frequency line marker size. Default is 1.
+#' @param p_zstar_size plot's bunching region marker line thickness. Default is 0.5.
+#' @param p_b whether plot should also include the bunching estimate. Default is FALSE.
+#' @param p_e whether plot should also include the elasticity estimate. Only shown if p_b is TRUE. Default is FALSE.
+#' @param p_b_e_xpos plot's x-axis coordinate of bunching/elasticity estimate. Default is set internally.
+#' @param p_b_e_ypos plot's y-axis coordinate of bunching/elasticity estimate. Default is set internally.
+#' @param p_b_e_size size of plot's printed bunching/elasticity estimate. Default is 3.
+#' @param t0 numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.
+#' @param t1 numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.
+#' @param notch whether analysis is for a kink or notch. Default is FALSE (kink).
+#' @param force_notch whether to enforce user's choice of zu (upper limit of bunching region) in a notch setting. Default is FALSE (zu set by setting bunching equal to missing mass).
+#' @param e_parametric whether to estimate elasticity using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).
+#' @param e_parametric_lb lower bound for elasticity estimate's solution using parametric specification in notch setting. Default is 1e-04.
+#' @param e_parametric_ub upper bound for elasticity estimate's solution using parametric specification in notch setting. Default is 3.
+#' @param p_domregion_color plot's dominated region marker line color in notch setting. Default is "blue".
+#' @param p_domregion_ltype line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".
 #' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 
-#' @details bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
+#' @details bunchit implements the bunching estimator in both kink and notch settings. It bins a given numeric vector, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
 
 #' @return \code{bunchit} returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
 #'   \item{plot}{The bunching plot.}
@@ -82,7 +82,7 @@
 #' @seealso \code{\link{plot_hist}}
 #'
 #' @examples
-#' # Load the example data before running the examples.
+#' # First, load the example data
 #' data(bunching_data)
 #'
 #' # Example 1: Kink with integration constraint correction
@@ -256,12 +256,12 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
 
-    # correct must be TRUE/FALSE
+    # correct must be logical
     if(!is.logical(correct)) {
         stop("correct (for integration constraint) can only be TRUE or FALSE")
     }
 
-    # correct_above_zu must be TRUE/FALSE
+    # correct_above_zu must be logical
     if(!is.logical(correct_above_zu)) {
         stop("correct_above_zu (for integration constraint in notch setting) can only be TRUE or FALSE")
     }
@@ -386,7 +386,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         stop("p_zstar_color must be a string, e.g. 'red'")
     }
 
-
     # is p_freq_size numeric?
     if(!is.numeric(p_freq_size)) {
         stop("p_freq_size must be numeric")
@@ -411,7 +410,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     if(!is.character(p_grid_major_y_color)) {
         stop("p_grid_major_y_color must a string, e.g. 'blue'")
     }
-
 
     # is p_b a logical?
     if(!is.logical(p_b)) {
@@ -564,7 +562,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 zu_bin_final <- zu_bin
                 # now try expanding by 1 bin
                 zu_bin <- zu_bin + 1
-
                 # add next bin_excl_r dummy as column to data
                 newvar <- paste0("bin_excl_r_", zu_bin)
                 tmp_firstpass_prep$data_binned[[newvar]]  <- ifelse(tmp_firstpass_prep$data_binned$z_rel == zu_bin,1,0)
@@ -576,7 +573,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 B_below <- tmp_firstpass$B_zl_zstar
                 M_above <- -tmp_firstpass$B_zstar_zu
 
-                # if we dont have M being larger, update firstpass with this (last iterations of loop will have M > B)
+                # if M is not larger, update firstpass with this (last iterations of loop will have M > B)
                 if(B_below > M_above) {
                     firstpass_prep <- tmp_firstpass_prep
                     firstpass <- tmp_firstpass
@@ -588,7 +585,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             bins_excl_r <- zu_bin_final
             # update zU_notch with this (to output)
             zU_notch <- bins_excl_r
-            # if we chose to correction_above_zu ==T, i.e. shift only above zu,
+            # if we chose correct_above_zu ==T, i.e. shift only above zu,
             # update bins_above_excluded to relate to this new bins_excl_r = zu_bin_final
             if(correct_above_zu) {
                 firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin_final,1,0)
@@ -611,7 +608,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # if we don't do correction, bunchers_initial will also be the final B_for_output
     B_for_output <- bunchers_initial
 
-    # initialise bootstrap results
+    # initialize bootstrap results
     b_sd <- NA
     b_vector <- NA
     e_vector <-NA
@@ -640,7 +637,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                      e_parametric = e_parametric, e_parametric_lb = e_parametric_lb, e_parametric_ub = e_parametric_ub)
             }))
             e_sd <- stats::sd(e_vector)
-            #B_for_output <- bunchers_initial # this is bunchers excess. if we dont do integration constraint, this will be output
             B_vector <- boot_results$B_vector
             B_sd <- boot_results$B_sd
             alpha_vector <- boot_results$alpha_vector
@@ -695,8 +691,6 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             mbuncher_sd <- boot_results$marginal_buncher_sd
         }
     }
-
-
 
     # add checks for estimated values
     # b_estimate < 0 (implies elasticity < 0, and mbuncher < zstar)
@@ -764,7 +758,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
                                  p_b_e_xpos, p_b_e_ypos, p_b_e_size,
                                  t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
-
+    # set rounding
     round_dp <- 3
 
     output <- list("plot" = p,

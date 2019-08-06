@@ -1,6 +1,6 @@
 #' Dominated Region
 #'
-#' Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
+#' Estimate z (the value of z_vector) that demarcates the upper bound of the dominated region (in notch settings only).
 
 #'
 #' @inheritParams bunchit

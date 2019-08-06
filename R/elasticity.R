@@ -3,7 +3,7 @@
 #' Estimate elasticity from single normalized bunching observation.
 
 #'
-#' @param beta normalised excess mass.
+#' @param beta normalized excess mass.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
 #' @return  \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.
@@ -29,8 +29,8 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_par
     } else {
         # notch elasticity, parametric and reduced form
 
-        #  first, calculate reduced-form for both cases
-        # we use this if parametri does not converge
+        # first, calculate reduced-form for both cases
+        # we use this if parametric does not converge
         e <- (1/(2+Dz_over_zstar))*(Dz_over_zstar**2)/(dt/(1-t0))
 
 

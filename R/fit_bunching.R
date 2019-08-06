@@ -1,6 +1,6 @@
 #' Fit Bunching
 #'
-#' Fit  bunching model and estimate excess mass.
+#' Fit bunching model to (binned) data and estimate excess mass.
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param themodelformula formula to fit.
 #' @param zD_bin the bin marking the upper end of the dominated region (notch case).
@@ -41,7 +41,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
     }
 
     # estimate bunching mass by region: outside bunching region, zl to zstar, and (above) zstar to zu
-    # separation of zl_zstar and zstar_zu is useful for notches
+    # note: separation of zl_zstar and zstar_zu is useful for notches
 
     # bins_excl_r doesnt get updated here so must do it manually
     # get number of bins above zstar through formula since that will get updated for notch iterations
@@ -77,6 +77,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
     }
     # get B: total bunching from zl to zu (traditional estimate for kinks)
     bunchers_excess <- B_zl_zstar + B_zstar_zu
+
     # counterfactual bunchers
     cf_bunchers <- sum(subset(bunching_region_count, bunch_region != "outside_bunching", select = "cf"))
 
@@ -86,7 +87,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
     # average per bin counterfactual
     c0 <- cf_bunchers/bins_bunchers
 
-    # normalised b
+    # normalized b
     b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
 
     # alpha set to NA if we don't do notch below but need to pass to results
@@ -103,7 +104,7 @@ fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
         bins_bunchers <- sum(thedata$zl_zstar)
         # in notch case, instead of avg c0 get height of counterfactual at (zstar)
         c0 <- thedata$cf[thedata$zstar == 1]
-        # normalised b
+        # normalized b
         b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
         # alpha: fraction in dominated region zstar to zD bin
         domregion_freq <- sum(thedata$freq_orig[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])

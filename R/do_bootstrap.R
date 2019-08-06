@@ -2,8 +2,8 @@
 #'
 #' Estimate bunching on bootstrapped samples, using residual-based bootstrapping with replacement.
 #' @param firstpass_prep (binned) data that includes all variables necessary for fitting the model.
-#' @param residuals residuals from (first pass) fitted bunchingm model
-#' @param boot_iterations number of bootstrapped samples
+#' @param residuals residuals from (first pass) fitted bunching model.
+#' @param boot_iterations number of bootstrapped samples.
 #' @param correction whether to implement correction for integration constraint.
 #' @param correction_iterations maximum iterations for integration constraint correction.
 #' @inheritParams bunchit
@@ -24,8 +24,8 @@
 #' @export
 
 
-do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterations, correction,
-                         correction_iterations, notch, zD_bin, seed) {
+do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
+                         correction, correction_iterations, notch, zD_bin, seed) {
     # set seed if chosen
     if(!is.na(seed)) {
         set.seed(seed)
@@ -51,7 +51,7 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
             alpha_boot <- booted_firstpass$alpha
             mbuncher_boot <- bunching::marginal_buncher(beta = b_boot, binwidth = binwidth, zstar = zstar)
 
-            # otherwise, do correction, then take b estimate
+        # otherwise, do correction, then take b estimate
         } else if (correction == T) {
             booted_correction <- bunching::do_correction(zstar, binwidth, data_for_boot, booted_firstpass,
                                                          correction_iterations, notch, zD_bin)

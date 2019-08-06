@@ -1,11 +1,11 @@
 #' Notch Equation
 #'
-#' Defines indifference condition based on parametric utility function in notch setting.
+#' Defines indifference condition based on parametric utility function in notch setting. Used to parametrically solve for elasticity.
 
 #'
 #' @inheritParams bunchit
 #' @param e elasticity.
-#' @param dzstar The distance of the marginal buncher above zstar.
+#' @param dzstar The distance of the marginal buncher from zstar.
 #' @return  \code{util_diff} returns the difference in utility between zstar and z_I in notch setting.
 #' @seealso \code{\link{bunchit}}
 #' @seealso \code{\link{elasticity}}

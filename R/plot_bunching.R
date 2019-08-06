@@ -3,21 +3,22 @@
 #' Creates the bunching plot.
 
 #'
-#' @param binned_data binned data with frequency and counterfactual estimated.
-#' @param b normalised bunching estimate.
-#' @param b_sd standard deviation of the normalised bunching estimate.
+#' @param binned_data binned data with frequency and estimated counterfactual.
+#' @param b normalized bunching estimate.
+#' @param b_sd standard deviation of the normalized bunching estimate.
 #' @param e elasticity estimate.
 #' @param e_sd standard deviation of the elasticity estimate.
 #' @param cf the counterfactual to be plotted.
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
-#' @return  \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
+#' @return  \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching and elasticity estimate if specified.
 #' @export
 
 
 plot_bunching <- function(binned_data, cf, zstar,
                           binwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
+                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks,
+                          p_title_size, p_axis_title_size, p_axis_val_size,
                           p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos, p_b_e_ypos, p_b_e_size,

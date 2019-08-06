@@ -6,12 +6,12 @@
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
 #' @return \code{data_binned} returns a list with the following:
-#' \item{data_binned}{The binned data with the extra columns necessary for model fitting.}
+#' \item{data_binned}{The binned data with the extra columns necessary for model fitting, such as indicators for bunching region, fixed effects, etc.}
 #' \item{model_formula}{The formula used for model fitting.}
 #' @export
 
-prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
-                              poly, bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
+prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r, poly,
+                              bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
 
     # --------------------------------------------
     # bin relative to zstar
@@ -75,7 +75,6 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
 
         bins_excl_r_vector <- c()
 
-        # otherwise seq(0) gives 1 so it includes a dummy for that one
         for(i in seq(bins_excl_r)) {
             bin_excl_r_varname <- paste0("bin_excl_r_",i)
             data_binned[[bin_excl_r_varname]] <- ifelse(data_binned$z_rel == i,1,0)
@@ -88,7 +87,7 @@ prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r,
     # --------------------------------------------
     # indicator for bunching region
     # --------------------------------------------
-    #  if bins_excluded_all exist (i.e. we didnt set bunching region to just zstar)
+    # if bins_excluded_all exist (i.e. we didnt set bunching region to just zstar)
     # sum bins_excludd_all and zstar
     if (length(bins_excluded_all) > 0) {
         data_binned$bunch_region <- rowSums(data_binned[,c("zstar",bins_excluded_all)])

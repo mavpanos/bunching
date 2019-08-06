@@ -58,7 +58,9 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 \item{p_zstar}{whether to show vertical line for zstar. Default is TRUE.}
 }
 \value{
-\code{plot_hist} returns a plot of the density without estimating a counterfactual.
+\code{plot_hist} returns a list with the following:
+  \item{plot}{the plot of the density without estimating a counterfactual.}
+  \item{data}{the binned data used for the plot.}
 }
 \description{
 Create a simple binned plot for quick exploration without estimating bunching mass.

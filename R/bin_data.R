@@ -1,13 +1,11 @@
 #' Bin the raw data
 #'
-#' Create dataframe of binned counts
+#' Create data frame of binned counts
 
 #'
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
-#' @return  \code{bin_data} returns a data frame with two columns:
-#' \item{bin}{The bin value.}
-#' \item{freq}{The count per bin.}
+#' @return  \code{bin_data} returns a data frame with bins and corresponding frequencies (counts).
 #' @export
 
 
@@ -17,7 +15,7 @@ bin_data <- function(z_vector, binv, zstar, binwidth, bins_l, bins_r) {
     #         1. generate bin cutoffs based on choice of binv
     # --------------------------------------------------------------------
 
-    # first, get max and min value of running variable, calculate bin number each value belongs to
+    # first, get max and min value of z_vector, calculate bin number each value belongs to
     zmax <- zstar + (binwidth*bins_r)
     zmin <- zstar - (binwidth*bins_l)
     bins <- seq(zmin,zmax, by = binwidth)
@@ -32,8 +30,8 @@ bin_data <- function(z_vector, binv, zstar, binwidth, bins_l, bins_r) {
     } else if(binv == "median") {
         thebin <- cut(z_vector, (bins+binwidth/2), right = F, labels = F)
         thebin <- zmin + binwidth * (thebin)
-        # in median version, change the maximum bin to NAs since that bin is mechanically only defined over half the binwidth
-        # don't use which.max since max bin may not be unique to one obs
+        # in median version, change the maximum bin to NAs since that bin is
+        # mechanically only defined over half the binwidth
         thebin[which(thebin == max(thebin, na.rm = T))] <- NA
     }
 

@@ -1,10 +1,12 @@
 #'Plot Histogram
 #'
-#' Create a simple binned plot for quick exploration without estimating bunching mass.
+#' Create a binned plot for quick exploration without estimating bunching mass.
 
 #' @param p_zstar whether to show vertical line for zstar. Default is TRUE.
 #' @inheritParams bunchit
-#' @return  \code{plot_hist} returns a plot of the density without estimating a counterfactual.
+#' @return  \code{plot_hist} returns a list with the following:
+#'   \item{plot}{the plot of the density without estimating a counterfactual.}
+#'   \item{data}{the binned data used for the plot.}
 
 #' @seealso \code{\link{bunchit}}
 #'
@@ -167,11 +169,12 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     # ------------------------------------------------
     #               1. bin the data
     # ------------------------------------------------
-    # convert vector into dataframe of binned counts
+    # convert z_vector into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
     #drop extra freq and z columns (uneccesary for hist)
     binned_data$freq <- NULL
     binned_data$z <- NULL
+
     # ------------------------------------------------
     #               2. make plot
     # ------------------------------------------------
@@ -189,7 +192,7 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
         hist_plot <- hist_plot +
             ggplot2::geom_vline(xintercept=zstar,  linetype = "solid", size = p_zstar_size, colour = p_zstar_color)
     }
-    # add bpoint (so it appears in front of vline) and rest of options
+    # add zstar (so it appears in front of vline) and rest of options
     hist_plot <- hist_plot + ggplot2::geom_point(colour = p_freq_color, size = p_freq_msize) +
         theme_classic() +
         theme(panel.grid.major.y = element_line(colour = p_grid_major_y_color),
@@ -213,7 +216,7 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
         hist_plot <- hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
     }
 
-    return(list(hist_data = binned_data,
+    return(list(data = binned_data,
                 plot = hist_plot))
 }
 

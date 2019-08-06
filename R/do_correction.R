@@ -9,7 +9,7 @@
 #' @inheritParams fit_bunching
 #' @seealso \code{\link{bunchit}}, \code{\link{fit_bunching}}
 #' @return do_correction returns a list with the data and estimates after correcting for the integration constraint, as follows:
-#' \item{data}{The dataset with the corrected frequency and counterfactual.}
+#' \item{data}{The dataset with the corrected counterfactual.}
 #' \item{coefficients}{The coefficients of the model fit on the corrected data.}
 #' \item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
 #' \item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}
@@ -57,7 +57,7 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     # b_corrected
     b_corrected <- bunchers_excess_updated/c0_updated
 
-    # B corrected (excess mass without normalisation)
+    # B corrected (excess mass without normalization)
     B_corrected <- bunchers_excess_updated
     # if we did correction, get last cf (this is the correct one) and assign to cf_graph for graphing
     thedata$cf_density <- iteration_results$cf_density
