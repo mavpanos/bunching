@@ -149,7 +149,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # check that inputs make sense
     # ------------------------------------------------
 
-    # data must be a dataframe
+    # z_vector must be numeric
     if(is.numeric(z_vector) == F) {
         stop("z_vector must be a numeric vector")
     }
