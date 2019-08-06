@@ -6,3 +6,4 @@
 ^LICENSE\.md$
 ^data-raw$
 ^create_sticker$
+^README\.Rmd$

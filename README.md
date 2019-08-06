@@ -40,31 +40,3 @@ You can install the development version from
 # install.packages("devtools")
 devtools::install_github("mavpanos/bunching")
 ```
-
-## Some Examples of bunching at a kink
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(bunching)
-#> Loading required package: BB
-#> Loading required package: dplyr
-#> Warning: package 'dplyr' was built under R version 3.5.2
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Loading required package: ggplot2
-#> Warning: package 'ggplot2' was built under R version 3.5.2
-#> Loading required package: tidyr
-data("bunching_data")
-kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth = 50,
-                 bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2, p_b = TRUE)
-kink1$plot
-```
-
-<img src="man/figures/README-example-1.png" width="50%" style="display: block; margin: auto;" />
