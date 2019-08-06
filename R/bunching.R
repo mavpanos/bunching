@@ -6,7 +6,7 @@
 #' Given a numeric vector, it allows the user to estimate bunching at a particular location in the vector's distribution, and returns a rich set of results.
 #' Important features include functionality for controlling for (different levels of) round numbers, controlling for other bunching points in the bunching bandwidth,
 #' and splitting bins using the bunching point as the minimum, median or maximum in its bin for robustness analysis. It estimates standard errors using residual-based bootstrapping,
-#' and estimates elasticities using both reduced-form and parametric specifications.
+#' and returns estimated elasticities using both reduced-form and parametric specifications.
 #' Besides estimation, it produces bunching plots in the style of Chetty et al. (2011) with lots of functionality for editing the plot's appearance.
 #'
 

@@ -13,7 +13,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_domregion_color = NA, p_domregion_ltype = NA, n_boot)
 }
 \arguments{
-\item{binned_data}{binned data with frequency and counterfactual estimated.}
+\item{binned_data}{binned data with frequency and estimated counterfactual.}
 
 \item{cf}{the counterfactual to be plotted.}
 
@@ -21,76 +21,76 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{binwidth}{a numeric value for the width of each bin.}
 
-\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region. Default is 0.}
 
-\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region. Default is 0.}
 
-\item{p_title}{plot title.}
+\item{p_title}{plot's title. Default is empty.}
 
-\item{p_xtitle}{plot x_axis label.}
+\item{p_xtitle}{plot's x_axis label. Default is the name of z_vector.}
 
-\item{p_ytitle}{plot y_axis label.}
+\item{p_ytitle}{plot's y_axis label. Default is "Count".}
 
-\item{p_miny}{plot's minimum y_axis value. Default is zero.}
+\item{p_miny}{plot's minimum y_axis value. Default is 0.}
 
 \item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
-\item{p_ybreaks}{the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.}
+\item{p_ybreaks}{a numeric vector of y-axis values at which to add horizontal line markers in plot. Default is optimized internally.}
 
-\item{p_title_size}{size of plot's title.}
+\item{p_title_size}{size of plot's title. Default is 11.}
 
-\item{p_axis_title_size}{size of plot's axes' title labels.}
+\item{p_axis_title_size}{size of plot's axes' title labels. Default is 10.}
 
-\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+\item{p_axis_val_size}{size of plot's axes' numeric labels. Default is 8.5.}
 
-\item{p_freq_color}{plot's frequency line color.}
+\item{p_freq_color}{plot's frequency line color. Default is "black".}
 
-\item{p_cf_color}{plot's counterfactual line color.}
+\item{p_cf_color}{plot's counterfactual line color. Default is "maroon".}
 
-\item{p_zstar_color}{plot's bunching region marker lines color.}
+\item{p_zstar_color}{plot's bunching region marker lines color. Default is "red".}
 
-\item{p_grid_major_y_color}{plot's y-axis major grid line color.}
+\item{p_grid_major_y_color}{plot's y-axis major grid line color. Default is "lightgrey".}
 
-\item{p_freq_size}{plot's frequency line thickness.}
+\item{p_freq_size}{plot's frequency line thickness. Default is 0.5.}
 
-\item{p_cf_size}{plot's counterfactual line thickness.}
+\item{p_cf_size}{plot's counterfactual line thickness. Default is 0.5.}
 
-\item{p_freq_msize}{plot's frequency line marker size.}
+\item{p_freq_msize}{plot's frequency line marker size. Default is 1.}
 
-\item{p_zstar_size}{plot's bunching region marker line thickness.}
+\item{p_zstar_size}{plot's bunching region marker line thickness. Default is 0.5.}
 
-\item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
+\item{p_b}{whether plot should also include the bunching estimate. Default is FALSE.}
 
-\item{b}{normalised bunching estimate.}
+\item{b}{normalized bunching estimate.}
 
-\item{b_sd}{standard deviation of the normalised bunching estimate.}
+\item{b_sd}{standard deviation of the normalized bunching estimate.}
 
-\item{p_e}{if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.}
+\item{p_e}{whether plot should also include the elasticity estimate. Only shown if p_b is TRUE. Default is FALSE.}
 
 \item{e}{elasticity estimate.}
 
 \item{e_sd}{standard deviation of the elasticity estimate.}
 
-\item{p_b_e_xpos}{plot's xaxis coordinate of bunching/elasticity estimate.}
+\item{p_b_e_xpos}{plot's x-axis coordinate of bunching/elasticity estimate. Default is set internally.}
 
-\item{p_b_e_ypos}{plot's yaxis coordinate of bunching/elasticity estimate.}
+\item{p_b_e_ypos}{plot's y-axis coordinate of bunching/elasticity estimate. Default is set internally.}
 
-\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate.}
+\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate. Default is 3.}
 
-\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
+\item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
-\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+\item{t1}{numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
-\item{p_domregion_color}{plot's dominated region marker line color (notch case).}
+\item{p_domregion_color}{plot's dominated region marker line color in notch setting. Default is "blue".}
 
-\item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
+\item{p_domregion_ltype}{line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".}
 
-\item{n_boot}{number of bootstrapped iterations.}
+\item{n_boot}{number of bootstrapped iterations. Default is 100.}
 }
 \value{
-\code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching estimate in the plot if specified.
+\code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching and elasticity estimate if specified.
 }
 \description{
 Creates the bunching plot.

@@ -11,7 +11,7 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 
 \item{themodelformula}{formula to fit.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
@@ -31,7 +31,7 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 \item{zD_bin}{The value of the bin which zD falls in.}
 }
 \description{
-Fit  bunching model and estimate excess mass.
+Fit bunching model to (binned) data and estimate excess mass.
 }
 \seealso{
 \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}

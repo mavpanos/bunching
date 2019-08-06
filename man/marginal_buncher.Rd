@@ -7,13 +7,13 @@
 marginal_buncher(beta, binwidth, zstar, notch = F, alpha = NULL)
 }
 \arguments{
-\item{beta}{normalised excess mass.}
+\item{beta}{normalized excess mass.}
 
 \item{binwidth}{a numeric value for the width of each bin.}
 
 \item{zstar}{a numeric value for the the bunching point.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
 \item{alpha}{the proportion of individuals in dominated region (in notch setting).}
 }
@@ -21,7 +21,7 @@ marginal_buncher(beta, binwidth, zstar, notch = F, alpha = NULL)
 \code{marginal_buncher} returns the location of the marginal buncher, i.e. zstar + Dzstar.
 }
 \description{
-Calculate location (value of running variable) of marginal buncher.
+Calculate location (value of z_vector) of marginal buncher.
 }
 \seealso{
 \code{\link{bunchit}}

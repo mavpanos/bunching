@@ -13,7 +13,7 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_zstar_size = 0.5, p_zstar = TRUE)
 }
 \arguments{
-\item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
+\item{z_vector}{a numeric vector of (unbinned) data.}
 
 \item{binv}{a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.}
 
@@ -25,35 +25,35 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{bins_r}{number of bins to right of zstar to use in analysis.}
 
-\item{p_title}{plot title.}
+\item{p_title}{plot's title. Default is empty.}
 
-\item{p_xtitle}{plot x_axis label.}
+\item{p_xtitle}{plot's x_axis label. Default is the name of z_vector.}
 
-\item{p_ytitle}{plot y_axis label.}
+\item{p_ytitle}{plot's y_axis label. Default is "Count".}
 
-\item{p_title_size}{size of plot's title.}
+\item{p_title_size}{size of plot's title. Default is 11.}
 
-\item{p_axis_title_size}{size of plot's axes' title labels.}
+\item{p_axis_title_size}{size of plot's axes' title labels. Default is 10.}
 
-\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+\item{p_axis_val_size}{size of plot's axes' numeric labels. Default is 8.5.}
 
-\item{p_miny}{plot's minimum y_axis value. Default is zero.}
+\item{p_miny}{plot's minimum y_axis value. Default is 0.}
 
 \item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
-\item{p_ybreaks}{the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.}
+\item{p_ybreaks}{a numeric vector of y-axis values at which to add horizontal line markers in plot. Default is optimized internally.}
 
-\item{p_grid_major_y_color}{plot's y-axis major grid line color.}
+\item{p_grid_major_y_color}{plot's y-axis major grid line color. Default is "lightgrey".}
 
-\item{p_freq_color}{plot's frequency line color.}
+\item{p_freq_color}{plot's frequency line color. Default is "black".}
 
-\item{p_zstar_color}{plot's bunching region marker lines color.}
+\item{p_zstar_color}{plot's bunching region marker lines color. Default is "red".}
 
-\item{p_freq_size}{plot's frequency line thickness.}
+\item{p_freq_size}{plot's frequency line thickness. Default is 0.5.}
 
-\item{p_freq_msize}{plot's frequency line marker size.}
+\item{p_freq_msize}{plot's frequency line marker size. Default is 1.}
 
-\item{p_zstar_size}{plot's bunching region marker line thickness.}
+\item{p_zstar_size}{plot's bunching region marker line thickness. Default is 0.5.}
 
 \item{p_zstar}{whether to show vertical line for zstar. Default is TRUE.}
 }
@@ -63,7 +63,7 @@ plot_hist(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   \item{data}{the binned data used for the plot.}
 }
 \description{
-Create a simple binned plot for quick exploration without estimating bunching mass.
+Create a binned plot for quick exploration without estimating bunching mass.
 }
 \examples{
 

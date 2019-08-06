@@ -18,13 +18,13 @@ do_correction(zstar, binwidth, thedata, firstpass_results, max_iterations,
 
 \item{max_iterations}{maximum number of iterations for counterfactual shifting.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 }
 \value{
 do_correction returns a list with the data and estimates after correcting for the integration constraint, as follows:
-\item{data}{The dataset with the corrected frequency and counterfactual.}
+\item{data}{The dataset with the corrected counterfactual.}
 \item{coefficients}{The coefficients of the model fit on the corrected data.}
 \item{b_corrected}{The normalized excess mass, corrected for the integration constraint.}
 \item{B_corrected}{The excess mass (not normalized), corrected for the integration constraint.}

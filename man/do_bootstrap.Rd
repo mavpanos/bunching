@@ -14,15 +14,15 @@ do_bootstrap(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
 
 \item{firstpass_prep}{(binned) data that includes all variables necessary for fitting the model.}
 
-\item{residuals}{residuals from (first pass) fitted bunchingm model}
+\item{residuals}{residuals from (first pass) fitted bunching model.}
 
-\item{boot_iterations}{number of bootstrapped samples}
+\item{boot_iterations}{number of bootstrapped samples.}
 
 \item{correction}{whether to implement correction for integration constraint.}
 
 \item{correction_iterations}{maximum iterations for integration constraint correction.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 

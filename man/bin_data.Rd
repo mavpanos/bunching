@@ -7,7 +7,7 @@
 bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 }
 \arguments{
-\item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
+\item{z_vector}{a numeric vector of (unbinned) data.}
 
 \item{binv}{a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.}
 
@@ -20,12 +20,10 @@ bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 \item{bins_r}{number of bins to right of zstar to use in analysis.}
 }
 \value{
-\code{bin_data} returns a data frame with two columns:
-\item{bin}{The bin value.}
-\item{freq}{The count per bin.}
+\code{bin_data} returns a data frame with bins and corresponding frequencies (counts).
 }
 \description{
-Create dataframe of binned counts
+Create data frame of binned counts
 }
 \seealso{
 \code{\link{bunchit}}

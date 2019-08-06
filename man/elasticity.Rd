@@ -8,23 +8,23 @@ elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric,
   e_parametric_lb, e_parametric_ub)
 }
 \arguments{
-\item{beta}{normalised excess mass.}
+\item{beta}{normalized excess mass.}
 
 \item{binwidth}{a numeric value for the width of each bin.}
 
 \item{zstar}{a numeric value for the the bunching point.}
 
-\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
+\item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
-\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+\item{t1}{numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
-\item{e_parametric}{if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
+\item{e_parametric}{whether to estimate elasticity using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
 
-\item{e_parametric_lb}{lower bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
+\item{e_parametric_lb}{lower bound for elasticity estimate's solution using parametric specification in notch setting. Default is 1e-04.}
 
-\item{e_parametric_ub}{upper bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
+\item{e_parametric_ub}{upper bound for elasticity estimate's solution using parametric specification in notch setting. Default is 3.}
 }
 \value{
 \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.

@@ -20,7 +20,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   p_domregion_ltype = "longdash")
 }
 \arguments{
-\item{z_vector}{a numeric vector of (unbinned) data to be analysed.}
+\item{z_vector}{a numeric vector of (unbinned) data.}
 
 \item{binv}{a string setting location of zstar within its bin ("min", "max" or "median" value). Default is median.}
 
@@ -32,87 +32,87 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{bins_r}{number of bins to right of zstar to use in analysis.}
 
-\item{poly}{a numeric value for the order of polynomial for counterfactual fit.}
+\item{poly}{a numeric value for the order of polynomial for counterfactual fit. Default is 9.}
 
-\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region. Default is 0.}
 
-\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region. Default is 0.}
 
-\item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
+\item{extra_fe}{a numeric vector of bin values to control for using fixed effects. Default includes no controls.}
 
-\item{rn}{a numeric vector of round numbers (up to 2) to control for.}
+\item{rn}{a numeric vector of (up to 2) round numbers to control for. Default includes no controls.}
 
-\item{n_boot}{number of bootstrapped iterations.}
+\item{n_boot}{number of bootstrapped iterations. Default is 100.}
 
 \item{correct}{implements correction for integration constraint. Default is TRUE.}
 
-\item{correct_above_zu}{should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
+\item{correct_above_zu}{if integration constraint correction is implemented, should counterfactual be shifted only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
 
-\item{iter_max}{maximum iterations for integration constraint correction.}
+\item{iter_max}{maximum iterations for integration constraint correction. Default is 200.}
 
-\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
+\item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
-\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+\item{t1}{numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.}
 
-\item{notch}{if TRUE, zstar treated as notch. Default is kink.}
+\item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
-\item{force_notch}{if TRUE, user choice of zu (upper limit of bunching region) is enforced. Default is FALSE (zu set by setting bunching equal to missing mass).}
+\item{force_notch}{whether to enforce user's choice of zu (upper limit of bunching region) in a notch setting. Default is FALSE (zu set by setting bunching equal to missing mass).}
 
-\item{e_parametric}{if TRUE, elasticity is estimated using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
+\item{e_parametric}{whether to estimate elasticity using parametric specification (quasi-linear and iso-elastic utility function). Default is FALSE (which estimates reduced-form approximation).}
 
-\item{e_parametric_lb}{lower bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
+\item{e_parametric_lb}{lower bound for elasticity estimate's solution using parametric specification in notch setting. Default is 1e-04.}
 
-\item{e_parametric_ub}{upper bound for estimate elasticity using parametric specification for notch (quasi-linear and iso-elastic utility function).}
+\item{e_parametric_ub}{upper bound for elasticity estimate's solution using parametric specification in notch setting. Default is 3.}
 
-\item{p_title}{plot title.}
+\item{p_title}{plot's title. Default is empty.}
 
-\item{p_xtitle}{plot x_axis label.}
+\item{p_xtitle}{plot's x_axis label. Default is the name of z_vector.}
 
-\item{p_ytitle}{plot y_axis label.}
+\item{p_ytitle}{plot's y_axis label. Default is "Count".}
 
-\item{p_title_size}{size of plot's title.}
+\item{p_title_size}{size of plot's title. Default is 11.}
 
-\item{p_axis_title_size}{size of plot's axes' title labels.}
+\item{p_axis_title_size}{size of plot's axes' title labels. Default is 10.}
 
-\item{p_axis_val_size}{size of plot's axes' numeric labels.}
+\item{p_axis_val_size}{size of plot's axes' numeric labels. Default is 8.5.}
 
-\item{p_miny}{plot's minimum y_axis value. Default is zero.}
+\item{p_miny}{plot's minimum y_axis value. Default is 0.}
 
 \item{p_maxy}{plot's maximum y_axis value. Default is optimized internally.}
 
-\item{p_ybreaks}{the y-axis value(s) at which to add horizontal line markers. Default is optimized internally.}
+\item{p_ybreaks}{a numeric vector of y-axis values at which to add horizontal line markers in plot. Default is optimized internally.}
 
-\item{p_freq_color}{plot's frequency line color.}
+\item{p_freq_color}{plot's frequency line color. Default is "black".}
 
-\item{p_cf_color}{plot's counterfactual line color.}
+\item{p_cf_color}{plot's counterfactual line color. Default is "maroon".}
 
-\item{p_zstar_color}{plot's bunching region marker lines color.}
+\item{p_zstar_color}{plot's bunching region marker lines color. Default is "red".}
 
-\item{p_grid_major_y_color}{plot's y-axis major grid line color.}
+\item{p_grid_major_y_color}{plot's y-axis major grid line color. Default is "lightgrey".}
 
-\item{p_freq_size}{plot's frequency line thickness.}
+\item{p_freq_size}{plot's frequency line thickness. Default is 0.5.}
 
-\item{p_freq_msize}{plot's frequency line marker size.}
+\item{p_freq_msize}{plot's frequency line marker size. Default is 1.}
 
-\item{p_cf_size}{plot's counterfactual line thickness.}
+\item{p_cf_size}{plot's counterfactual line thickness. Default is 0.5.}
 
-\item{p_zstar_size}{plot's bunching region marker line thickness.}
+\item{p_zstar_size}{plot's bunching region marker line thickness. Default is 0.5.}
 
-\item{p_b}{if TRUE, plot also includes bunching estimate. Default is TRUE.}
+\item{p_b}{whether plot should also include the bunching estimate. Default is FALSE.}
 
-\item{p_e}{if TRUE, plot also includes elasticity estimate. Only shown if bunching estimate shown. Default is TRUE.}
+\item{p_e}{whether plot should also include the elasticity estimate. Only shown if p_b is TRUE. Default is FALSE.}
 
-\item{p_b_e_xpos}{plot's xaxis coordinate of bunching/elasticity estimate.}
+\item{p_b_e_xpos}{plot's x-axis coordinate of bunching/elasticity estimate. Default is set internally.}
 
-\item{p_b_e_ypos}{plot's yaxis coordinate of bunching/elasticity estimate.}
+\item{p_b_e_ypos}{plot's y-axis coordinate of bunching/elasticity estimate. Default is set internally.}
 
-\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate.}
+\item{p_b_e_size}{size of plot's printed bunching/elasticity estimate. Default is 3.}
 
-\item{p_domregion_color}{plot's dominated region marker line color (notch case).}
+\item{p_domregion_color}{plot's dominated region marker line color in notch setting. Default is "blue".}
 
 \item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
 
-\item{p_domregion_ltype}{a string for the vertical line type marking the dominated region (zD) in the plot (notch case only).}
+\item{p_domregion_ltype}{line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".}
 }
 \value{
 \code{bunchit} returns a list of results, both for visualizing and for further analysis of the data underlying the estimates. These include:
@@ -143,10 +143,10 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 Implement the bunching estimator in a kink or notch setting.
 }
 \details{
-bunchit implements the bunching estimator in both kink and notch settings. It bins the running variable, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
+bunchit implements the bunching estimator in both kink and notch settings. It bins a given numeric vector, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
 }
 \examples{
-# Load the example data before running the examples.
+# First, load the example data
 data(bunching_data)
 
 # Example 1: Kink with integration constraint correction

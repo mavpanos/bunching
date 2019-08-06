@@ -18,21 +18,21 @@ prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly,
 
 \item{bins_r}{number of bins to right of zstar to use in analysis.}
 
-\item{poly}{a numeric value for the order of polynomial for counterfactual fit.}
+\item{poly}{a numeric value for the order of polynomial for counterfactual fit. Default is 9.}
 
-\item{bins_excl_l}{number of bins to left of zstar to include in bunching region.}
+\item{bins_excl_l}{number of bins to left of zstar to include in bunching region. Default is 0.}
 
-\item{bins_excl_r}{number of bins to right of zstar to include in bunching region.}
+\item{bins_excl_r}{number of bins to right of zstar to include in bunching region. Default is 0.}
 
-\item{rn}{a numeric vector of round numbers (up to 2) to control for.}
+\item{rn}{a numeric vector of (up to 2) round numbers to control for. Default includes no controls.}
 
-\item{extra_fe}{a numeric vector of bin values to control for using fixed effects.}
+\item{extra_fe}{a numeric vector of bin values to control for using fixed effects. Default includes no controls.}
 
-\item{correct_above_zu}{should correction shift up counterfactual only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
+\item{correct_above_zu}{if integration constraint correction is implemented, should counterfactual be shifted only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
 }
 \value{
 \code{data_binned} returns a list with the following:
-\item{data_binned}{The binned data with the extra columns necessary for model fitting.}
+\item{data_binned}{The binned data with the extra columns necessary for model fitting, such as indicators for bunching region, fixed effects, etc.}
 \item{model_formula}{The formula used for model fitting.}
 }
 \description{

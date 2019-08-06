@@ -9,9 +9,9 @@ domregion(zstar, t0, t1, binwidth)
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}
 
-\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
+\item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
-\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+\item{t1}{numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.}
 
 \item{binwidth}{a numeric value for the width of each bin.}
 }
@@ -21,7 +21,7 @@ domregion(zstar, t0, t1, binwidth)
 \item{zD_bin}{The value of the bin which zD falls in.}
 }
 \description{
-Estimate z (the value of the running variable) that demarcates the dominated region (in notch settings only).
+Estimate z (the value of z_vector) that demarcates the upper bound of the dominated region (in notch settings only).
 }
 \seealso{
 \code{\link{bunchit}}

@@ -9,19 +9,19 @@ notch_equation(e, t0, t1, zstar, dzstar)
 \arguments{
 \item{e}{elasticity.}
 
-\item{t0}{numeric value between 0 and 1 setting the marginal/average tax rate below zstar, depending on kink/notch choice. see notch parameter.}
+\item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
-\item{t1}{numeric value between 0 and 1 setting the marginal/average tax rate above zstar, depending on kink/notch choice. see notch parameter.}
+\item{t1}{numeric value setting the marginal (average) tax rate above zstar in a kink (notch) setting.}
 
 \item{zstar}{a numeric value for the the bunching point.}
 
-\item{dzstar}{The distance of the marginal buncher above zstar.}
+\item{dzstar}{The distance of the marginal buncher from zstar.}
 }
 \value{
 \code{util_diff} returns the difference in utility between zstar and z_I in notch setting.
 }
 \description{
-Defines indifference condition based on parametric utility function in notch setting.
+Defines indifference condition based on parametric utility function in notch setting. Used to parametrically solve for elasticity.
 }
 \seealso{
 \code{\link{bunchit}}
