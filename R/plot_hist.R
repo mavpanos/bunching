@@ -23,10 +23,56 @@
 
 plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                       p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-                      p_maxy = NA, p_title_size = 11, p_axis_title_size = 10, p_axis_val_size = 8.5,
+                      p_miny = 0, p_maxy = NA, p_ybreaks = NA, p_title_size = 11,
+                      p_axis_title_size = 10, p_axis_val_size = 8.5,
                       p_grid_major_y_color = "lightgrey",
                       p_freq_color = "black", p_zstar_color = "red",
                       p_freq_size = .5, p_freq_msize = 1, p_zstar_size = .5, p_zstar = TRUE) {
+
+    # check inputs
+
+    # z_vector must be numeric
+    if(is.numeric(z_vector) == F) {
+        stop("z_vector must be a numeric vector")
+    }
+
+    # binv: is it one of the 3 allowed ones?
+    if(binv %in% c("min", "max", "median") == F) {
+        stop("binv can only be one of 'min', 'max', 'median'")
+    }
+
+    # zstar: is it within range? get max and min of variable
+    data_varmax <- max(z_vector, na.rm = T)
+    data_varmin <- min(z_vector, na.rm = T)
+    if(zstar > data_varmax |  zstar < data_varmin) {
+        stop("zstar is outside of z_vector's range of values")
+    }
+
+    # binwidth: must be positive, numeric
+    if(binwidth <= 0 | !is.numeric(binwidth)) {
+        stop("Binwidth must be a positive number")
+    }
+
+    # check that bins_l are positive and integers
+    is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+
+    # bins_l: must be positive
+    if(bins_l <= 0 | !is.wholenumber(bins_l)) {
+        stop("bins_l must be a positive integer")
+    }
+
+    # bins_r: must be positive
+    if(bins_r <= 0 | !is.wholenumber(bins_r)) {
+        stop("bins_r must be a positive integer")
+    }
+
+
+
+
+
+
+
+
 
     # turn data into dataframe of binned counts
     binned_data <- bunching::bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
@@ -58,7 +104,14 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
               panel.grid=element_blank(),
               panel.border=element_blank()) +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
-        ggplot2::ylim(0,p_maxy) + ggplot2::guides(fill=FALSE, color=FALSE)
+        ggplot2::guides(fill=FALSE, color=FALSE)
+
+    # pass choice of ylim and p_ybreaks
+    if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
+        hist_plot <-  hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
+    } else {
+        hist_plot <- hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
+    }
 
     return(hist_plot)
 
