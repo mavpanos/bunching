@@ -8,6 +8,6 @@ TODO
 other
 inst/doc
 vignettes/jpegs
-vignettes
+vignettes/figure
 data/create_example_data.R
 man/figures
