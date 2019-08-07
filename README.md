@@ -7,6 +7,8 @@
 
 <!-- badges: end -->
 
+## Overview
+
 `bunching` allows the user to conduct bunching analysis in a kink or
 notch setting and returns a rich set of results. Important features of
 the package include functionality to control for (different levels of)
@@ -41,3 +43,6 @@ You can install the development version from
 # install.packages("devtools")
 devtools::install_github("mavpanos/bunching")
 ```
+
+If you find a bug, please file a minimal reproducible example in the
+[issues](https://github.com/mavpanos/bunching/issues).
