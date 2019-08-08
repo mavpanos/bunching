@@ -2,8 +2,6 @@
 title: "Introduction to the `bunching` Package"
 author: Panos Mavrokonstantis
 date: "2019-08-07"
-#output: pdf_document
-#output: rmarkdown::html_vignette
 output: pdf_document
 header-includes: 
   - \usepackage{bbm}
@@ -26,7 +24,8 @@ library(bunching)
 
 # Introduction
 
-This vignette is an introduction to the `bunching` package's basic toolkit, and shows examples of how it can be applied to data that feature bunching. The package implements the bunching estimator, which was originally developed to analyze responses to discrete changes in choice sets within public and labor economics, but can be applied to any setting that features such an optimization setting. The aim is to measure behavioral responses to changes in incentives, by estimating how much excess mass, in an otherwise smooth distribution, can be attributed to the responses in a discrete change in constraints at that same level.
+This vignette is an introduction to the basic toolkit of the `bunching` package, and shows examples of how it can be applied to data that feature bunching. The package offers a flexible implementation of the bunching estimator. This was originally developed to tackle questions in labor and public economics,
+but can be applied to any setting where a constrained optimization problem involves a discontinuity in a constraint, which can be related to a discontinuity in the observed density of the decision variable. The main aim is to measure behavioral responses to such changes in incentives, by estimating how much excess mass, in an otherwise smooth distribution, can be attributed to the responses in a discrete change in constraints at that same level.
 
 `bunching` allows the user to conduct such bunching analysis in a kink or notch setting and returns a rich set of results.  Important features of the package include functionality to control for (different levels of) round-number bunching or other bunching masses within the estimation bandwidth, options to split bins by placing the bunching point as the minimum, median or maximum in its bin (for robustness analysis), and can return estimates of both parametric and reduced-form versions of elasticities associated with the bunching mass. It also provides an exploratory visualization function to speed up pre-analysis, and  produces plots in the Chetty et al. (2011) style with lots of options on editing the plot appearance. Further, it returns bootstrapped estimates of all the main estimable parameters, which can be used for further analysis such as incorporation into structural models that rely on bunching moments.
 
@@ -101,7 +100,7 @@ $\hat{B}_0$ estimates the excess number of observations locating at $z^*$ due to
 $$\hat{b}_0=\frac{\hat{B}_0}{\hat{c}_0}$$
 
 
-## The Integration constraint correction
+## The integration constraint correction
 
 The initial estimate $\hat{B}_0$ will be slightly biased, because it ignores the fact that those with counterfactual earnings above $z^* + \Delta z^*$ (those of the marginal buncher) are also exhibiting an interior response to the introduction of a kink or notch at $z^*$. Hence, what we observe in the actual distribution above the bunching region is not the true counterfactual, since this has been shifted. Technically, it is not straightforward to fully account for this because the response is coming from \textit{all} levels above the bunching region, including those beyond our estimation bandwidth. A feasible solution is to approximate this total response to that among those we do observe in our estimation bandwidth. With a large enough bandwidth (and not extremely large bunching estimates), this typically yields good results. The solution, named the \textit{integration constraint correction} is to shift the counterfactual distribution lying to the right of $z^*$ upwards until the count of observations under the empirical distribution equals that under the counterfactual distribution. This is done by running:
 

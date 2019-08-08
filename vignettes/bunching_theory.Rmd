@@ -15,7 +15,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(fig.width=4, fig.height = 4, out.width="45%", fig.align="center", 
-                      fig.pos = "H",
+                      fig.pos = "H", 
                       echo=FALSE,
                       collapse = TRUE,
                       comment = "#>"
@@ -33,11 +33,11 @@ The `bunching` package implements the bunching estimator, as developed (in diffe
 
 The aim of the estimator is to credibly estimate the resulting bunching (i.e. excess mass) at a particular level of a choice set that features a discontinuity, over and above what would have been observed in the absence of the discontinuity in the given constraint. The estimator solves a challenge of both causal inference and prediction, since we would like to (causally) attribute the excess mass to a particular discontinuity in a constraint, but cannot typically observe the counterfactual density in the absence of that constraint. The estimator's novelty is to provide a prediction method for this counterfactual by combining reduced-form methods with micro-economically founded optimization theory, and relies on minimal assumptions. 
 
-The vignette will explain the intuition using the original setting for which bunching was developed: analyzing behavioral responses to income taxes, and will closely follow Mavrokonstantis (2019). For a longer review, see Kleven (2016). Two main types of disconinuities are considered: kinks, i.e. changes in the slopes of choice sets (constraints), and notches, i.e. changes in the levels of choice sets. Both are supported by the `bunching` package.
+The vignette will explain the intuition using the original setting for which bunching was developed: analyzing behavioral responses to income taxes, and will closely follow Mavrokonstantis (2019). For a longer review, see Kleven (2016). Two main types of discontinuities are considered: kinks, i.e. changes in the slopes of choice sets (constraints), and notches, i.e. changes in the levels of choice sets. Both are supported by the `bunching` package.
 
-# Theoretical Foundations: Why Would Densities Exhibit Bunching?
+# Theoretical foundations: Why would densities exhibit bunching?
 
-## The Case of Kinks
+## The case of kinks
 Let's consider the setting of income taxes. In most countries, income taxes follow what is called a progressive tax schedule, which features several brackets, with the marginal tax rate increasing as incomes enter higher brackets. This creates "kinks" at the thresholds where brackets change, because only income falling in that bracket is subject to its marginal tax rate. The other case is a notch, where all income is subject to that bracket's tax rate. 
 
 From a taxpayer's optimization perspective, we want to understand how the presence of a kink affects incentives and behavioral responses to tax reforms. We can do this by first considering the case where no kinks are in place, and then analyze what changes when a kink is introduced. 
@@ -74,7 +74,7 @@ The question is how to estimate this credibly, which is covered in the companion
 
 
 
-### From Bunching at Kinks to Elasticities
+### From bunching at kinks to elasticities
 
 The key point of estimating the bunching mass is to recover an economic parameter of interest. Since individuals are responding to a change in their choice set, it is feasible to estimate an elasticity. In our setting, we can back out the elasticity of earnings $e$ with respect to the marginal tax rate by relating the response of the marginal buncher to the change in the marginal tax rates. If the kink size $\Delta t = t_1 - t_0$ is small, then the non-parametric estimate of the (observed) elasticity of earnings is simply:
 
@@ -104,20 +104,20 @@ $$e =- \frac{ ln\Big(1+\frac{B}{ h_0(z^*)z^*}\Big)}{ln\Big(\frac{1-t_{0}}{1-t_{1
 
 Note that this can be interpreted as the "observed", but not necessarily the "structural" elasticity. The latter is a deep preference parameter that does not depend on the policy environment. Whether the observed is also the structural elasticity will depend on whether there are any optimization frictions affecting (and here, attenuating) the observed bunching responses. To recover structural estimates in the presence of frictions, the observed bunching mass must be combined with a structural model that includes frictional parameters. For an example of this, see Mavrokonstantis (2019) and Gelber et al. (2019).
 
-## The Case of Notches
+## The case of notches
 
-Whereas a kink creates a discrete change in the slope of the constraint, a notch creates a discrete change in its level. A typical example is a taxation system where above a given threshold $z^*$, the tax rate increases from $t_0$ to $t_1$ but applies to all income, not just that falling in the new bracket. In other words, instead of the marginal tax rate changing, the average tax rate changes. This can be analyzed using the same optimization setup as with kinks, the only diference being that the tax function is now given by $T(z) = z(t_0 + (t_1-t_0) \mathbbm{1}(z> z^*))$. Figure \ref{fig:notch} depicts such a constraint, with its associated density.
+Whereas a kink creates a discrete change in the slope of the constraint, a notch creates a discrete change in its level. A typical example is a taxation system where above a given threshold $z^*$, the tax rate increases from $t_0$ to $t_1$ but applies to all income, not just that falling in the new bracket. In other words, instead of the marginal tax rate changing, the average tax rate changes. This can be analyzed using the same optimization setup as with kinks, the only difference being that the tax function is now given by $T(z) = z(t_0 + (t_1-t_0) \mathbbm{1}(z> z^*))$. Figure \ref{fig:notch} depicts such a constraint, with its associated density.
 
 
 ```{r, fig.show="hold", fig.cap="\\label{fig:notch}Optimization with Notched Constraints", fig.subcap = c("Optimization", "Density")}
 knitr::include_graphics(c("bunching_theory_figs/notch_budget.pdf","bunching_theory_figs/notch_density.pdf"))
 ```
 
-Sub-figure (a) shows how a notch creates a drop in the budget constraint as an individual crosses $z^*$, essentially rotating the budget constraint through the origin. From our optimization perspective, this agains leads to bunching from those with pre-notch earnings $z\in(z^*,z^*+\Delta z^*]$. The marginal buncher now is the individual tangent to both the linear tax schedule at $z^*+\Delta z^*$ and to the interior of the notched schedule at some lower level $z_I$, while at the same time being indifferent between $z_I$ and $z^*$. 
+Sub-figure (a) shows how a notch creates a drop in the budget constraint as an individual crosses $z^*$, essentially rotating the budget constraint through the origin. From our optimization perspective, this again leads to bunching from those with pre-notch earnings $z\in(z^*,z^*+\Delta z^*]$. The marginal buncher now is the individual tangent to both the linear tax schedule at $z^*+\Delta z^*$ and to the interior of the notched schedule at some lower level $z_I$, while at the same time being indifferent between $z_I$ and $z^*$. 
 
-Compared to the kink case, notches are more involved in two ways. First, they lead to a hole in the density between  $z^*$ and  $z_I$,  as depicted in sub-figure (b). While everyone with pre-notch earnings above the marginal buncher will also respond to the higher average tax rate (by finding their tangency point along the notched schedule), this can only be above $z_I$ since that was the tangency point of the marginal buncher. Second, notches also create a dominated region $z\in(z^*,z^*+\Delta z_D]$ (market by the red dashed line) where no individual wants to locate. At any point in this range, consumption is lower and effort cost is higher than at $z^*$, placing individuals at lower indifference curves and making them strictly worse off. Note that the location of $z^*+\Delta z_D$ is assumption-free as it only depends on the size of $z^*$, $t_0$ and $t_1$.
+Compared to the kink case, notches are more involved in two ways. First, they lead to a hole in the density between  $z^*$ and  $z_I$,  as depicted in sub-figure (b). While everyone with pre-notch earnings above the marginal buncher will also respond to the higher average tax rate (by finding their tangency point along the notched schedule), this can only be above $z_I$ since that was the tangency point of the marginal buncher. Second, notches also create a dominated region $z\in(z^*,z_D]$ (market by the red dashed line) where no individual wants to locate. At any point in this range, consumption is lower and effort cost is higher than at $z^*$, placing individuals at lower indifference curves and making them strictly worse off. Note that the location of $z_D$ is assumption-free as it only depends on the size of $z^*$, $t_0$ and $t_1$.
 
-### Frictions Attenuating Bunching
+### Frictions attenuating bunching
 
 In reality, individuals may locate in the dominated region due to optimization frictions stopping them from moving to $z^*$. This will be evident from a visual inspection of the density. In this case, the observed bunching mass is:
 
@@ -127,7 +127,7 @@ where $\alpha$ is the proportion of individuals who would optimize by bunching a
 
 
 
-### From Bunching at Notches to Elasticities
+### From bunching at notches to elasticities
 
 As with kinks, we can estimate both a reduced-form (assumption free) approximation, or rely on functional form assumptions on preferences. The reduced-form approximation is more involved than in the case of kinks, because we now need to convert the average tax to an implicit marginal tax rate that would have generated an equivalent bunching response. Denoting the marginal tax rate in this hypothetical scenario by $t^*$, and using the trapezoid rule, we get the following approximation:
 
