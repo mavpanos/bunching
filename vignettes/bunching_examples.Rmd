@@ -25,7 +25,7 @@ library(bunching)
 # Introduction
 
 This vignette is an introduction to the basic toolkit of the `bunching` package, and shows examples of how it can be applied to data that feature bunching. The package offers a flexible implementation of the bunching estimator. This was originally developed to tackle questions in labor and public economics,
-but can be applied to any setting where a constrained optimization problem involves a discontinuity in a constraint, which can be related to a discontinuity in the observed density of the decision variable. The main aim is to measure behavioral responses to such changes in incentives, by estimating how much excess mass, in an otherwise smooth distribution, can be attributed to the responses in a discrete change in constraints at that same level.
+but can be applied to any setting where a constrained optimization problem involves a discontinuity in a constraint, which can be related to a discontinuity in the observed density of the decision variable. The main aim is to measure behavioral responses to such changes in incentives, by estimating how much excess mass, in an otherwise smooth distribution, can be attributed to the responses to a discrete change in constraints at that same level.
 
 `bunching` allows the user to conduct such bunching analysis in a kink or notch setting and returns a rich set of results.  Important features of the package include functionality to control for (different levels of) round-number bunching or other bunching masses within the estimation bandwidth, options to split bins by placing the bunching point as the minimum, median or maximum in its bin (for robustness analysis), and can return estimates of both parametric and reduced-form versions of elasticities associated with the bunching mass. It also provides an exploratory visualization function to speed up pre-analysis, and  produces plots in the Chetty et al. (2011) style with lots of options on editing the plot appearance. Further, it returns bootstrapped estimates of all the main estimable parameters, which can be used for further analysis such as incorporation into structural models that rely on bunching moments.
 
@@ -42,28 +42,28 @@ The main parameters the user must choose for `bunchit()` are:
 
 - **`z_vector`**: the name of the (unbinned) vector to be analyzed
 - **`zstar`**: the location of the bunching point
-- **`binwidth`** how wide the grouping bins should be
+- **`binwidth`**: how wide the grouping bins should be
 - **`bins_l`** and  **`bins_r`**: how many bins to the left and right of `zstar` to consider in the bandwidth
-- **`t0`** and **`t1`**: the marginal (average) tax rates below and above `z_star` in a kink (notch) setting
+- **`t0`** and **`t1`**: the marginal (average) tax rates below and above `zstar` in a kink (notch) setting
 
 Note that without inputs for `t0` and `t1`, no elasticity can be calculated which will throw an error. To avoid this estimation process, use `plot_hist()` for exploratory analysis, which requires these same inputs except for `t0` and `t1`.
 
 
-The rest of the inputs have set defaults. Among these, the important ones the user may want to experiment with are:
+The rest of the inputs have set defaults. Among these, the ones that the user may want to experiment with  (and which affect estimation) are:
 
-- **`binv`**: This is the bin version, which controls how the bins are grouped around `zstar`. The  default is "median", which places `zstar` in the median position in its bin. The other options are "min" and "max", which create bins with `zstar` being in the minimum or maximum position
-- **`poly`**: The order of the polynomial used to fit the bin counts
-- **`bins_excl_l`** and **`bins_excl_r`**: How many bins to the left and right of `zstar` to also include in the bunching (i.e. "excluded") region. This is particularly important when the density exhibits diffuse bunching around `zstar`
-- **`extra_fe`**: Whether the counterfactual estimate should also control for a particular fixed point in the distribution that also features a bunching mass (or hole). This is useful when there is another focal point in the bandwidth that can affect the estimate of the bunching mass at `zstar` if not controlled for
-- **`rn`**: Round numbers to also control for through fixed effects
-- **`n_boot`**: How many bootstrapped samples to use to estimate (residual-based) standard errors
-- **`correct`**: Whether to correct for the integration constraint
-- **`correct_above_zu`**: This controls where to start shifting the counterfactual distribution up from when applying the integration constraint correction. If set to `TRUE`, it only shifts bins above $z_U$ (upper range of bunching region). Default is `FALSE`, which shifts all bins above $z^*$
+- **`binv`**: This is the bin version, which controls how the bins are grouped around `zstar`. The  default is `"median"`, which places `zstar` in the median position in its bin. The other options are `"min"` and `"max"`, which create bins with `zstar` being in the minimum or maximum position. Default is `"median"`
+- **`poly`**: The order of the polynomial used to fit the bin counts. Default is `9`
+- **`bins_excl_l`** and **`bins_excl_r`**: How many bins to the left and right of `zstar` to also include in the bunching (i.e. "excluded") region. This is particularly important when the density exhibits diffuse bunching around `zstar`. Defaults are `0`
+- **`extra_fe`**: Other fixed points,  featuring a bunching mass (or hole), that the counterfactual estimate should also control for. This is useful when there is another focal point in the bandwidth, which can affect the estimate of the bunching mass at `zstar`. Default is `NA`
+- **`rn`**: Round numbers (up to two) to control for through fixed effects. Default is `NA`
+- **`n_boot`**: How many bootstrapped samples to use to estimate (residual-based) standard errors. Default is `100`
+- **`correct`**: Whether to correct for the integration constraint. Default is `TRUE`
+- **`correct_above_zu`**: When applying the integration constraint correction, this controls where to start shifting the counterfactual distribution up from.  If set to `TRUE`, it only shifts bins above $z_U$ (upper bound of bunching region). Default is `FALSE`, which shifts all bins above $z^*$
 - **`notch`**: Whether the analysis is for a notch or a kink. Default is `FALSE` (kink)
-- **`force_notch`**: Whether to force the user choice of bins_excl_r. The default is `FALSE`, whereby the upper bound of the excluded region is estimated through an iterative process that equates the bunching and missing masses
-- **`e_parametric`**: Whether to estimate elasticities using the parametric form or the reduced-form specifications. Default is `FALSE`
-- **`e_parametric_lb`** and  **`e_parametric_ub`**: If both `notch = TRUE` and `e_parametric = TRUE` are chosen, the elasticity is found by a non-linear equation solver. `e_parametric_lb` and `e_parametric_ub`set the lower and upper bound of possible solution values for the elasticity
-- **`seed`**: A value used as a seed for reproducability of standard errors
+- **`force_notch`**: In the case of a notch, whether to force the user's choice of `bins_excl_r`. The default is `FALSE`, whereby the upper bound of the excluded region is estimated through an iterative process that equates the bunching and missing masses
+- **`e_parametric`**: Whether to estimate elasticities using the parametric form or the reduced-form specifications. Default is `FALSE` (non-parametric)
+- **`e_parametric_lb`** and  **`e_parametric_ub`**: If both `notch = TRUE` and `e_parametric = TRUE` are chosen, the elasticity is found by a non-linear equation solver. `e_parametric_lb` and `e_parametric_ub` set the lower and upper bound of possible solution values for the elasticity. Defaults are `1e-04` and `3` respectively
+- **`seed`**: A value used as a seed for reproducability of standard errors. Default is `NA`
 
 The rest of the inputs control the plot's output, and are explained in the last section of the vignette. 
 
@@ -71,13 +71,13 @@ The rest of the inputs control the plot's output, and are explained in the last 
 ## How does `bunchit()` estimate the bunching mass?
 
 
-Using the package's helper functions `bin_data()` and `prep_data_for_fit()`, the chosen vector is binned into groups of binwidth $\delta$ around the bunching point `zstar` =  $z^*$. The following specification is then run:
+Using the package's helper functions `bin_data()` and `prep_data_for_fit()`, the chosen vector is binned into groups of binwidth $\delta$ around the bunching point $z^*$. The following specification is then run:
 
 $$c_j  = 
 \sum_{i=0}^{p} \beta_i(z_j)^{i}+ \sum_{i=z_L}^{z_U} \gamma_i \mathbbm{1}[z_j=i]+ \sum_{r \in R}
 \rho_r  \mathbbm{1} \Big[\frac{z_j}{r} \in \mathbb{N}\Big] + \sum_{k \in K} \theta_k  \mathbbm{1}\Big[ z_j \in K \wedge z_j \notin [z_L,z_U] \Big] +v_j $$
 
-$c_j$ is the observation count in bin $j$, $p$ is the order of polynomial used to fit the counts, and $z_L$ and $z_U$ stand for the lower and upper region that define the bunching region. The specification also allows the user to control for round number bunching, and for other fixed effects that feature a bunching mass in the estimation bandwidth outside the bunching range $z \in [z_L, z_U]$ but that are not associated with $z^*$ (through the $\rho$ and $\theta$ coefficient vectors respectively). 
+$c_j$ is the observation count in bin $j$, $p$ is the order of polynomial used to fit the counts, and $z_L$ and $z_U$ stand for the lower and upper region that define the bunching region. The specification also allows the user to control for bunching at round numbers in a set $R$ (defined by `rn`), and for other fixed effects in a set $K$ (`extra_fe`) that feature a bunching mass in the estimation bandwidth outside the bunching range $z \in [z_L, z_U]$ but that are not associated with $z^*$ (through the $\rho$ and $\theta$ coefficient vectors respectively). 
 
 The specification allows for (up to) two different levels of round number bunching. This is useful in cases that typically feature bunching at round numbers (such as earnings distributions), and (may also) exhibit uneven bunching because some numbers are "rounder" than others. For instance, there could be bunching at all multiples of 1000's and 500's, but bunching at the former being much stronger than at the latter. Not controlling for round number bunching can significantly bias the bunching estimate upwards if $z^*$ is also a round number. This is because some of the observed bunching will be driven by factors unrelated to the change in incentives driven by the discrete change in the constraint that we want to attribute the bunching to. Similarly, not controlling for other bunching masses can exert a downward bias in the bunching estimate at $z^*$ by biasing the counterfactual estimate upwards.  
 
@@ -95,20 +95,20 @@ $$\hat{c}_j = \sum_{i=0}^{p} \hat{\beta_i}(z_j)^{i} + \sum_{r \in R}
 \hat{\rho}_r  \mathbbm{1} \Big[\frac{z_j}{r} \in \mathbb{N}\Big] + \sum_{k \in K} \hat{\theta}_k  \mathbbm{1}\Big[ z_j \in K \wedge z_j \notin [z_L,z_U] \Big]$$
 
 
-$\hat{B}_0$ estimates the excess number of observations locating at $z^*$ due to the kink or notch. To be able to compare bunching mass across different kinks or notches that feature varying heights of counterfactuals, we use a normalization where we divide the total excess mass with the height of the counterfactual at $z^*$. This returns the \textit{normalized excess mass}, which is a central parameter of interest besides elasticity estimates:
+$\hat{B}_0$ estimates the excess number of observations locating at $z^*$ due to the kink or notch. To be able to compare bunching masses across different kinks or notches that feature varying heights of counterfactuals, we use a normalization where we divide the total excess mass with the height of the counterfactual at $z^*$. This returns the \textit{normalized excess mass}, which is a central parameter of interest besides elasticity estimates:
 
 $$\hat{b}_0=\frac{\hat{B}_0}{\hat{c}_0}$$
 
 
 ## The integration constraint correction
 
-The initial estimate $\hat{B}_0$ will be slightly biased, because it ignores the fact that those with counterfactual earnings above $z^* + \Delta z^*$ (those of the marginal buncher) are also exhibiting an interior response to the introduction of a kink or notch at $z^*$. Hence, what we observe in the actual distribution above the bunching region is not the true counterfactual, since this has been shifted. Technically, it is not straightforward to fully account for this because the response is coming from \textit{all} levels above the bunching region, including those beyond our estimation bandwidth. A feasible solution is to approximate this total response to that among those we do observe in our estimation bandwidth. With a large enough bandwidth (and not extremely large bunching estimates), this typically yields good results. The solution, named the \textit{integration constraint correction} is to shift the counterfactual distribution lying to the right of $z^*$ upwards until the count of observations under the empirical distribution equals that under the counterfactual distribution. This is done by running:
+The initial estimate $\hat{B}_0$ will be slightly biased, because it ignores the fact that those with counterfactual earnings above $z^* + \Delta z^*$ (those of the marginal buncher) are also exhibiting an interior response to the introduction of a kink or notch at $z^*$. Hence, what we observe in the actual distribution above the bunching region is not the true counterfactual, since this has been shifted. Technically, it is not straightforward to fully account for this because the response is coming from \textit{all} levels above the bunching region, including those beyond our estimation bandwidth. A feasible solution is to approximate this total response to that among those we do observe in our estimation bandwidth. With a large enough bandwidth (and not extremely large bunching estimates), this typically yields good results. The solution, named the \textit{integration constraint correction}, is to shift the counterfactual distribution lying to the right of $z^*$ upwards until the count of observations under the empirical distribution equals that under the counterfactual distribution. This is done by running:
 
 $$c_j \Bigg(1 + \mathbbm{1}[j>z_U] \frac{\hat{B}_0}{\sum\limits_{j=z^* + 1}^{\infty} c_j}   \Bigg) = 
 \sum_{i=0}^{p} \beta_i(z_j)^{i}+ \sum_{i=z_L}^{z_U} \gamma_i \mathbbm{1}[z_j=i]+ \sum_{r \in R}
 \rho_r  \mathbbm{1} \Big[\frac{z_j}{r} \in \mathbb{N}\Big] + \sum_{k \in K} \theta_k  \mathbbm{1}\Big[ z_j \in K \wedge z_j \notin [z_L,z_U] \Big] +v_j $$
 
-This is estimated by iteration until a fixed point is found. The final $\hat{B}$ is then based on this updated counterfactual. Note that an alternative formulation is to implement the upward shift starting from bin $j=z_U + 1$ instead of $z^*$. Which alternative used has typically very little effect on the actual bunching estimate (because the counterfactual should not shift much at $z^*$), but may over-shift the counterfactual in bins above the bunching region. The next sub-section explains how this may be an issue when setting $z_U$ in the notch setting. The package allows the user to conduct robustness checks of the effect of each alternative, by choosing the preferred version through the input parameter `correct_above_zu` (the default is set to `FALSE`, i.e. shifting starts at the right of $z^*$).
+This is estimated by iteration until a fixed point is found. The final $\hat{B}$ is then based on this updated counterfactual. Note that an alternative formulation is to implement the upward shift starting from bin $j=z_U + 1$ instead of $z^*$. Which alternative used has typically very little effect on the actual bunching estimate (because the counterfactual should not shift much at $z^*$), but the latter may over-shift the counterfactual in bins above the bunching region. The next sub-section explains how this may be an issue when setting $z_U$ in the notch setting. The package allows the user to conduct robustness checks of the effect of each alternative, by choosing the preferred version through the input parameter `correct_above_zu` (the default is set to `FALSE`, i.e. shifting starts at the right of $z^*$).
 
 
 ## How are $z_L$ and $z_U$ set?
@@ -121,28 +121,28 @@ Note that in the case of notches, there is a further complication when choosing 
 
 The function returns a list with the following:
 
-- **`plot`**: a plot (a `ggplot2` object) with the observed and estimated counterfactual
-- **`data`**: a dataframe with the binned data and other generated variables used for the bunching estimation
-- **`cf`**: the estimated counterfactual density
-- **`model_fit`**: the coefficients of the fitted model
-- **`B`**: the estimated bunching mass
-- **`B_vector`**: a vector of bootstrapped estimates of `B`
-- **`B_sd`**: the standard deviation of `B_vector`
-- **`b`**: the normalized estimated bunching mass
-- **`b_vector`**: a vector of bootstrapped estimates of `b`
-- **`b_sd`**: the standard deviation of `b_vector`
-- **`e`**: the estimated elasticity
-- **`e_vector`**:  a vector of bootstrapped estimates of `e`
-- **`e_sd`**: the standard deviation of `e_vector`
-- **`alpha`**: the estimated proportion of observations in the hole (in a notch setting only)
-- **`alpha_vector`**:  a vector of bootstrapped estimates of `alpha` (in a notch setting only)
-- **`alpha_sd`**: the standard deviation of `alpha_vector` (in a notch setting only)
-- **`zD`**: the upper bound of the dominated region (in a notch setting only)
-- **`zD_bin`**: the bin in which the upper bound of the dominated region is in (in a notch setting only)
-- **`zU_bin`**: the bin in which the upper bound of the dominated region is in (in a notch setting only, relevant where `zU` is estimated internally, otherwise it will match the choice of `bins_exl_r`)
-- **`marginal_buncher`**: the estimated counterfactual level of the marginal buncher, i.e. $z^* + \Delta z^*$
-- **`marginal_buncher_vector`**: a vector of bootstrapped estimates of `marginal_buncher`
-- **`marginal_buncher_sd`**: the standard deviation of `marginal_buncher_vector`
+- **`plot`**: A plot (a `ggplot2` object) with the observed and estimated counterfactual
+- **`data`**: A dataframe with the binned data and other generated variables used for the bunching estimation
+- **`cf`**: The estimated counterfactual density
+- **`model_fit`**: The coefficients of the fitted model
+- **`B`**: The estimated bunching mass
+- **`B_vector`**: A vector of bootstrapped estimates of `B`
+- **`B_sd`**: The standard deviation of `B_vector`
+- **`b`**: The normalized estimated bunching mass
+- **`b_vector`**: A vector of bootstrapped estimates of `b`
+- **`b_sd`**: The standard deviation of `b_vector`
+- **`e`**: The estimated elasticity
+- **`e_vector`**:  A vector of bootstrapped estimates of `e`
+- **`e_sd`**: The standard deviation of `e_vector`
+- **`alpha`**: The estimated proportion of observations in the hole (in a notch setting only)
+- **`alpha_vector`**:  A vector of bootstrapped estimates of `alpha` (in a notch setting only)
+- **`alpha_sd`**: The standard deviation of `alpha_vector` (in a notch setting only)
+- **`zD`**: The upper bound of the dominated region (in a notch setting only)
+- **`zD_bin`**: The bin in which the upper bound of the dominated region is in (in a notch setting only)
+- **`zU_bin`**: The bin in which the upper bound of the dominated region is in (in a notch setting only, relevant where `zU` is estimated internally, otherwise it will match the choice of `bins_exl_r`)
+- **`marginal_buncher`**: The estimated counterfactual level of the marginal buncher, i.e. $z^* + \Delta z^*$
+- **`marginal_buncher_vector`**: A vector of bootstrapped estimates of `marginal_buncher`
+- **`marginal_buncher_sd`**: The standard deviation of `marginal_buncher_vector`
 
 
 # Examples
@@ -223,7 +223,7 @@ kink1_no_corr <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth 
 kink1_no_corr$plot
 ```
 
-As expected, the counterfactual to the right of $z^*$ is now lower. The effect of this is to pull the height of the counterfactual at $z^*$ slightly lower than before, leading to a larger estimate for the normalized excess mass of `r kink1_no_corr$b` compared to `r kink1_param$b`.
+As expected, the counterfactual to the right of $z^*$ is now lower. The effect of this is to pull the height of the counterfactual at $z^*$ to a slightly lower level than before, leading to a larger estimate for the normalized excess mass of `r kink1_no_corr$b` compared to `r kink1_param$b`.
 
 \newpage
 
@@ -352,13 +352,13 @@ plot_hist(z_vector = bunching_data$kink, zstar = 10000, binv = "max",
           binwidth = 100, bins_l = 20, bins_r = 20, 
           p_title = "Distribution from grouping zstar to be max in bin")$plot
 ```
-This version now creates some diffuse bunching by shifting some to the first bin to the right of $z^*$, so `bins_excl_r` should be set to 1. We can also increase the flexibility of the polynomial by setting `poly = 9`. Finally, let's get an estimate of the elasticity using the parametric formulation, using `e_parametric = TRUE`.
+This version now creates some diffuse bunching by shifting some to the first bin to the right of $z^*$, so `bins_excl_r` should be set to 1. We can also increase the flexibility of the polynomial by setting `poly = 9`.
 
 ```{r}
 kink5 <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binv = "max", 
                  binwidth = 100, bins_l = 20, bins_r = 20, bins_excl_r = 1,
-                 poly  = 6, t0 = 0, t1 = .2, e_parametric = TRUE, p_b = TRUE,
-                 seed = 1, p_title = "Kink with diffuse bunching and zstar max in bin")
+                 poly  = 6, t0 = 0, t1 = .2, p_b = TRUE, seed = 1, 
+                 p_title = "Kink with diffuse bunching and zstar max in bin")
 kink5$plot
 ```
 
@@ -388,7 +388,7 @@ notch1 <- bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth
                   p_title = "Notch without correction")
 notch1$plot
 ```
-The plot now includes two vertical lines: the red vertical line is the usual marker for $z_U$, where this has been estimated internally. The new blue line marks $z_D$, the upper bound of the dominated region. The plot shows a clear sign of missing mass in the range $z \in (z^*, z_D)$, since the counterfactual lies strictly above the actual density. It also reveals optimization frictions, since optimization theory predicts an empty hole in a frictionless world. We can get (the exact value of) $z_D$ and its bin, and an estimate  of the fraction of observations "stuck" in the hole, $\alpha$, by returning the following objects:
+The plot now includes two vertical lines: the red dashed vertical line is the usual marker for $z_U$, where this has been estimated internally. The new blue line marks $z_D$, the upper bound of the dominated region. The plot shows a clear sign of missing mass in the range $z \in (z^*, z_D]$, since the counterfactual lies strictly above the actual density. It also reveals optimization frictions, since optimization theory predicts an empty hole in a frictionless world. We can get (the exact value of) $z_D$ and its bin, and an estimate  of the fraction of observations "stuck" in the hole, $\alpha$, by returning the following objects:
 
 ```{r}
 # zD
@@ -399,7 +399,7 @@ notch1$zD_bin
 notch1$alpha
 ```
 
-$z_D$ is estimated to be `r notch1$zD`, and lies in bin `r notch1$zD_bin` and the proportion of individuals who are unresponsive due to frictions is  `r notch1$alpha`.  Further, we can use `notch1$zU_bin` to get $z_u$, which was estimated at `r notch1$zU_bin` bins above $z^*$.
+$z_D$ is estimated to be `r notch1$zD` and lies in bin `r notch1$zD_bin`, and the proportion of individuals who are unresponsive due to frictions is  `r notch1$alpha`.  Further, we can use `notch1$zU_bin` to get $z_u$, which was estimated at `r notch1$zU_bin` bins above $z^*$.
 
 
 
@@ -445,34 +445,34 @@ All parameters associated with the plot are prefixed with `p_`:
 
 - **`p_title`**: Title displayed in the plot. Default is empty
 - **`p_xtitle`**: x-axis title. Default is the name of the analyzed vector
-- **`p_ytitle`**: y-axis title. Default is "Count"
-- **`p_title_size`**: Size of plot title. Default is 9
-- **`p_axis_title_size`**: Size of x- and y-axis titles. Default is 9
-- **`p_axis_val_size`**: Size of x- and y-axis value labels. Default is 7.5
-- **`p_miny`**: Minimum value of y-axis. Default is 0
+- **`p_ytitle`**: y-axis title. Default is `"Count"`
+- **`p_title_size`**: Size of plot title. Default is `9`
+- **`p_axis_title_size`**: Size of x- and y-axis titles. Default is `9`
+- **`p_axis_val_size`**: Size of x- and y-axis value labels. Default is `7.5`
+- **`p_miny`**: Minimum value of y-axis. Default is `0`
 - **`p_maxy`**: Maximum value of y-axis. Default is set internally
 - **`p_ybreaks`**: y-axis value(s) at which to add horizontal line markers. Default is optimized internally
-- **`p_freq_color`**: Color of the frequency line. Default is "black"
-- **`p_cf_color`**: Color of the counterfactual line. Default is "maroon"
-- **`p_zstar_color`**: Color of the vertical line marking $z^*$. Default is "red"
-- **`p_grid_major_y_color`**: Color of the y-axis major-y line marker. Default is "lightgrey"
-- **`p_freq_size`**: Thickness of frequency line. Default is 0.5
-- **`p_freq_msize`**: Size of frequency line markers. Default is 1
-- **`p_cf_size`**: Thickness of counterfactual line. Default is 0.5
-- **`p_zstar_size`**: Thickness of vertical line marking $z^*$. Default is 0.5
-- **`p_b`**: Whether to show the normalized bunching estimate on the plot. Default is FALSE 
-- **`p_e`**: Whether to show the elasticity estimate on the plot. Default is FALSE 
+- **`p_freq_color`**: Color of the frequency line. Default is `"black"`
+- **`p_cf_color`**: Color of the counterfactual line. Default is `"maroon"`
+- **`p_zstar_color`**: Color of the vertical line marking $z^*$. Default is `"red"`
+- **`p_grid_major_y_color`**: Color of the y-axis major-y line marker. Default is `"lightgrey"`
+- **`p_freq_size`**: Thickness of frequency line. Default is `0.5`
+- **`p_freq_msize`**: Size of frequency line markers. Default is `1`
+- **`p_cf_size`**: Thickness of counterfactual line. Default is `0.5`
+- **`p_zstar_size`**: Thickness of vertical line marking $z^*$. Default is `0.5`
+- **`p_b`**: Whether to show the normalized bunching estimate on the plot. Default is `FALSE`
+- **`p_e`**: Whether to show the elasticity estimate on the plot. Default is `FALSE` 
 - **`p_b_e_xpos`**: x-coordinate of bunching/elasticity estimate on plot. Default is optimized internally
 - **`p_b_e_ypos`**: y-coordinate of bunching/elasticity estimate on plot. Default is optimized internally
-- **`p_b_e_size`**: Text size of bunching/elasticity estimate on plot. Default is 3
-- **`p_domregion_color`**: Color of vertical line marking upper bound of dominated region (in notch case). Default is "blue"
-- **`p_domregion_ltype`**: Line type/style of vertical line marking upper bound of dominated region (in notch case). Default is "longdash". Any line type compatible with `geom_vline()` of  `ggplot2` will work (e.g. "dotted").
+- **`p_b_e_size`**: Text size of bunching/elasticity estimate on plot. Default is `3`
+- **`p_domregion_color`**: Color of vertical line marking upper bound of dominated region (in notch case). Default is `"blue"`
+- **`p_domregion_ltype`**: Line type/style of vertical line marking upper bound of dominated region (in notch case). Default is `"longdash"`. Any line type compatible with `geom_vline()` of  `ggplot2` will work (e.g. "dotted").
 
 Let's see how to use these in the following examples.
 
 ### Editing plot options
 
-We will again analyze the original kink vector, but change the plot's appearance in the following ways. First, we'll edit the x- and y-axis titles to "Earnings" and "Bin Count" using `p_xtitle = "Earnings"` and `p_ytitle = "Bin Count"`. Second, we'll drop the horizontal line markers by setting their color to white using `p_grid_major_y_color = "white"`. Third, we'll increase the size of the plots and axis labels: we'll increase the title's size by setting `p_title_size = 15`, the axes' title size with `p_axis_title_size = 13` and  the axes' values' size with `p_axis_val_size = 11`.  Further, we'll change some colors: the counterfactual line to red using `p_cf_color =  "red"`, the true density's color to a navy offshoot using a Hex value:  `p_freq_color = "#1A476F"`, and set the $z^*$ marker to black using `p_zstar_color = "black"`. Next, let's change the frequency line's thickness using `p_freq_size = .8`, and increase the size of its markers with  `p_freq_msize = 1.5`. We'll also set the minimum y-axis value to 200 and the maximum to 1250 using `p_miny = 200` and `p_maxy = 1200` but only label the values at 500 and 1000 using `p_ybreaks = c(500,1000)`. Finally, we'll increase the size of the text showing the estimates of $b$ using `p_b_e_size = 5`, and change their x- and y-coordinates to the corresponding values in `p_b_e_xpos = 9500` and `p_b_e_ypos = 1000`. This is the resulting plot:
+We will again analyze the original kink vector, but change the plot's appearance in the following ways. First, we'll edit the x- and y-axis titles to "Earnings" and "Bin Count" using `p_xtitle = "Earnings"` and `p_ytitle = "Bin Count"`. Second, we'll drop the horizontal line markers by setting their color to white using `p_grid_major_y_color = "white"`. Third, we'll increase the size of the plots and axis labels: we'll increase the title's size by setting `p_title_size = 15`, the axes' title size with `p_axis_title_size = 13` and  the axes' values' size with `p_axis_val_size = 11`.  Further, we'll change some colors: the counterfactual line to red using `p_cf_color =  "red"`, the true density's color to a navy offshoot using a Hex value:  `p_freq_color = "#1A476F"`, and set the $z^*$ marker to black using `p_zstar_color = "black"`. Next, let's change the frequency line's thickness using `p_freq_size = .8`, and increase the size of its markers with  `p_freq_msize = 1.5`. We'll also set the minimum y-axis value to 200 and the maximum to 1200 using `p_miny = 200` and `p_maxy = 1200` but only label the values at 500 and 1000 using `p_ybreaks = c(500,1000)`. Finally, we'll increase the size of the text showing the estimates of $b$ using `p_b_e_size = 5`, and change their x- and y-coordinates to `p_b_e_xpos = 9500` and `p_b_e_ypos = 1000`. This is the resulting plot:
 ```{r}
 kink_p <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth = 50, 
                   bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2, 
@@ -505,7 +505,7 @@ notch_p$plot
 
 Please note that there can be a difference in the appearance of marker and font sizes between the plot, as viewed in RStudio, and its exported version, so you may need to experiment with a few settings to find the one that best matches your final document.
 
-If you require further flexibility than what is provided, you can instead build the whole plot from scratch. From the list of results returned from `bunchit()`, simply use `cf_density` for the estimated counterfactual, and  columns `bin` and `freq_orig` from the `data` dataframe for the bins and per-bin count.
+If you require further flexibility than what is provided, you can instead build the whole plot from scratch. From the list of results returned from `bunchit()`, simply use `cf` for the estimated counterfactual, and  columns `bin` and `freq_orig` from the `data` dataframe for the bins and per-bin count.
 
 
 # References
