@@ -5,7 +5,6 @@ date: "2019-08-07"
 output: rmarkdown::pdf_document
 header-includes: 
   - \usepackage{bbm}
-  - \usepackage[export]{adjustbox}
   - \usepackage{subfig}
   - \usepackage{floatrow}
 vignette: >
