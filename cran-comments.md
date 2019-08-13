@@ -4,5 +4,15 @@
 * win-builder (devel)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs.
+
+There was 1 NOTE when testing using win-builder:
+
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Panos Mavrokonstantis <mavpanos@gmail.com>'
+
+According to CRAN maintainer Uwe Ligges, "This is just a Note that reminds CRAN maintainers to check that the
+submission comes actually from his maintainer and not anybody else".
+Source: https://mailman.stat.ethz.ch/pipermail/r-devel/2014-March/068497.html
+
 
