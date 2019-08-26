@@ -128,7 +128,8 @@
 #' # Example 5: Notch
 #' notch <- bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
 #'                  bins_l = 40, bins_r = 40, poly = 5, t0 = 0.18, t1 = .25,
-#'                  correct = FALSE, notch = TRUE,p_b = TRUE, p_b_e_xpos = 8900)
+#'                  correct = FALSE, notch = TRUE,p_b = TRUE, p_b_e_xpos = 8900,
+#'                  n_boot = 0)
 #' notch$plot
 
 
