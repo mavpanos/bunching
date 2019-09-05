@@ -17,7 +17,7 @@ elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_par
     dt <- t1 - t0
 
     # kinks elasticity, parametric and reduced form
-    if(notch == F) {
+    if(notch == FALSE) {
         if(e_parametric) {
             e <- -log(1+Dz_over_zstar)/log(1-(dt/(1-t0)))
         } else {

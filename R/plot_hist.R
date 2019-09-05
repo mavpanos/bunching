@@ -41,13 +41,13 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
     }
 
     # binv: is it one of the 3 allowed ones?
-    if(binv %in% c("min", "max", "median") == F) {
+    if(binv %in% c("min", "max", "median") == FALSE) {
         stop("binv can only be one of 'min', 'max', 'median'")
     }
 
     # zstar: is it within range? get max and min of variable
-    data_varmax <- max(z_vector, na.rm = T)
-    data_varmin <- min(z_vector, na.rm = T)
+    data_varmax <- max(z_vector, na.rm = TRUE)
+    data_varmin <- min(z_vector, na.rm = TRUE)
     if(zstar > data_varmax |  zstar < data_varmin) {
         stop("zstar is outside of z_vector's range of values")
     }
@@ -199,21 +199,21 @@ plot_hist <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r
               panel.grid.minor.y = element_blank(),
               panel.grid.major.x = element_blank(),
               panel.grid.minor.x = element_blank(),
-              plot.title = element_text(hjust=0.5, size = p_title_size),
-              text = element_text(size=p_axis_title_size),
-              axis.text=element_text(size=p_axis_val_size),
+              plot.title = element_text(hjust = 0.5, size = p_title_size),
+              text = element_text(size = p_axis_title_size),
+              axis.text = element_text(size = p_axis_val_size),
               legend.position = "none",
               panel.background = element_blank(),
-              panel.grid=element_blank(),
-              panel.border=element_blank()) +
+              panel.grid = element_blank(),
+              panel.border = element_blank()) +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
-        ggplot2::guides(fill=FALSE, color=FALSE)
+        ggplot2::guides(fill = FALSE, color = FALSE)
 
     # pass choice of ylim and p_ybreaks
     if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
-        hist_plot <-  hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
+        hist_plot <-  hist_plot + scale_y_continuous(limits= c(p_miny, p_maxy))
     } else {
-        hist_plot <- hist_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
+        hist_plot <- hist_plot + scale_y_continuous(limits= c(p_miny, p_maxy), breaks = p_ybreaks)
     }
 
     return(list(data = binned_data,

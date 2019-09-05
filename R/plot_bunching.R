@@ -22,11 +22,11 @@ plot_bunching <- function(binned_data, cf, zstar,
                           p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
                           p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
                           p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos, p_b_e_ypos, p_b_e_size,
-                          t0 = NA, t1 = NA, notch = F,
+                          t0 = NA, t1 = NA, notch = FALSE,
                           p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
 
     # get upper bound to customize plot region
-    zmax <- max(binned_data$bin,na.rm = T)
+    zmax <- max(binned_data$bin, na.rm = TRUE)
 
     # prepare data for graphing in "long" structure
     df_plot <- data.frame(cbind(binned_data[,c("bin", "freq_orig")], "cf_graph" = cf))
@@ -42,7 +42,7 @@ plot_bunching <- function(binned_data, cf, zstar,
     vlines_color <- rep(p_zstar_color, 3)
 
     # if it's a notch, add domregion bin marker to vlines
-    if(notch == T) {
+    if(notch == TRUE) {
         bin_domregion <- domregion(zstar, t0, t1, binwidth)$zD
         vlines <- c(vlines, bin_domregion)
         vlines_type <- c(vlines_type, p_domregion_ltype)
@@ -75,26 +75,26 @@ plot_bunching <- function(binned_data, cf, zstar,
                        panel.grid.minor.y = element_blank(),
                        panel.grid.major.x = element_blank(),
                        panel.grid.minor.x = element_blank(),
-                       plot.title = element_text(hjust=0.5, size = p_title_size),
-                       text = element_text(size=p_axis_title_size),
-                       axis.text=element_text(size=p_axis_val_size),
+                       plot.title = element_text(hjust = 0.5, size = p_title_size),
+                       text = element_text(size = p_axis_title_size),
+                       axis.text=element_text(size = p_axis_val_size),
                        legend.position = "none",
                        panel.background = element_blank(),
-                       panel.grid=element_blank(),
-                       panel.border=element_blank()) +
+                       panel.grid = element_blank(),
+                       panel.border = element_blank()) +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
-        ggplot2::guides(fill=FALSE, color=FALSE)
+        ggplot2::guides(fill = FALSE, color = FALSE)
 
     # pass choice of ylim and p_ybreaks
     if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {
-        bunch_plot <-  bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy))
+        bunch_plot <-  bunch_plot + scale_y_continuous(limits= c(p_miny, p_maxy))
     } else {
-        bunch_plot <- bunch_plot + scale_y_continuous(limits=c(p_miny, p_maxy), breaks = p_ybreaks)
+        bunch_plot <- bunch_plot + scale_y_continuous(limits= c(p_miny, p_maxy), breaks = p_ybreaks)
     }
 
     # choice to show b (and e) on plot or not
-    if(p_b == T) {
-        if(p_e == T) {
+    if(p_b == TRUE) {
+        if(p_e == TRUE) {
             # if both TRUE, add both on separate lines
             text_to_print <- paste0(b_estimates, "\n", e_estimates)
         } else { # add only b

@@ -10,7 +10,7 @@
 #' @seealso \code{\link{bunchit}}
 #' @export
 
-marginal_buncher <- function(beta, binwidth, zstar, notch = F, alpha = NULL) {
+marginal_buncher <- function(beta, binwidth, zstar, notch = FALSE, alpha = NULL) {
     if(!notch) {
         # kink specification
         zstar + (beta*binwidth)

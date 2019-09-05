@@ -38,21 +38,21 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
     # get vector of bootstrapped betas
     boot_results <- sapply(seq(1:boot_iterations), function(i) {
         # adjust frequencies using residual
-        data_for_boot$freq_orig <- data_for_boot$freq_orig + sample(residuals, replace = T)
+        data_for_boot$freq_orig <- data_for_boot$freq_orig + sample(residuals, replace = TRUE)
         # make this "freq" so we can pass to fit_bunching which requires "freq ~ ..."
         data_for_boot$freq <- data_for_boot$freq_orig
         # next, re-run first pass on this new series
         booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
 
         # if no need for integration correction, just take this b
-        if(correction == F) {
+        if(correction == FALSE) {
             b_boot <- booted_firstpass$b_estimate
             B_boot <- booted_firstpass$bunchers_excess
             alpha_boot <- booted_firstpass$alpha
             mbuncher_boot <- bunching::marginal_buncher(beta = b_boot, binwidth = binwidth, zstar = zstar)
 
         # otherwise, do correction, then take b estimate
-        } else if (correction == T) {
+        } else if (correction == TRUE) {
             booted_correction <- bunching::do_correction(zstar, binwidth, data_for_boot, booted_firstpass,
                                                          correction_iterations, notch, zD_bin)
             b_boot <- booted_correction$b_corrected
@@ -69,10 +69,10 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
     B_boot <- unlist(boot_results["B_boot",])
     alpha_boot <- unlist(boot_results["alpha_boot",])
     mbuncher_boot <- unlist(boot_results["mbuncher_boot",])
-    b_sd <- stats::sd(b_boot, na.rm = T)
-    B_sd <- stats::sd(B_boot, na.rm = T)
-    alpha_sd <- stats::sd(alpha_boot, na.rm = T)
-    mbuncher_sd <- stats::sd(mbuncher_boot, na.rm = T)
+    b_sd <- stats::sd(b_boot, na.rm = TRUE)
+    B_sd <- stats::sd(B_boot, na.rm = TRUE)
+    alpha_sd <- stats::sd(alpha_boot, na.rm = TRUE)
+    mbuncher_sd <- stats::sd(mbuncher_boot, na.rm = TRUE)
 
     output <- list("b_vector" = b_boot, "b_sd" = b_sd,
                    "B_vector" = B_boot, "B_sd" = B_sd,

@@ -104,7 +104,7 @@
 #' kink3_vector <- c(bunching_data$kink_vector, rep(10200,540))
 #' kink3 <- bunchit(kink3_vector, zstar = 10000, binwidth = 50,
 #'                  bins_l = 40, bins_r = 40, poly = 6, t0 = 0, t1 = .2,
-#'                  correct = FALSE, p_b=TRUE, extra_fe = 10200)
+#'                  correct = FALSE, p_b = TRUE, extra_fe = 10200)
 #' kink3$plot
 #'
 #' # Example 4: Kink with round number bunching
@@ -121,7 +121,7 @@
 #'                   rep(bpoint - 3*rn2,135))
 #' kink4 <- bunchit(z_vector = kink4_vector, zstar = bpoint, binwidth = 50,
 #'                  bins_l = 20, bins_r = 20, poly = 6, t0 = 0, t1 = .2,
-#'                  correct = FALSE, p_b=TRUE, p_e = TRUE, p_freq_msize = 1.5,
+#'                  correct = FALSE, p_b = TRUE, p_e = TRUE, p_freq_msize = 1.5,
 #'                  p_b_e_ypos = 880, rn = c(250,500))
 #' kink4$plot
 #'
@@ -156,13 +156,13 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # binv: is it one of the 3 allowed ones?
-    if(binv %in% c("min", "max", "median") == F) {
+    if(binv %in% c("min", "max", "median") == FALSE) {
         stop("binv can only be one of 'min', 'max', 'median'")
     }
 
     # zstar: is it within range? get max and min of variable
-    data_varmax <- max(z_vector, na.rm = T)
-    data_varmin <- min(z_vector, na.rm = T)
+    data_varmax <- max(z_vector, na.rm = TRUE)
+    data_varmin <- min(z_vector, na.rm = TRUE)
     if(zstar > data_varmax |  zstar < data_varmin) {
         stop("zstar is outside of z_vector's range of values")
     }
@@ -492,7 +492,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # Kink case
 
-    if (notch == F) {
+    if (notch == FALSE) {
 
         # prepare data
         firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
@@ -508,7 +508,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
                                             notch, zD_bin)
 
-    } else if (notch == T) {
+    } else if (notch == TRUE) {
         # calculate z_dominated for notches
         z_dominated <- bunching::domregion(zstar, t0, t1, binwidth)
         zD_bin <- z_dominated$zD_bin
@@ -516,7 +516,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         zU_notch <- bins_excl_r
 
         # if we force zu, same procedure as kink
-        if (force_notch == T) {
+        if (force_notch == TRUE) {
             # prepare data
             firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
                                                           poly, bins_excl_l, bins_excl_r, rn, extra_fe,
@@ -526,7 +526,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 
 
-        } else if (force_notch == F) {
+        } else if (force_notch == FALSE) {
             # start with only one bin above zstar
             bins_excl_r <- 1
             firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
@@ -586,7 +586,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             bins_excl_r <- zu_bin_final
             # update zU_notch with this (to output)
             zU_notch <- bins_excl_r
-            # if we chose correct_above_zu ==T, i.e. shift only above zu,
+            # if we chose correct_above_zu == T, i.e. shift only above zu,
             # update bins_above_excluded to relate to this new bins_excl_r = zu_bin_final
             if(correct_above_zu) {
                 firstpass_prep$data_binned$bin_above_excluded <- ifelse(firstpass_prep$data_binned$z_rel > zu_bin_final,1,0)
@@ -626,7 +626,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     #               if requested
     # ------------------------------------------------
 
-    if(correct == F) {
+    if(correct == FALSE) {
 
         if(n_boot > 0) {
             boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
@@ -652,7 +652,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     # 4. if correction requested, do that first
     #       to get residuals, then bootstrap
     # ------------------------------------------------
-    if (correct == T) {
+    if (correct == TRUE) {
 
         # initial correction to get updated estimates, and vector of residuals for bootstrap
         firstpass_corrected <- bunching::do_correction(zstar, binwidth, firstpass_prep$data_binned,
@@ -734,7 +734,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
     # bunching/elasticity estimates' x position
     if(is.na(p_b_e_xpos)) {
-        if (notch == T) {
+        if (notch == TRUE) {
             p_b_e_xpos <- zmin + (zstar - zmin)*.3
         } else {
             p_b_e_xpos <- zstar + (zmax - zstar)*.7
