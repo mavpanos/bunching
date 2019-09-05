@@ -511,8 +511,8 @@ If you require further flexibility than what is provided, you can instead build 
 # References
 
 
-Chetty, R., J.N. Friedman, Olsen, T. and Pistafferi, L. (2011) "Adjustment Costs, Firm Responses, and Micro vs. Macro Labor Supply Elasticities: Evidence from Danish Tax Records", \textit{Quarterly Journal of Economics}, vol. 126(2), pp. 749-804.
+Chetty, R., J.N. Friedman, Olsen, T. and Pistafferi, L. (2011) <doi:https://doi.org/10.1093/qje/qjr013>
 
-Mavrokonstantis, P. (2019) "Bunching and Adjustment Costs: Evidence from Cypriot Tax Reforms", mimeo.
+Mavrokonstantis, P. (2019) <https:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
 
 

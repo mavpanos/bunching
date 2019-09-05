@@ -161,22 +161,24 @@ which is estimable using our estimates of $e$ and $\Delta z^*$.
 
 # References
 
-Allen, E.J, Dechow, P.M., Pope, D.G. and Wu, G. (2017) "Reference-Dependent Preferences: Evidence from Marathon Runners", \textit{Management Science}, vol. 63(6), pp. 1657-2048.  
+Allen, E.J, Dechow, P.M., Pope, D.G. and Wu, G. (2017) <doi:https://doi.org/10.1287/mnsc.2015.2417>
 
-Dharmapala, D. (2018) "Estimating the Compliance Costs of Securities Regulation: A Bunching Approach", mimeo.
+Dharmapala, D. (2018) <https:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2817151>
 
-Dagostino, R. (2019) "The Impact of Bank Financing on Municipalities’ Bond Issuance and the Real Economy", mimeo.
-
-
-Chetty, R., J.N. Friedman, Olsen, T. and Pistafferi, L. (2011) "Adjustment Costs, Firm Responses, and Micro vs. Macro Labor Supply Elasticities: Evidence from Danish Tax Records", \textit{Quarterly Journal of Economics}, vol. 126(2), pp. 749-804.
-
-Gelber, A.M., D. Jones and Sacks, D.W. (2019) "Estimating Earnings Adjustment Frictions: Method \& Evidence from the Earnings Test",  \textit{forthcoming, American Economic Journal: Economic Policy}.
+Dagostino, R. (2019) <https:https://www.brookings.edu/wp-content/uploads/2019/07/Dagostino2019_muni.pdf>
 
 
-Kleven, H. and Waseem, M. (2013) "Using Notches to Uncover Optimization Frictions and Structural Elasticities: Theory and Evidence from Pakistan", \textit{Quarterly Journal of Economics}, vol. 128, pp. 669-723.
+Chetty, R., J.N. Friedman, Olsen, T. and Pistafferi, L. (2011) <doi:https://doi.org/10.1093/qje/qjr013>
 
-Kleven, H. (2018) "Calculating Reduced-Form Elasticities Using Notches", mimeo.
 
-Mavrokonstantis, P. (2019) "Bunching and Adjustment Costs: Evidence from Cypriot Tax Reforms", mimeo.
+Gelber, A.M., D. Jones and Sacks, D.W. (2019) <https:https://home.uchicago.edu/~j1s/Jones_ET_1_19.pdf>
 
-Saez, E. (2010) "Do Taxpayers Bunch at Kink Points?" \textit{American Economic Journal: Economic Policy}, vol. 2(3), pp. 180-212.
+
+Kleven, H. and Waseem, M. (2013) <doi:https://doi.org/10.1093/qje/qjt004>
+
+Kleven, H. (2018) <https:https://www.henrikkleven.com/uploads/3/7/3/1/37310663/notchelasticity_kleven_2018.pdf>
+
+Mavrokonstantis, P. (2019) <https:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
+
+Saez, E. (2010) <doi:10.1257/pol.2.3.180>
+
