@@ -168,7 +168,7 @@ kink2$plot
 kink3_vector <- c(bunching_data$kink_vector, rep(10200,540))
 kink3 <- bunchit(kink3_vector, zstar = 10000, binwidth = 50,
                  bins_l = 40, bins_r = 40, poly = 6, t0 = 0, t1 = .2,
-                 correct = FALSE, p_b=TRUE, extra_fe = 10200)
+                 correct = FALSE, p_b = TRUE, extra_fe = 10200)
 kink3$plot
 
 # Example 4: Kink with round number bunching
@@ -185,7 +185,7 @@ kink4_vector <- c(bunching_data$kink_vector,
                   rep(bpoint - 3*rn2,135))
 kink4 <- bunchit(z_vector = kink4_vector, zstar = bpoint, binwidth = 50,
                  bins_l = 20, bins_r = 20, poly = 6, t0 = 0, t1 = .2,
-                 correct = FALSE, p_b=TRUE, p_e = TRUE, p_freq_msize = 1.5,
+                 correct = FALSE, p_b = TRUE, p_e = TRUE, p_freq_msize = 1.5,
                  p_b_e_ypos = 880, rn = c(250,500))
 kink4$plot
 

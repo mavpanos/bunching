@@ -9,7 +9,7 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
   p_axis_title_size, p_axis_val_size, p_freq_color, p_cf_color,
   p_zstar_color, p_grid_major_y_color, p_freq_size, p_cf_size,
   p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos,
-  p_b_e_ypos, p_b_e_size, t0 = NA, t1 = NA, notch = F,
+  p_b_e_ypos, p_b_e_size, t0 = NA, t1 = NA, notch = FALSE,
   p_domregion_color = NA, p_domregion_ltype = NA, n_boot)
 }
 \arguments{

@@ -4,7 +4,7 @@
 \alias{marginal_buncher}
 \title{Marginal Buncher}
 \usage{
-marginal_buncher(beta, binwidth, zstar, notch = F, alpha = NULL)
+marginal_buncher(beta, binwidth, zstar, notch = FALSE, alpha = NULL)
 }
 \arguments{
 \item{beta}{normalized excess mass.}
