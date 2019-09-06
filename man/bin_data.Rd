@@ -23,7 +23,7 @@ bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 \code{bin_data} returns a data frame with bins and corresponding frequencies (counts).
 }
 \description{
-Create data frame of binned counts.
+Create data frame of binned counts
 }
 \seealso{
 \code{\link{bunchit}}
