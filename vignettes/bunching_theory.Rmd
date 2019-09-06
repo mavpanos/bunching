@@ -14,9 +14,8 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(fig.width=4, fig.height = 4, out.width="45%", fig.align="center", 
-                      fig.pos = "H", 
-                      echo=FALSE,
+knitr::opts_chunk$set(fig.width=4, fig.height = 4, out.width="45%", fig.align="center",
+                      echo=FALSE, fig.pos = 'h',
                       collapse = TRUE,
                       comment = "#>"
                       )
