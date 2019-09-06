@@ -1,7 +1,7 @@
 Package: bunching
 Type: Package
 Title: Estimate Bunching
-Version: 0.8.2
+Version: 0.8.3
 Authors@R: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Description: Implementation of the bunching estimator for kinks and notches. 
