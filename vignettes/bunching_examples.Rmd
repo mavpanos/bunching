@@ -256,7 +256,7 @@ The plot now also marks the bounds of the bunching region by default, using vert
 
 ### Kink example 3: Round number bunching
 
-Distributions may also exhibit bunching for reasons unrelated to the examined discontinuity. This is common for instance when analyzing earnings or profits, which tend to be set at or reported in round numbers. If $z^*$ is also at a round number, then some (or all) of the bunching may actually just be because of the round number bunching, and not of the discontinuity in question. In such cases, we want to residualize this effect by introducing controls. As an example, consider the following distribution:
+Distributions may also exhibit bunching for reasons unrelated to the examined discontinuity. This is common for instance when analyzing earnings or profits, which tend to be set at or reported in round numbers. If $z^*$ is also at a round number, then some (or all) of the bunching may actually just be because of the round number bunching, and not of the discontinuity in question. For empirical examples, see for instance, Clifford & Mavrokonstantis (2019) and Mavrokonstantis (2019). In such cases, we want to residualize this effect by introducing controls. As an example, consider the following distribution:
 
 ```{r}
 # create round number bunching
@@ -511,7 +511,9 @@ If you require further flexibility than what is provided, you can instead build 
 # References
 
 
-Chetty, R., J.N. Friedman, Olsen, T. and Pistafferi, L. (2011) <doi:https://doi.org/10.1093/qje/qjr013>
+Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:https://doi.org/10.1093/qje/qjr013>
+
+Clifford, S. and Mavrokonstantis, P. (2019) <https:https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
 
 Mavrokonstantis, P. (2019) <https:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
 
