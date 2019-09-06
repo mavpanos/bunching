@@ -5,8 +5,8 @@ date: "2019-08-07"
 output: rmarkdown::pdf_document
 header-includes: 
   - \usepackage{bbm}
+  - \usepackage{float}
   - \usepackage{subfig}
-  - \usepackage{floatrow}
 vignette: >
   %\VignetteIndexEntry{bunching_theory}
   %\VignetteEngine{knitr::rmarkdown}
