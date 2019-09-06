@@ -511,7 +511,7 @@ If you require further flexibility than what is provided, you can instead build 
 # References
 
 
-Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:https://doi.org/10.1093/qje/qjr013>
+Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:10.1093/qje/qjr013>
 
 Clifford, S. and Mavrokonstantis, P. (2019) <https:https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
 
