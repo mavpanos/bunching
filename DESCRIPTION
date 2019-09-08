@@ -6,7 +6,7 @@ Authors@R: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Description: Implementation of the bunching estimator for kinks and notches. 
         Allows for flexible estimation of counterfactual (e.g. controlling for round number bunching, accounting for other bunching masses within bunching window, fixing bunching point to be minimum, maximum or median value in its bin, etc.). 
-        It produces publication-ready plots in the style followed since Chetty et al. (2011), with lots of functionality to set plot options.
+        It produces publication-ready plots in the style followed since Chetty et al. (2011) <doi:10.1093/qje/qjr013>, with lots of functionality to set plot options.
 URL: http://github.com/mavpanos/bunching
 BugReports: https://github.com/mavpanos/bunching/issues
 License: MIT + file LICENSE

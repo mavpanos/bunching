@@ -23,7 +23,7 @@ dominated region, fraction in dominated region in notch setting, etc.)
 which can be used for further analysis, e.g. incorporation into
 structural models that rely on bunching moments. The package also
 provides an exploratory viusalization function to speed up pre-analysis,
-and produces plots in the Chetty et al. (2011) style with lots of
+and produces plots in the Chetty et al. (2011) <doi:10.1093/qje/qjr013> style with lots of
 options on editing the plot
 appearance.
 
