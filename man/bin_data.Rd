@@ -4,7 +4,7 @@
 \alias{bin_data}
 \title{Bin the raw data}
 \usage{
-bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
+bin_data(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r)
 }
 \arguments{
 \item{z_vector}{a numeric vector of (unbinned) data.}
@@ -24,6 +24,12 @@ bin_data(z_vector, binv, zstar, binwidth, bins_l, bins_r)
 }
 \description{
 Create data frame of binned counts
+}
+\examples{
+data(bunching_data)
+binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+                        binwidth = 50, bins_l = 20, bins_r = 20)
+head(binned_data)
 }
 \seealso{
 \code{\link{bunchit}}

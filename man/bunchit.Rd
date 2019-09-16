@@ -7,16 +7,16 @@
 bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
   poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA,
   rn = NA, n_boot = 100, correct = TRUE, correct_above_zu = FALSE,
-  iter_max = 200, t0, t1, notch = FALSE, force_notch = FALSE,
+  correct_iter_max = 200, t0, t1, notch = FALSE, force_notch = FALSE,
   e_parametric = FALSE, e_parametric_lb = 1e-04, e_parametric_ub = 3,
-  p_title = "", p_xtitle = "z_name", p_ytitle = "Count",
-  p_title_size = 11, p_axis_title_size = 10, p_axis_val_size = 8.5,
-  p_miny = 0, p_maxy = NA, p_ybreaks = NA, p_freq_color = "black",
-  p_cf_color = "maroon", p_zstar_color = "red",
-  p_grid_major_y_color = "lightgrey", p_freq_size = 0.5,
-  p_freq_msize = 1, p_cf_size = 0.5, p_zstar_size = 0.5,
-  p_b = FALSE, p_e = FALSE, p_b_e_xpos = NA, p_b_e_ypos = NA,
-  p_b_e_size = 3, p_domregion_color = "blue", seed = NA,
+  seed = NA, p_title = "", p_xtitle = deparse(substitute(z_vector)),
+  p_ytitle = "Count", p_title_size = 11, p_axis_title_size = 10,
+  p_axis_val_size = 8.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
+  p_freq_color = "black", p_cf_color = "maroon",
+  p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+  p_freq_size = 0.5, p_freq_msize = 1, p_cf_size = 0.5,
+  p_zstar_size = 0.5, p_b = FALSE, p_e = FALSE, p_b_e_xpos = NA,
+  p_b_e_ypos = NA, p_b_e_size = 3, p_domregion_color = "blue",
   p_domregion_ltype = "longdash")
 }
 \arguments{
@@ -48,7 +48,7 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{correct_above_zu}{if integration constraint correction is implemented, should counterfactual be shifted only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).}
 
-\item{iter_max}{maximum iterations for integration constraint correction. Default is 200.}
+\item{correct_iter_max}{maximum iterations for integration constraint correction. Default is 200.}
 
 \item{t0}{numeric value setting the marginal (average) tax rate below zstar in a kink (notch) setting.}
 
@@ -63,6 +63,8 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 \item{e_parametric_lb}{lower bound for elasticity estimate's solution using parametric specification in notch setting. Default is 1e-04.}
 
 \item{e_parametric_ub}{upper bound for elasticity estimate's solution using parametric specification in notch setting. Default is 3.}
+
+\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals). Default is NA.}
 
 \item{p_title}{plot's title. Default is empty.}
 
@@ -110,8 +112,6 @@ bunchit(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
 \item{p_domregion_color}{plot's dominated region marker line color in notch setting. Default is "blue".}
 
-\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
-
 \item{p_domregion_ltype}{line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".}
 }
 \value{
@@ -151,8 +151,11 @@ data(bunching_data)
 
 # Example 1: Kink with integration constraint correction
 kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth = 50,
-                 bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2, p_b = TRUE)
+                 bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2,
+                 p_b = TRUE, seed = 1)
 kink1$plot
+kink1$b
+kink1$b_sd
 
 # Example 2: Kink with diffuse bunching
 bpoint <- 10000; binwidth <- 50
@@ -161,14 +164,15 @@ kink2_vector <- c(bunching_data$kink_vector,
                  rep(bpoint + binwidth,80), rep(bpoint + 2*binwidth,80))
 kink2 <- bunchit(z_vector = kink2_vector, zstar = 10000, binwidth = 50,
                  bins_l = 20, bins_r = 20, poly = 4,  t0 = 0, t1 = .2,
-                 bins_excl_l = 2, bins_excl_r = 2, correct = FALSE, p_b = TRUE)
+                 bins_excl_l = 2, bins_excl_r = 2, correct = FALSE,
+                 p_b = TRUE, seed = 1)
 kink2$plot
 
 # Example 3: Kink with further bunching at other level in bandwidth
 kink3_vector <- c(bunching_data$kink_vector, rep(10200,540))
 kink3 <- bunchit(kink3_vector, zstar = 10000, binwidth = 50,
                  bins_l = 40, bins_r = 40, poly = 6, t0 = 0, t1 = .2,
-                 correct = FALSE, p_b = TRUE, extra_fe = 10200)
+                 correct = FALSE, p_b = TRUE, extra_fe = 10200, seed = 1)
 kink3$plot
 
 # Example 4: Kink with round number bunching
@@ -186,7 +190,7 @@ kink4_vector <- c(bunching_data$kink_vector,
 kink4 <- bunchit(z_vector = kink4_vector, zstar = bpoint, binwidth = 50,
                  bins_l = 20, bins_r = 20, poly = 6, t0 = 0, t1 = .2,
                  correct = FALSE, p_b = TRUE, p_e = TRUE, p_freq_msize = 1.5,
-                 p_b_e_ypos = 880, rn = c(250,500))
+                 p_b_e_ypos = 880, rn = c(250,500), seed = 1)
 kink4$plot
 
 # Example 5: Notch

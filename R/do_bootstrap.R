@@ -3,9 +3,6 @@
 #' Estimate bunching on bootstrapped samples, using residual-based bootstrapping with replacement.
 #' @param firstpass_prep (binned) data that includes all variables necessary for fitting the model.
 #' @param residuals residuals from (first pass) fitted bunching model.
-#' @param boot_iterations number of bootstrapped samples.
-#' @param correction whether to implement correction for integration constraint.
-#' @param correction_iterations maximum iterations for integration constraint correction.
 #' @inheritParams bunchit
 #' @inheritParams fit_bunching
 #'
@@ -21,11 +18,27 @@
 
 
 #' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
+#'
+#' @examples
+#' data(bunching_data)
+#' binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+#'                         binwidth = 50, bins_l = 20, bins_r = 20)
+#' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+#'                                   bins_l = 20, bins_r = 20, poly = 4)
+#' firstpass <- fit_bunching(prepped_data$data_binned, prepped_data$model_formula)
+#' residuals_for_boot <- fit_bunching(prepped_data$data_binned,
+#'                                    prepped_data$model_formula)$residuals
+#' boot_results <- do_bootstrap(zstar = 10000, binwidth = 50,
+#'                              firstpass_prep = prepped_data,
+#'                              residuals = residuals_for_boot,
+#'                              seed = 1)
+#' boot_results$b_sd
+
 #' @export
 
 
-do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
-                         correction, correction_iterations, notch, zD_bin, seed) {
+do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, n_boot = 100,
+                         correct = TRUE, correct_iter_max = 200, notch = FALSE, zD_bin = NA, seed = NA) {
     # set seed if chosen
     if(!is.na(seed)) {
         set.seed(seed)
@@ -36,7 +49,7 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
     model <- firstpass_prep$model_formula
 
     # get vector of bootstrapped betas
-    boot_results <- sapply(seq(1:boot_iterations), function(i) {
+    boot_results <- sapply(seq(1:n_boot), function(i) {
         # adjust frequencies using residual
         data_for_boot$freq_orig <- data_for_boot$freq_orig + sample(residuals, replace = TRUE)
         # make this "freq" so we can pass to fit_bunching which requires "freq ~ ..."
@@ -45,16 +58,16 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, boot_iterat
         booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
 
         # if no need for integration correction, just take this b
-        if(correction == FALSE) {
+        if(correct == FALSE) {
             b_boot <- booted_firstpass$b_estimate
             B_boot <- booted_firstpass$bunchers_excess
             alpha_boot <- booted_firstpass$alpha
             mbuncher_boot <- bunching::marginal_buncher(beta = b_boot, binwidth = binwidth, zstar = zstar)
 
         # otherwise, do correction, then take b estimate
-        } else if (correction == TRUE) {
+        } else if (correct == TRUE) {
             booted_correction <- bunching::do_correction(zstar, binwidth, data_for_boot, booted_firstpass,
-                                                         correction_iterations, notch, zD_bin)
+                                                         correct_iter_max, notch, zD_bin)
             b_boot <- booted_correction$b_corrected
             B_boot <- booted_correction$B_corrected
             alpha_boot <- booted_correction$alpha_corrected

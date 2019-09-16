@@ -166,10 +166,10 @@ test_that("main parameter inputs are correctly specified", {
                          bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2, correct_above_zu = 1),
                   "correct_above_zu (for integration constraint in notch setting) can only be TRUE or FALSE", fixed = TRUE)
 
-    # max_iter not positive
+    # correct_iter_max not positive
     expect_error(bunchit(z_vector = bunching_data$kink_vector, zstar = 10000, binwidth = 50,
-                         bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2, iter_max = 0),
-                 "Maximum number of iterations (for integration constraint) iter_max must be a positive integer", fixed = TRUE)
+                         bins_l = 20, bins_r = 20, t0 = 0, t1 = 0.2, correct_iter_max = 0),
+                 "Maximum number of iterations (for integration constraint) correct_iter_max must be a positive integer", fixed = TRUE)
 
     # t0 not numeric
     expect_error(bunchit(z_vector = bunching_data$kink_vector, zstar = 10000, binwidth = 50,

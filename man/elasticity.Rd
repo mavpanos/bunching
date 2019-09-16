@@ -4,8 +4,8 @@
 \alias{elasticity}
 \title{Elasticity}
 \usage{
-elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric,
-  e_parametric_lb, e_parametric_ub)
+elasticity(beta, binwidth, zstar, t0, t1, notch = FALSE,
+  e_parametric = FALSE, e_parametric_lb = 1e-04, e_parametric_ub = 3)
 }
 \arguments{
 \item{beta}{normalized excess mass.}
@@ -31,6 +31,10 @@ elasticity(beta, binwidth, zstar, t0, t1, notch, e_parametric,
 }
 \description{
 Estimate elasticity from single normalized bunching observation.
+}
+\examples{
+elasticity(beta = 2, binwidth = 50, zstar = 10000, t0 = 0, t1 = 0.2)
+
 }
 \seealso{
 \code{\link{bunchit}}

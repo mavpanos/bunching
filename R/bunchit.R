@@ -16,7 +16,8 @@
 #' @param n_boot number of bootstrapped iterations. Default is 100.
 #' @param correct implements correction for integration constraint. Default is TRUE.
 #' @param correct_above_zu if integration constraint correction is implemented, should counterfactual be shifted only above zu (upper bound of exclusion region)? Default is FALSE (i.e. shift from above zstar).
-#' @param iter_max maximum iterations for integration constraint correction. Default is 200.
+#' @param correct_iter_max maximum iterations for integration constraint correction. Default is 200.
+#' @param seed a numeric value for bootstrap seed (random re-sampling of residuals). Default is NA.
 #' @param p_title plot's title. Default is empty.
 #' @param p_xtitle plot's x_axis label. Default is the name of z_vector.
 #' @param p_ytitle plot's y_axis label. Default is "Count".
@@ -48,7 +49,6 @@
 #' @param e_parametric_ub upper bound for elasticity estimate's solution using parametric specification in notch setting. Default is 3.
 #' @param p_domregion_color plot's dominated region marker line color in notch setting. Default is "blue".
 #' @param p_domregion_ltype line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".
-#' @param seed a numeric value for bootstrap seed (random re-sampling of residuals).
 
 #' @details bunchit implements the bunching estimator in both kink and notch settings. It bins a given numeric vector, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
 
@@ -87,8 +87,11 @@
 #'
 #' # Example 1: Kink with integration constraint correction
 #' kink1 <- bunchit(z_vector = bunching_data$kink, zstar = 10000, binwidth = 50,
-#'                  bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2, p_b = TRUE)
+#'                  bins_l = 20, bins_r = 20, poly = 4, t0 = 0, t1 = .2,
+#'                  p_b = TRUE, seed = 1)
 #' kink1$plot
+#' kink1$b
+#' kink1$b_sd
 #'
 #' # Example 2: Kink with diffuse bunching
 #' bpoint <- 10000; binwidth <- 50
@@ -97,14 +100,15 @@
 #'                  rep(bpoint + binwidth,80), rep(bpoint + 2*binwidth,80))
 #' kink2 <- bunchit(z_vector = kink2_vector, zstar = 10000, binwidth = 50,
 #'                  bins_l = 20, bins_r = 20, poly = 4,  t0 = 0, t1 = .2,
-#'                  bins_excl_l = 2, bins_excl_r = 2, correct = FALSE, p_b = TRUE)
+#'                  bins_excl_l = 2, bins_excl_r = 2, correct = FALSE,
+#'                  p_b = TRUE, seed = 1)
 #' kink2$plot
 #'
 #' # Example 3: Kink with further bunching at other level in bandwidth
 #' kink3_vector <- c(bunching_data$kink_vector, rep(10200,540))
 #' kink3 <- bunchit(kink3_vector, zstar = 10000, binwidth = 50,
 #'                  bins_l = 40, bins_r = 40, poly = 6, t0 = 0, t1 = .2,
-#'                  correct = FALSE, p_b = TRUE, extra_fe = 10200)
+#'                  correct = FALSE, p_b = TRUE, extra_fe = 10200, seed = 1)
 #' kink3$plot
 #'
 #' # Example 4: Kink with round number bunching
@@ -122,7 +126,7 @@
 #' kink4 <- bunchit(z_vector = kink4_vector, zstar = bpoint, binwidth = 50,
 #'                  bins_l = 20, bins_r = 20, poly = 6, t0 = 0, t1 = .2,
 #'                  correct = FALSE, p_b = TRUE, p_e = TRUE, p_freq_msize = 1.5,
-#'                  p_b_e_ypos = 880, rn = c(250,500))
+#'                  p_b_e_ypos = 880, rn = c(250,500), seed = 1)
 #' kink4$plot
 #'
 #' # Example 5: Notch
@@ -137,9 +141,10 @@
 
 bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                     poly = 9, bins_excl_l = 0, bins_excl_r = 0, extra_fe = NA, rn = NA,
-                    n_boot = 100, correct = TRUE, correct_above_zu = FALSE, iter_max = 200,
-                    t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE, e_parametric_lb = 0.0001, e_parametric_ub = 3, seed = NA,
-                    p_title = "", p_xtitle = "z_name", p_ytitle = "Count", p_title_size = 11,
+                    n_boot = 100, correct = TRUE, correct_above_zu = FALSE, correct_iter_max = 200,
+                    t0, t1, notch = FALSE, force_notch = FALSE, e_parametric = FALSE,
+                    e_parametric_lb = 0.0001, e_parametric_ub = 3, seed = NA,
+                    p_title = "", p_xtitle = deparse(substitute(z_vector)), p_ytitle = "Count", p_title_size = 11,
                     p_axis_title_size = 10, p_axis_val_size = 8.5, p_miny = 0, p_maxy = NA, p_ybreaks = NA,
                     p_freq_color = "black", p_cf_color = "maroon", p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
                     p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
@@ -268,8 +273,8 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     }
 
     # max iteration for integration correction must be a positive integer
-    if(iter_max <= 0 | !is.wholenumber(iter_max)) {
-        stop("Maximum number of iterations (for integration constraint) iter_max must be a positive integer")
+    if(correct_iter_max <= 0 | !is.wholenumber(correct_iter_max)) {
+        stop("Maximum number of iterations (for integration constraint) correct_iter_max must be a positive integer")
     }
 
     # check that taxrate t0 inputs are numeric
@@ -630,7 +635,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
         if(n_boot > 0) {
             boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
-                                                   correct, iter_max, notch, zD_bin, seed)
+                                                   correct, correct_iter_max, notch, zD_bin, seed)
             b_sd <- boot_results$b_sd
             b_vector <- boot_results$b_vector
             e_vector <- unlist(lapply(b_vector, function(b) {
@@ -656,7 +661,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
         # initial correction to get updated estimates, and vector of residuals for bootstrap
         firstpass_corrected <- bunching::do_correction(zstar, binwidth, firstpass_prep$data_binned,
-                                                       firstpass, iter_max, notch, zD_bin)
+                                                       firstpass, correct_iter_max, notch, zD_bin)
 
         # get corrected results for beta, counterfactuals, alpha etc.
         counterfactuals_for_graph <- firstpass_corrected$data$cf_density
@@ -673,7 +678,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
 
         if(n_boot > 0) {
             boot_results <- bunching::do_bootstrap(zstar, binwidth, firstpass_prep, residuals_for_boot, n_boot,
-                                                   correct,iter_max, notch, zD_bin, seed)
+                                                   correct, correct_iter_max, notch, zD_bin, seed)
 
             b_vector <- boot_results$b_vector
             b_sd <- boot_results$b_sd
@@ -727,38 +732,21 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
     #               6. make plot
     # ---------------------------------------------
 
-    # if p_b_e_xpos/p_y_e_xpos not chosen, set them. get data ranges
-    zmin <- min(firstpass_prep$data_binned$bin)
-    zmax <- max(firstpass_prep$data_binned$bin)
-    maxy <- max(firstpass_prep$data_binned$freq_orig, counterfactuals_for_graph)
-
-    # bunching/elasticity estimates' x position
-    if(is.na(p_b_e_xpos)) {
-        if (notch == TRUE) {
-            p_b_e_xpos <- zmin + (zstar - zmin)*.3
-        } else {
-            p_b_e_xpos <- zstar + (zmax - zstar)*.7
-        }
-    }
-
-    # y position
-    if(is.na(p_b_e_ypos)) {
-        p_b_e_ypos <- maxy * .8
-    }
-    # get name of z_vector to pass as xtitle if chosen
-    if (p_xtitle == "z_name") {
-        p_xtitle <- deparse(substitute(z_vector))
-    }
 
     # plot!
-    p <- bunching::plot_bunching(firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar,
-                                 binwidth, bins_excl_l, bins_excl_r,
-                                 p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size, p_axis_title_size, p_axis_val_size,
-                                 p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
-                                 p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                                 p_b, b = b_estimate, b_sd = b_sd, p_e, e = e_estimate, e_sd = e_sd,
-                                 p_b_e_xpos, p_b_e_ypos, p_b_e_size,
-                                 t0, t1, notch, p_domregion_color, p_domregion_ltype, n_boot)
+    #
+    p <- bunching::plot_bunching(z_vector, binned_data = firstpass_prep$data_binned, cf = counterfactuals_for_graph, zstar = zstar,
+                                 binwidth = binwidth, bins_excl_l = bins_excl_l, bins_excl_r = bins_excl_r,
+                                 p_title = p_title, p_xtitle = p_xtitle, p_ytitle = p_ytitle, p_miny = p_miny,
+                                 p_maxy = p_maxy, p_ybreaks = p_ybreaks, p_title_size = p_title_size,
+                                 p_axis_title_size = p_axis_title_size, p_axis_val_size = p_axis_val_size,
+                                 p_freq_color = p_freq_color, p_cf_color = p_cf_color, p_zstar_color = p_zstar_color,
+                                 p_grid_major_y_color = p_grid_major_y_color, p_freq_size = p_freq_size,
+                                 p_freq_msize = p_freq_msize, p_cf_size = p_cf_size, p_zstar_size = p_zstar_size,
+                                 p_b = p_b, b = b_estimate, b_sd = b_sd, p_e = p_e, e = e_estimate, e_sd = e_sd,
+                                 p_b_e_xpos = p_b_e_xpos, p_b_e_ypos = p_b_e_ypos, p_b_e_size = p_b_e_size,
+                                 t0 = t0, t1 = t1, notch = notch, p_domregion_color = p_domregion_color,
+                                 p_domregion_ltype = p_domregion_ltype)
     # set rounding
     round_dp <- 3
 

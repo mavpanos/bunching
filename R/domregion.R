@@ -8,6 +8,9 @@
 #' \item{zD}{The level of z that demarcates the upper bound of the dominated region.}
 #' \item{zD_bin}{The value of the bin which zD falls in.}
 #' @seealso \code{\link{bunchit}}
+#'
+#' @examples
+#' domregion(zstar = 10000, t0 = 0, t1 = 0.2, binwidth = 50)
 #' @export
 
 domregion <- function(zstar,t0,t1, binwidth) {

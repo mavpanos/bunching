@@ -23,6 +23,9 @@ notch_equation(e, t0, t1, zstar, dzstar)
 \description{
 Defines indifference condition based on parametric utility function in notch setting. Used to parametrically solve for elasticity.
 }
+\examples{
+notch_equation(e = .04, t0 = 0, t1 = .2, zstar = 10000, dzstar = 50)
+}
 \seealso{
 \code{\link{bunchit}}
 

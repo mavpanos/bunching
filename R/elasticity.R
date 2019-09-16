@@ -7,9 +7,14 @@
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
 #' @return  \code{elasticity} returns the estimated elasticity. By default, this is based on the reduced-form approximation. To use the parametric equivalent, set e_parametric to TRUE.
+#'
+#' @examples
+#' elasticity(beta = 2, binwidth = 50, zstar = 10000, t0 = 0, t1 = 0.2)
+#'
 #' @export
 
-elasticity <- function(beta, binwidth, zstar, t0, t1, notch, e_parametric, e_parametric_lb, e_parametric_ub) {
+elasticity <- function(beta, binwidth, zstar, t0, t1, notch = FALSE, e_parametric = FALSE,
+                       e_parametric_lb = 1e-04, e_parametric_ub = 3) {
 
     # define some quantities to simplify equations
     Dz <- beta*binwidth

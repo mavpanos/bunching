@@ -23,6 +23,9 @@ marginal_buncher(beta, binwidth, zstar, notch = FALSE, alpha = NULL)
 \description{
 Calculate location (value of z_vector) of marginal buncher.
 }
+\examples{
+marginal_buncher(beta = 2, binwidth = 50, zstar = 10000)
+}
 \seealso{
 \code{\link{bunchit}}
 }

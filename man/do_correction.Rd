@@ -4,19 +4,19 @@
 \alias{do_correction}
 \title{Integration Constraint Correction}
 \usage{
-do_correction(zstar, binwidth, thedata, firstpass_results, max_iterations,
-  notch, zD_bin)
+do_correction(zstar, binwidth, data_prepped, firstpass_results,
+  correct_iter_max = 200, notch = FALSE, zD_bin = NA)
 }
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}
 
 \item{binwidth}{a numeric value for the width of each bin.}
 
-\item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
+\item{data_prepped}{(binned) data that includes all variables necessary for fitting the model.}
 
 \item{firstpass_results}{initial bunching estimates without correction.}
 
-\item{max_iterations}{maximum number of iterations for counterfactual shifting.}
+\item{correct_iter_max}{maximum iterations for integration constraint correction. Default is 200.}
 
 \item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
@@ -34,6 +34,19 @@ do_correction returns a list with the data and estimates after correcting for th
 }
 \description{
 Implements the correction for the integration constraint.
+}
+\examples{
+data(bunching_data)
+binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+                        binwidth = 50, bins_l = 20, bins_r = 20)
+prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+                                  bins_l = 20, bins_r = 20, poly = 4)
+firstpass <- fit_bunching(prepped_data$data_binned, prepped_data$model_formula)
+corrected <- do_correction(zstar = 10000, binwidth = 50,
+                           data_prepped = prepped_data$data_binned,
+                           firstpass_results = firstpass)
+paste0("Without correction, b = ", firstpass$b_estimate)
+paste0("With correction, b = ", round(corrected$b_corrected,3))
 }
 \seealso{
 \code{\link{bunchit}}, \code{\link{fit_bunching}}

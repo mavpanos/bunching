@@ -2,9 +2,8 @@
 #'
 #' Implements the correction for the integration constraint.
 #'
-#' @param thedata (binned) data that includes all variables necessary for fitting the model.
+#' @param data_prepped (binned) data that includes all variables necessary for fitting the model.
 #' @param firstpass_results initial bunching estimates without correction.
-#' @param max_iterations maximum number of iterations for counterfactual shifting.
 #' @inheritParams bunchit
 #' @inheritParams fit_bunching
 #' @seealso \code{\link{bunchit}}, \code{\link{fit_bunching}}
@@ -16,19 +15,33 @@
 #' \item{c0_corrected}{The counterfactual at zstar, corrected for the integration constraint.}
 #' \item{marginal_buncher_corrected}{The location (z value) of the marginal buncher, corrected for the integration constraint.}
 #' \item{alpha_corrected}{The estimated fraction of bunchers in the dominated region, corrected for the integration constraint (only in notch case).}
+
+#' @examples
+#' data(bunching_data)
+#' binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+#'                         binwidth = 50, bins_l = 20, bins_r = 20)
+#' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+#'                                   bins_l = 20, bins_r = 20, poly = 4)
+#' firstpass <- fit_bunching(prepped_data$data_binned, prepped_data$model_formula)
+#' corrected <- do_correction(zstar = 10000, binwidth = 50,
+#'                            data_prepped = prepped_data$data_binned,
+#'                            firstpass_results = firstpass)
+#' paste0("Without correction, b = ", firstpass$b_estimate)
+#' paste0("With correction, b = ", round(corrected$b_corrected,3))
 #' @export
 
 
 
-do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_iterations, notch, zD_bin) {
+do_correction <- function(zstar, binwidth, data_prepped, firstpass_results,
+                          correct_iter_max = 200, notch = FALSE, zD_bin = NA) {
     # get initial buncher value, bins of bunchers and model formula
     bunchers_excess_initial <- firstpass_results$bunchers_excess
     bins_bunchers <- firstpass_results$bins_bunchers
     model_formula <- firstpass_results$model_formula
 
     # calculate proportional shift upwards for those above zU
-    thedata$location_shift_sca <- thedata$bin_above_excluded/
-        sum(thedata$freq[thedata$bin_above_excluded == 1]) # total count above excluded region
+    data_prepped$location_shift_sca <- data_prepped$bin_above_excluded/
+        sum(data_prepped$freq[data_prepped$bin_above_excluded == 1]) # total count above excluded region
 
 
     # set some initial value
@@ -39,9 +52,9 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     bunchers_excess_updated <- bunchers_excess_initial # to pass as variable below
 
     iteration <- 1
-    while(b_diff >= 1 & iteration < max_iterations){
-        thedata$freq <- thedata$freq_orig * (1 + (bunchers_excess_updated*thedata$location_shift_sca))
-        iteration_results <- bunching::fit_bunching(thedata, model_formula, notch, zD_bin)
+    while(b_diff >= 1 & iteration < correct_iter_max){
+        data_prepped$freq <- data_prepped$freq_orig * (1 + (bunchers_excess_updated*data_prepped$location_shift_sca))
+        iteration_results <- bunching::fit_bunching(data_prepped, model_formula, notch, zD_bin)
         bunchers_excess_updated <- iteration_results$bunchers_excess
         c0_updated <- iteration_results$c0
         # add data to excess_updated_df
@@ -60,7 +73,7 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     # B corrected (excess mass without normalization)
     B_corrected <- bunchers_excess_updated
     # if we did correction, get last cf (this is the correct one) and assign to cf_graph for graphing
-    thedata$cf_density <- iteration_results$cf_density
+    data_prepped$cf_density <- iteration_results$cf_density
 
     # get alpha
     alpha_corrected <- iteration_results$alpha
@@ -69,12 +82,12 @@ do_correction <- function(zstar, binwidth, thedata, firstpass_results, max_itera
     mbuncher_corrected <- bunching::marginal_buncher(beta = b_corrected, binwidth = binwidth, zstar = zstar,
                                                      notch = notch, alpha = alpha_corrected)
     # get residuals
-    thedata$residuals <- thedata$cf_density - thedata$freq_orig
+    data_prepped$residuals <- data_prepped$cf_density - data_prepped$freq_orig
 
 
 
     # generate output (updated with correction)
-    output <- list("data" = thedata,
+    output <- list("data" = data_prepped,
                    "coefficients" = iteration_results$coefficients,
                    "b_corrected" = b_corrected,
                    "B_corrected" = B_corrected,

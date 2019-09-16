@@ -4,7 +4,7 @@
 \alias{fit_bunching}
 \title{Fit Bunching}
 \usage{
-fit_bunching(thedata, themodelformula, notch, zD_bin)
+fit_bunching(thedata, themodelformula, notch = FALSE, zD_bin = NA)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
@@ -32,6 +32,17 @@ fit_bunching(thedata, themodelformula, notch, zD_bin)
 }
 \description{
 Fit bunching model to (binned) data and estimate excess mass.
+}
+\examples{
+data(bunching_data)
+binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+                        binwidth = 50, bins_l = 20, bins_r = 20)
+prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+                                  bins_l = 20, bins_r = 20, poly = 4)
+fitted <- fit_bunching(thedata = prepped_data$data_binned,
+                       themodelformula = prepped_data$model_formula)
+# extract coefficients
+fitted$coefficients
 }
 \seealso{
 \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}

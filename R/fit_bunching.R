@@ -19,10 +19,22 @@
 #' \item{alpha}{The estimated fraction of bunchers in the dominated region (only in notch case.)}
 #' \item{zD_bin}{The value of the bin which zD falls in.}
 #' @seealso \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}
+#'
+#' @examples
+#' data(bunching_data)
+#' binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+#'                         binwidth = 50, bins_l = 20, bins_r = 20)
+#' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+#'                                   bins_l = 20, bins_r = 20, poly = 4)
+#' fitted <- fit_bunching(thedata = prepped_data$data_binned,
+#'                        themodelformula = prepped_data$model_formula)
+#' # extract coefficients
+#' fitted$coefficients
+
 #' @export
 
 
-fit_bunching <- function(thedata, themodelformula, notch, zD_bin) {
+fit_bunching <- function(thedata, themodelformula, notch = FALSE, zD_bin = NA) {
 
     # fit model, extract coefficients and residuals (for bootstrap later)
     model_fit <- stats::lm(themodelformula,thedata)

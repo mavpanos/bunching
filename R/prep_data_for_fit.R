@@ -8,10 +8,23 @@
 #' @return \code{data_binned} returns a list with the following:
 #' \item{data_binned}{The binned data with the extra columns necessary for model fitting, such as indicators for bunching region, fixed effects, etc.}
 #' \item{model_formula}{The formula used for model fitting.}
+#'
+#' @examples
+#' data(bunching_data)
+#' binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+#'                         binwidth = 50, bins_l = 20, bins_r = 20)
+#' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+#'                                   bins_l = 20, bins_r = 20, poly = 4,
+#'                                   bins_excl_l = 2, bins_excl_r = 3,
+#'                                   rn = c(250,500), extra_fe = 10200)
+#' head(prepped_data$data_binned)
+#' prepped_data$model_formula
+
 #' @export
 
-prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r, poly,
-                              bins_excl_l,  bins_excl_r, rn, extra_fe, correct_above_zu) {
+prep_data_for_fit <- function(data_binned, zstar, binwidth, bins_l, bins_r, poly = 9,
+                              bins_excl_l = 0,  bins_excl_r = 0, rn = NA, extra_fe = NA,
+                              correct_above_zu = FALSE) {
 
     # --------------------------------------------
     # bin relative to zstar

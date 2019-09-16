@@ -4,15 +4,22 @@
 \alias{plot_bunching}
 \title{Bunching Plot}
 \usage{
-plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
-  p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks, p_title_size,
-  p_axis_title_size, p_axis_val_size, p_freq_color, p_cf_color,
-  p_zstar_color, p_grid_major_y_color, p_freq_size, p_cf_size,
-  p_freq_msize, p_zstar_size, p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos,
-  p_b_e_ypos, p_b_e_size, t0 = NA, t1 = NA, notch = FALSE,
-  p_domregion_color = NA, p_domregion_ltype = NA, n_boot)
+plot_bunching(z_vector, binned_data, cf, zstar, binwidth,
+  bins_excl_l = 0, bins_excl_r = 0, p_title = "",
+  p_xtitle = deparse(substitute(z_vector)), p_ytitle = "Count",
+  p_miny = 0, p_maxy = NA, p_ybreaks = NA, p_title_size = 11,
+  p_axis_title_size = 10, p_axis_val_size = 8.5,
+  p_freq_color = "black", p_cf_color = "maroon",
+  p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+  p_freq_size = 0.5, p_freq_msize = 1, p_cf_size = 0.5,
+  p_zstar_size = 0.5, p_b = FALSE, b = NA, b_sd = NA,
+  p_e = FALSE, e = NA, e_sd = NA, p_b_e_xpos = NA,
+  p_b_e_ypos = NA, p_b_e_size = 3, t0 = NA, t1 = NA,
+  notch = FALSE, p_domregion_color = NA, p_domregion_ltype = NA)
 }
 \arguments{
+\item{z_vector}{a numeric vector of (unbinned) data.}
+
 \item{binned_data}{binned data with frequency and estimated counterfactual.}
 
 \item{cf}{the counterfactual to be plotted.}
@@ -53,9 +60,9 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 
 \item{p_freq_size}{plot's frequency line thickness. Default is 0.5.}
 
-\item{p_cf_size}{plot's counterfactual line thickness. Default is 0.5.}
-
 \item{p_freq_msize}{plot's frequency line marker size. Default is 1.}
+
+\item{p_cf_size}{plot's counterfactual line thickness. Default is 0.5.}
 
 \item{p_zstar_size}{plot's bunching region marker line thickness. Default is 0.5.}
 
@@ -86,14 +93,26 @@ plot_bunching(binned_data, cf, zstar, binwidth, bins_excl_l, bins_excl_r,
 \item{p_domregion_color}{plot's dominated region marker line color in notch setting. Default is "blue".}
 
 \item{p_domregion_ltype}{line type for the vertical line type marking the dominated region (zD) in the plot for notch settings. Default is "longdash".}
-
-\item{n_boot}{number of bootstrapped iterations. Default is 100.}
 }
 \value{
 \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching and elasticity estimate if specified.
 }
 \description{
 Creates the bunching plot.
+}
+\examples{
+data(bunching_data)
+binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+                        binwidth = 50, bins_l = 20, bins_r = 20)
+prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+                                  bins_l = 20, bins_r = 20, poly = 4)
+fitted <- fit_bunching(thedata = prepped_data$data_binned,
+                       themodelformula = prepped_data$model_formula)
+plot_bunching(z_vector = bunching_data$kink_vector,
+              binned_data = prepped_data$data_binned,
+              cf = fitted$cf_density, zstar = 10000,
+              binwidth = 50, bins_excl_l = 0 , bins_excl_r = 0,
+              b = 1.989, b_sd = 0.005, p_b = TRUE)
 }
 \seealso{
 \code{\link{bunchit}}

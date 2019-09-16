@@ -23,6 +23,9 @@ domregion(zstar, t0, t1, binwidth)
 \description{
 Estimate z (the value of z_vector) that demarcates the upper bound of the dominated region (in notch settings only).
 }
+\examples{
+domregion(zstar = 10000, t0 = 0, t1 = 0.2, binwidth = 50)
+}
 \seealso{
 \code{\link{bunchit}}
 }

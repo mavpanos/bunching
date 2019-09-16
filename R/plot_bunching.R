@@ -12,21 +12,54 @@
 #' @inheritParams bunchit
 #' @seealso \code{\link{bunchit}}
 #' @return  \code{plot_bunching} returns a plot with the frequency, counterfactual and bunching region demarcated. Can also include the bunching and elasticity estimate if specified.
+#'
+#' @examples
+#' data(bunching_data)
+#' binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+#'                         binwidth = 50, bins_l = 20, bins_r = 20)
+#' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+#'                                   bins_l = 20, bins_r = 20, poly = 4)
+#' fitted <- fit_bunching(thedata = prepped_data$data_binned,
+#'                        themodelformula = prepped_data$model_formula)
+#' plot_bunching(z_vector = bunching_data$kink_vector,
+#'               binned_data = prepped_data$data_binned,
+#'               cf = fitted$cf_density, zstar = 10000,
+#'               binwidth = 50, bins_excl_l = 0 , bins_excl_r = 0,
+#'               b = 1.989, b_sd = 0.005, p_b = TRUE)
 #' @export
-
-
-plot_bunching <- function(binned_data, cf, zstar,
-                          binwidth, bins_excl_l, bins_excl_r,
-                          p_title, p_xtitle, p_ytitle, p_miny, p_maxy, p_ybreaks,
-                          p_title_size, p_axis_title_size, p_axis_val_size,
-                          p_freq_color, p_cf_color, p_zstar_color, p_grid_major_y_color,
-                          p_freq_size, p_cf_size, p_freq_msize, p_zstar_size,
-                          p_b, b, b_sd, p_e, e, e_sd, p_b_e_xpos, p_b_e_ypos, p_b_e_size,
+#'
+plot_bunching <- function(z_vector, binned_data, cf, zstar,
+                          binwidth, bins_excl_l = 0, bins_excl_r = 0,
+                          p_title = "", p_xtitle = deparse(substitute(z_vector)), p_ytitle = "Count",
+                          p_miny = 0, p_maxy = NA, p_ybreaks = NA,
+                          p_title_size = 11, p_axis_title_size = 10, p_axis_val_size = 8.5,
+                          p_freq_color = "black", p_cf_color = "maroon",
+                          p_zstar_color = "red", p_grid_major_y_color = "lightgrey",
+                          p_freq_size = .5, p_freq_msize = 1, p_cf_size = .5, p_zstar_size = .5,
+                          p_b = FALSE, b = NA, b_sd = NA, p_e = FALSE, e = NA, e_sd = NA, p_b_e_xpos = NA,
+                          p_b_e_ypos = NA, p_b_e_size = 3,
                           t0 = NA, t1 = NA, notch = FALSE,
-                          p_domregion_color = NA, p_domregion_ltype = NA, n_boot) {
+                          p_domregion_color = NA, p_domregion_ltype = NA) {
 
-    # get upper bound to customize plot region
-    zmax <- max(binned_data$bin, na.rm = TRUE)
+
+    # if p_b_e_xpos/p_y_e_xpos not chosen, set them. get data ranges
+    zmin <- min(binned_data$bin, na.rm = TRUE)
+    zmax <- max(binned_data$bin,na.rm = TRUE)     # also needed to customize plot region
+    maxy <- max(binned_data$freq_orig, cf)
+
+    # bunching/elasticity estimates' x position
+    if(is.na(p_b_e_xpos)) {
+        if (notch == TRUE) {
+            p_b_e_xpos <- zmin + (zstar - zmin)*.3
+        } else {
+            p_b_e_xpos <- zstar + (zmax - zstar)*.7
+        }
+    }
+
+    # y position
+    if(is.na(p_b_e_ypos)) {
+        p_b_e_ypos <- maxy * .8
+    }
 
     # prepare data for graphing in "long" structure
     df_plot <- data.frame(cbind(binned_data[,c("bin", "freq_orig")], "cf_graph" = cf))
@@ -49,8 +82,8 @@ plot_bunching <- function(binned_data, cf, zstar,
         vlines_color <- c(vlines_color, p_domregion_color)
     }
 
-    # combine b and b_sd (e and e_sd) to pass to graph (if n_boot == 0, only report point estimate)
-    if(n_boot > 0) {
+    # combine b and b_sd (e and e_sd) to pass to graph (if b_sd is not NA, otherwise only report point estimate)
+    if(!is.na(b_sd)) {
         b_estimates <- paste0("b = ", round(b,3), "(", round(b_sd,3),  ")")
         e_estimates <- paste0("e = ", round(e,3), "(", round(e_sd, 3),  ")")
     } else {

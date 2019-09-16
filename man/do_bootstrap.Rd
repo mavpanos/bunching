@@ -4,8 +4,9 @@
 \alias{do_bootstrap}
 \title{Bootstrap}
 \usage{
-do_bootstrap(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
-  correction, correction_iterations, notch, zD_bin, seed)
+do_bootstrap(zstar, binwidth, firstpass_prep, residuals, n_boot = 100,
+  correct = TRUE, correct_iter_max = 200, notch = FALSE,
+  zD_bin = NA, seed = NA)
 }
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}
@@ -16,17 +17,17 @@ do_bootstrap(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
 
 \item{residuals}{residuals from (first pass) fitted bunching model.}
 
-\item{boot_iterations}{number of bootstrapped samples.}
+\item{n_boot}{number of bootstrapped iterations. Default is 100.}
 
-\item{correction}{whether to implement correction for integration constraint.}
+\item{correct}{implements correction for integration constraint. Default is TRUE.}
 
-\item{correction_iterations}{maximum iterations for integration constraint correction.}
+\item{correct_iter_max}{maximum iterations for integration constraint correction. Default is 200.}
 
 \item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
 \item{zD_bin}{the bin marking the upper end of the dominated region (notch case).}
 
-\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals).}
+\item{seed}{a numeric value for bootstrap seed (random re-sampling of residuals). Default is NA.}
 }
 \value{
 \code{do_bootstrap} returns a list with the following bootstrapped estimates:
@@ -41,6 +42,21 @@ do_bootstrap(zstar, binwidth, firstpass_prep, residuals, boot_iterations,
 }
 \description{
 Estimate bunching on bootstrapped samples, using residual-based bootstrapping with replacement.
+}
+\examples{
+data(bunching_data)
+binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
+                        binwidth = 50, bins_l = 20, bins_r = 20)
+prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
+                                  bins_l = 20, bins_r = 20, poly = 4)
+firstpass <- fit_bunching(prepped_data$data_binned, prepped_data$model_formula)
+residuals_for_boot <- fit_bunching(prepped_data$data_binned,
+                                   prepped_data$model_formula)$residuals
+boot_results <- do_bootstrap(zstar = 10000, binwidth = 50,
+                             firstpass_prep = prepped_data,
+                             residuals = residuals_for_boot,
+                             seed = 1)
+boot_results$b_sd
 }
 \seealso{
 \code{\link{bunchit}}, \code{\link{prep_data_for_fit}}

@@ -9,6 +9,9 @@
 #' @return  \code{util_diff} returns the difference in utility between zstar and z_I in notch setting.
 #' @seealso \code{\link{bunchit}}
 #' @seealso \code{\link{elasticity}}
+#'
+#' @examples
+#' notch_equation(e = .04, t0 = 0, t1 = .2, zstar = 10000, dzstar = 50)
 #' @export
 
 notch_equation <- function(e, t0, t1, zstar, dzstar) {
