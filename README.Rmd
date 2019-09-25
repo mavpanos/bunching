@@ -23,12 +23,12 @@ knitr::opts_chunk$set(fig.width=5, fig.height = 4, fig.align = "center",
 
 ## Installation
 
-<!--You can install the released version of bunching from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of bunching from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("bunching")
 ```
--->
+
 You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
