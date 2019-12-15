@@ -513,8 +513,8 @@ If you require further flexibility than what is provided, you can instead build 
 
 Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:10.1093/qje/qjr013>
 
-Clifford, S. and Mavrokonstantis, P. (2019) <https:https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
+Clifford, S. and Mavrokonstantis, P. (2019) <https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
 
-Mavrokonstantis, P. (2019) <https:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
+Mavrokonstantis, P. (2019) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
 
 
