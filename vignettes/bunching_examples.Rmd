@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the `bunching` Package"
 author: Panos Mavrokonstantis
-date: "2019-08-07"
+date: "2020-05-19"
 output: pdf_document
 header-includes: 
   - \usepackage{bbm}
@@ -256,7 +256,7 @@ The plot now also marks the bounds of the bunching region by default, using vert
 
 ### Kink example 3: Round number bunching
 
-Distributions may also exhibit bunching for reasons unrelated to the examined discontinuity. This is common for instance when analyzing earnings or profits, which tend to be set at or reported in round numbers. If $z^*$ is also at a round number, then some (or all) of the bunching may actually just be because of the round number bunching, and not of the discontinuity in question. For empirical examples, see for instance, Clifford & Mavrokonstantis (2019) and Mavrokonstantis (2019). In such cases, we want to residualize this effect by introducing controls. As an example, consider the following distribution:
+Distributions may also exhibit bunching for reasons unrelated to the examined discontinuity. This is common for instance when analyzing earnings or profits, which tend to be set at or reported in round numbers. If $z^*$ is also at a round number, then some (or all) of the bunching may actually just be because of the round number bunching, and not of the discontinuity in question. For empirical examples, see for instance, Clifford and Mavrokonstantis (2019) and Mavrokonstantis and Seibold (2020). In such cases, we want to residualize this effect by introducing controls. As an example, consider the following distribution:
 
 ```{r}
 # create round number bunching
@@ -298,7 +298,7 @@ Notice how the counterfactual at $z^*$ is much lower in this case, resulting in 
 
 ### Kink example 4: Other bunching mass in bandwidth
 
-Another case that may be empirically relevant is that of another bunching mass, unrelated to round number bunching, but present in the estimation bandwidth. This can occur when the kink of interest has been recently created by shifting a former kink in the vicinity, creating new bunching mass but also leaving behind residual mass, presumably because optimization frictions precluded those bunching at the former kink to de-bunch.\footnote{For a study analyzing such a setting, see Mavrokonstantis (2019).} Here is an example of such a case:
+Another case that may be empirically relevant is that of another bunching mass, unrelated to round number bunching, but present in the estimation bandwidth. This can occur when the kink of interest has been recently created by shifting a former kink in the vicinity, creating new bunching mass but also leaving behind residual mass, presumably because optimization frictions precluded those bunching at the former kink to de-bunch.\footnote{For a study analyzing such a setting, see Mavrokonstantis and Seibold (2020).} Here is an example of such a case:
 
 ```{r}
 # create extra bunching mass
@@ -515,6 +515,6 @@ Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:10.1093/qje
 
 Clifford, S. and Mavrokonstantis, P. (2019) <https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
 
-Mavrokonstantis, P. (2019) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
+Mavrokonstantis, P. and Seibold, A.  (2020) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
 
 

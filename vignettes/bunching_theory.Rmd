@@ -1,7 +1,7 @@
 ---
 title: "Optimization Theory Behind the `bunching` Package"
 author: Panos Mavrokonstantis
-date: "2019-08-07"
+date: "2020-05-19"
 output: rmarkdown::pdf_document
 header-includes: 
   - \usepackage{bbm}
@@ -32,7 +32,7 @@ The `bunching` package implements the bunching estimator, as developed (in diffe
 
 The goal of the estimator is to credibly estimate the resulting bunching (i.e. excess mass) at a particular level of a choice set that features a discontinuity, over and above what would have been observed in the absence of the discontinuity in the given constraint. The estimator solves a challenge of both causal inference and prediction, since we would like to (causally) attribute the excess mass to a particular discontinuity in a constraint, but cannot typically observe the counterfactual density in the absence of that constraint. The estimator's novelty is to provide a prediction method for this counterfactual by combining reduced-form methods with micro-economically founded optimization theory, and relies on minimal assumptions. 
 
-The vignette will explain the intuition using the original setting for which bunching was developed: analyzing behavioral responses to income taxes, and will closely follow Mavrokonstantis (2019). For a longer review, see Kleven (2016). Two main types of discontinuities are considered: kinks, i.e. changes in the slopes of choice sets, and notches, i.e. changes in the levels of choice sets. Both are supported by the `bunching` package.
+The vignette will explain the intuition using the original setting for which bunching was developed: analyzing behavioral responses to income taxes, and will closely follow Mavrokonstantis and Seibold (2020). For a longer review, see Kleven (2016). Two main types of discontinuities are considered: kinks, i.e. changes in the slopes of choice sets, and notches, i.e. changes in the levels of choice sets. Both are supported by the `bunching` package.
 
 # Theoretical foundations: Why would densities exhibit bunching?
 
@@ -101,7 +101,7 @@ or using our estimable quantities:
 
 $$e =- \frac{ ln\Big(1+\frac{B}{ h_0(z^*)z^*}\Big)}{ln\Big(\frac{1-t_{0}}{1-t_{1}}\Big)}$$
 
-Note that this can be interpreted as the "observed", but not necessarily the "structural" elasticity. The latter is a deep preference parameter that does not depend on the policy environment. Whether the observed is a good approximation of the structural elasticity will depend on whether there are any optimization frictions affecting (and here, attenuating) the observed bunching responses. To recover structural estimates in the presence of frictions, the observed bunching mass must be combined with a structural model that includes frictional parameters. For an example of such an approach, see Mavrokonstantis (2019) and Gelber et al. (2019).
+Note that this can be interpreted as the "observed", but not necessarily the "structural" elasticity. The latter is a deep preference parameter that does not depend on the policy environment. Whether the observed is a good approximation of the structural elasticity will depend on whether there are any optimization frictions affecting (and here, attenuating) the observed bunching responses. To recover structural estimates in the presence of frictions, the observed bunching mass must be combined with a structural model that includes frictional parameters. For an example of such an approach, see Gelber et al. (2019) and Mavrokonstantis and Seibold (2020).
 
 ## The case of notches
 
@@ -174,7 +174,7 @@ Kleven, H. and Waseem, M. (2013) <doi:10.1093/qje/qjt004>
 
 Kleven, H. (2018) <https://www.henrikkleven.com/uploads/3/7/3/1/37310663/notchelasticity_kleven_2018.pdf>
 
-Mavrokonstantis, P. (2019) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
+Mavrokonstantis, P. and Seibold, A. (2020) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
 
 Saez, E. (2010) <doi:10.1257/pol.2.3.180>
 

@@ -1,7 +1,7 @@
 Package: bunching
 Type: Package
 Title: Estimate Bunching
-Version: 0.8.4
+Version: 0.8.5
 Authors@R: person("Panos", "Mavrokonstantis", email = "mavpanos@gmail.com",
     role = c("aut", "cre"))
 Description: Implementation of the bunching estimator for kinks and notches. 
@@ -9,7 +9,7 @@ Description: Implementation of the bunching estimator for kinks and notches.
         It produces publication-ready plots in the style followed since Chetty et al. (2011) <DOI:10.1093/qje/qjr013>, with lots of functionality to set plot options.
 URL: http://github.com/mavpanos/bunching
 BugReports: https://github.com/mavpanos/bunching/issues
-License: MIT + file LICENSE
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: BB (>= 2014.10-1),
