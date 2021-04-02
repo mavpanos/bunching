@@ -100,7 +100,7 @@ fit_bunching <- function(thedata, themodelformula, notch = FALSE, zD_bin = NA) {
     c0 <- cf_bunchers/bins_bunchers
 
     # normalized b
-    b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
+    b_estimate <- as.numeric(sprintf("%.9f", bunchers_excess/c0))
 
     # alpha set to NA if we don't do notch below but need to pass to results
     alpha <- NA
@@ -117,7 +117,7 @@ fit_bunching <- function(thedata, themodelformula, notch = FALSE, zD_bin = NA) {
         # in notch case, instead of avg c0 get height of counterfactual at (zstar)
         c0 <- thedata$cf[thedata$zstar == 1]
         # normalized b
-        b_estimate <- as.numeric(sprintf("%.3f", bunchers_excess/c0))
+        b_estimate <- as.numeric(sprintf("%.9f", bunchers_excess/c0))
         # alpha: fraction in dominated region zstar to zD bin
         domregion_freq <- sum(thedata$freq_orig[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
         domregion_cf <- sum(thedata$cf[thedata$z_rel >= 1 & thedata$z_rel <= zD_bin])
