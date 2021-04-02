@@ -748,7 +748,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                  t0 = t0, t1 = t1, notch = notch, p_domregion_color = p_domregion_color,
                                  p_domregion_ltype = p_domregion_ltype)
     # set rounding
-    round_dp <- 3
+    round_dp <- 9
 
     output <- list("plot" = p,
                    "data" = firstpass_prep$data_binned,
