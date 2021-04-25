@@ -20,7 +20,8 @@
 #' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
 #'                                   bins_l = 20, bins_r = 20, poly = 4)
 #' fitted <- fit_bunching(thedata = prepped_data$data_binned,
-#'                        themodelformula = prepped_data$model_formula)
+#'                        themodelformula = prepped_data$model_formula,
+#'                        binwidth = 50)
 #' plot_bunching(z_vector = bunching_data$kink_vector,
 #'               binned_data = prepped_data$data_binned,
 #'               cf = fitted$cf_density, zstar = 10000,

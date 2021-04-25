@@ -511,7 +511,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
         zD <- NA
         zU_notch <- NA
         firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula,
-                                            notch, zD_bin)
+                                            binwidth, notch, zD_bin)
 
     } else if (notch == TRUE) {
         # calculate z_dominated for notches
@@ -527,7 +527,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                                                           poly, bins_excl_l, bins_excl_r, rn, extra_fe,
                                                           correct_above_zu)
             # fit firstpass model
-            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, binwidth, notch, zD_bin)
 
 
 
@@ -537,7 +537,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
             firstpass_prep <- bunching::prep_data_for_fit(binned_data, zstar, binwidth, bins_l, bins_r,
                                                           poly, bins_excl_l, bins_excl_r, rn, extra_fe,
                                                           correct_above_zu)
-            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, notch, zD_bin)
+            firstpass <- bunching::fit_bunching(firstpass_prep$data_binned, firstpass_prep$model_formula, binwidth, notch, zD_bin)
 
             # extract bunching mass below and missing mass above zstar
             B_below <- firstpass$B_zl_zstar
@@ -574,7 +574,7 @@ bunchit <- function(z_vector, binv = "median", zstar, binwidth, bins_l, bins_r,
                 # add next order bin_excl_r to formula
                 tmp_firstpass_prep$model_formula <- stats::as.formula(paste(Reduce(paste, deparse(tmp_firstpass_prep$model_formula)), newvar, sep = " + "))
                 # re-fit model using the now expanded zu
-                tmp_firstpass <- bunching::fit_bunching(tmp_firstpass_prep$data_binned, tmp_firstpass_prep$model_formula, notch, zD_bin)
+                tmp_firstpass <- bunching::fit_bunching(tmp_firstpass_prep$data_binned, tmp_firstpass_prep$model_formula, binwidth, notch, zD_bin)
                 # get new B below and M above
                 B_below <- tmp_firstpass$B_zl_zstar
                 M_above <- -tmp_firstpass$B_zstar_zu

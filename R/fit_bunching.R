@@ -3,6 +3,7 @@
 #' Fit bunching model to (binned) data and estimate excess mass.
 #' @param thedata (binned) data that includes all variables necessary for fitting the model.
 #' @param themodelformula formula to fit.
+#' @param binwidth a numeric value for the width of each bin.
 #' @param zD_bin the bin marking the upper end of the dominated region (notch case).
 #' @inheritParams bunchit
 #' @return \code{fit_bunching} returns a list of the following results:
@@ -27,14 +28,15 @@
 #' prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
 #'                                   bins_l = 20, bins_r = 20, poly = 4)
 #' fitted <- fit_bunching(thedata = prepped_data$data_binned,
-#'                        themodelformula = prepped_data$model_formula)
+#'                        themodelformula = prepped_data$model_formula,
+#'                        binwidth = 50)
 #' # extract coefficients
 #' fitted$coefficients
 
 #' @export
 
 
-fit_bunching <- function(thedata, themodelformula, notch = FALSE, zD_bin = NA) {
+fit_bunching <- function(thedata, themodelformula, binwidth, notch = FALSE, zD_bin = NA) {
 
     # fit model, extract coefficients and residuals (for bootstrap later)
     model_fit <- stats::lm(themodelformula,thedata)
@@ -62,11 +64,9 @@ fit_bunching <- function(thedata, themodelformula, notch = FALSE, zD_bin = NA) {
 
     # get zstar value
     zstarvalue <- thedata$bin[thedata$zstar == 1]
-    # get binwidth value (difference between binvalue of consecutive rows)
-    binwidthvalue <- thedata$bin[2] - thedata$bin[1]
     # use these to make indicator for zl_zstar and zstar_zu
-    thedata$zl_zstar <- ifelse((thedata$bin >= zstarvalue - (binwidthvalue * (bins_zl_zstar - 1))) & (thedata$bin <= zstarvalue), 1, 0)
-    thedata$zstar_zu <- ifelse((thedata$bin <= zstarvalue + (binwidthvalue * bins_zstar_zu)) & (thedata$bin > zstarvalue), 1, 0)
+    thedata$zl_zstar <- ifelse((thedata$bin >= zstarvalue - (binwidth * (bins_zl_zstar - 1))) & (thedata$bin <= zstarvalue), 1, 0)
+    thedata$zstar_zu <- ifelse((thedata$bin <= zstarvalue + (binwidth * bins_zstar_zu)) & (thedata$bin > zstarvalue), 1, 0)
 
     # use these to make indicator by bunching region
     thedata$bunch_region <- ifelse(thedata$zl_zstar == 1, "zl_zstar",

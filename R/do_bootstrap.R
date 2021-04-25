@@ -55,7 +55,7 @@ do_bootstrap <- function(zstar, binwidth, firstpass_prep, residuals, n_boot = 10
         # make this "freq" so we can pass to fit_bunching which requires "freq ~ ..."
         data_for_boot$freq <- data_for_boot$freq_orig
         # next, re-run first pass on this new series
-        booted_firstpass <- bunching::fit_bunching(data_for_boot, model, notch, zD_bin)
+        booted_firstpass <- bunching::fit_bunching(data_for_boot, model, binwidth, notch, zD_bin)
 
         # if no need for integration correction, just take this b
         if(correct == FALSE) {
