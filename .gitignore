@@ -11,3 +11,6 @@ vignettes/jpegs
 vignettes/figure
 data/create_example_data.R
 man/figures
+old/
+..Rcheck/
+sandbox/
