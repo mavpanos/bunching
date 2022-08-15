@@ -4,8 +4,17 @@
 \alias{elasticity}
 \title{Elasticity}
 \usage{
-elasticity(beta, binwidth, zstar, t0, t1, notch = FALSE,
-  e_parametric = FALSE, e_parametric_lb = 1e-04, e_parametric_ub = 3)
+elasticity(
+  beta,
+  binwidth,
+  zstar,
+  t0,
+  t1,
+  notch = FALSE,
+  e_parametric = FALSE,
+  e_parametric_lb = 1e-04,
+  e_parametric_ub = 3
+)
 }
 \arguments{
 \item{beta}{normalized excess mass.}

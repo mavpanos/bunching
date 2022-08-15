@@ -18,7 +18,7 @@ Depends: BB (>= 2014.10-1),
     R (>= 2.10),
     stats,
     tidyr (>= 0.8.2)    
-RoxygenNote: 6.1.1.9000
+RoxygenNote: 7.2.1
 Suggests: 
     knitr,
     rmarkdown,

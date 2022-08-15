@@ -3,7 +3,6 @@
 \docType{package}
 \name{bunching}
 \alias{bunching}
-\alias{bunching-package}
 \title{bunching: Analyze bunching at a kink or notch}
 \description{
 \if{html}{\figure{bunching_logo.png}{options: align = "right" height="140"}}

@@ -4,9 +4,19 @@
 \alias{prep_data_for_fit}
 \title{Data Preparation}
 \usage{
-prep_data_for_fit(data_binned, zstar, binwidth, bins_l, bins_r, poly = 9,
-  bins_excl_l = 0, bins_excl_r = 0, rn = NA, extra_fe = NA,
-  correct_above_zu = FALSE)
+prep_data_for_fit(
+  data_binned,
+  zstar,
+  binwidth,
+  bins_l,
+  bins_r,
+  poly = 9,
+  bins_excl_l = 0,
+  bins_excl_r = 0,
+  rn = NA,
+  extra_fe = NA,
+  correct_above_zu = FALSE
+)
 }
 \arguments{
 \item{data_binned}{dataframe of counts per bin}

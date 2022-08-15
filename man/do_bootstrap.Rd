@@ -4,9 +4,18 @@
 \alias{do_bootstrap}
 \title{Bootstrap}
 \usage{
-do_bootstrap(zstar, binwidth, firstpass_prep, residuals, n_boot = 100,
-  correct = TRUE, correct_iter_max = 200, notch = FALSE,
-  zD_bin = NA, seed = NA)
+do_bootstrap(
+  zstar,
+  binwidth,
+  firstpass_prep,
+  residuals,
+  n_boot = 100,
+  correct = TRUE,
+  correct_iter_max = 200,
+  notch = FALSE,
+  zD_bin = NA,
+  seed = NA
+)
 }
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}

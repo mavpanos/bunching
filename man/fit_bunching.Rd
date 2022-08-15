@@ -4,12 +4,14 @@
 \alias{fit_bunching}
 \title{Fit Bunching}
 \usage{
-fit_bunching(thedata, themodelformula, notch = FALSE, zD_bin = NA)
+fit_bunching(thedata, themodelformula, binwidth, notch = FALSE, zD_bin = NA)
 }
 \arguments{
 \item{thedata}{(binned) data that includes all variables necessary for fitting the model.}
 
 \item{themodelformula}{formula to fit.}
+
+\item{binwidth}{a numeric value for the width of each bin.}
 
 \item{notch}{whether analysis is for a kink or notch. Default is FALSE (kink).}
 
@@ -40,7 +42,8 @@ binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
 prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
                                   bins_l = 20, bins_r = 20, poly = 4)
 fitted <- fit_bunching(thedata = prepped_data$data_binned,
-                       themodelformula = prepped_data$model_formula)
+                       themodelformula = prepped_data$model_formula,
+                       binwidth = 50)
 # extract coefficients
 fitted$coefficients
 }

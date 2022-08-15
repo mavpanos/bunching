@@ -4,11 +4,13 @@
 \name{bunching_data}
 \alias{bunching_data}
 \title{Simulated data for bunching examples.}
-\format{A data frame with 27510 rows and 2 variables:
+\format{
+A data frame with 27510 rows and 2 variables:
 \describe{
   \item{kink_vector}{simulated earnings vector, suitable for examples of bunching at kinks}.
   \item{notch_vector}{simulated earnings vector, suitable for examples of bunching at notches}.
-}}
+}
+}
 \usage{
 bunching_data
 }

@@ -4,8 +4,15 @@
 \alias{do_correction}
 \title{Integration Constraint Correction}
 \usage{
-do_correction(zstar, binwidth, data_prepped, firstpass_results,
-  correct_iter_max = 200, notch = FALSE, zD_bin = NA)
+do_correction(
+  zstar,
+  binwidth,
+  data_prepped,
+  firstpass_results,
+  correct_iter_max = 200,
+  notch = FALSE,
+  zD_bin = NA
+)
 }
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}
