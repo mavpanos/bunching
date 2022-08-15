@@ -57,7 +57,7 @@ kink3 <- bunchit(z_vector = bunching_data$kink_vector, zstar = 10000, binwidth =
                  bins_l = 20, bins_r = 20, t0 = 0, t1 = .2)
 elasticity <- ((kink3$marginal_buncher - 10000)/10000)/.2
 test_that("non-parametric elasticity in kink setting is correct", {
-    expect_equal(kink3$e, round(elasticity,3))
+    expect_equal(round(kink3$e,3), round(elasticity,3))
 })
 
 
@@ -70,7 +70,7 @@ dt <- .2
 t0 = 0
 elasticity <- -log(1+Dz_over_zstar)/log(1-(dt/(1-t0)))
 test_that("non-parametric elasticity in kink setting is correct", {
-    expect_equal(kink4$e, round(elasticity,3))
+    expect_equal(round(kink4$e,3), round(elasticity,3))
 })
 
 
@@ -168,7 +168,7 @@ dt = 0.25 - 0.18
 t0 = .18
 elasticity <- (1/(2+Dz_over_zstar))*(Dz_over_zstar**2)/(dt/(1-t0))
 test_that("non-parametric elasticity in notch setting is correct", {
-    expect_equal(notch3$e, round(elasticity,3))
+    expect_equal(round(notch3$e,3), round(elasticity,3))
 })
 
 # test that parametric elasticity for notches fails correctly (hits lower bound)
@@ -176,7 +176,7 @@ test_that("parametric elasticity correctly hits lower bound when no solution", {
     notch4 <- suppressWarnings(bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth = 50,
                                        bins_l = 40, bins_r = 40, t0 = 0.9, t1 = 0.95, notch = TRUE,
                                        correct = FALSE, n_boot = 0, e_parametric = TRUE))
-    expect_equal(notch4$e, 0)
+    expect_equal(round(notch4$e), 0)
 })
 
 
