@@ -8,7 +8,7 @@
 
 <div>
 
-<img src='man/figures/bunching_logo.png' style='float: right; width: 20%; height=20%; alt="bunching logo"' />
+<img src='man/figures/bunching_logo.png' style='float: right; width: 20%; height=20%; alt="bunching logo"'>
 
 <!-- badges: start -->
 <!-- badges: end -->
