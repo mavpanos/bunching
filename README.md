@@ -3,10 +3,15 @@
 
 # bunching
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bunching)](https://cran.r-project.org/package=bunching)
+[![CRAN_Downloads_Badge](https://cranlogs.r-pkg.org/badges/bunching)](https://cranlogs.r-pkg.org/badges/bunching)
+
+<img src='man/figures/bunching_logo.png' style='float: right; width: 20%; height=20%; alt="bunching logo"' />
+
 <!-- badges: start -->
 <!-- badges: end -->
 
-## Overview <img src='man/figures/bunching_logo.png' style='float: right; width: 20%; height=20%; alt="bunching logo"' />
+## Overview
 
 `bunching` allows the user to conduct bunching analysis in a kink or
 notch setting and returns a rich set of results. Important features of
