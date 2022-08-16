@@ -8,7 +8,12 @@
 
 ## Overview
 
+<div>
+
 <img src='man/figures/bunching_logo.png' style='float: right; width: 20%' />
+
+</div>
+
 `bunching` allows the user to conduct bunching analysis in a kink or
 notch setting and returns a rich set of results. Important features of
 the package include functionality to control for (different levels of)
