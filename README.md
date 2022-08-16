@@ -1,10 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# bunching <img src='man/figures/bunching_logo.png' style='float: right; width: 20%' />
+# bunching
 
-<!-- badges: start -->
-<!-- badges: end -->
+<img src='man/figures/bunching_logo.png' style='float: right; width: 20%' />
+<!-- badges: start --> <!-- badges: end -->
 
 ## Overview
 
