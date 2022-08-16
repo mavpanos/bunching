@@ -1,18 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# bunching
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-## Overview
+\# bunching
 
 <div>
 
 <img src='man/figures/bunching_logo.png' style='float: right; width: 20%' />
 
 </div>
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+## Overview
 
 `bunching` allows the user to conduct bunching analysis in a kink or
 notch setting and returns a rich set of results. Important features of
