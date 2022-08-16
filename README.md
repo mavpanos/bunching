@@ -6,7 +6,9 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bunching)](https://cran.r-project.org/package=bunching)
 [![CRAN_Downloads_Badge](https://cranlogs.r-pkg.org/badges/bunching)](https://cranlogs.r-pkg.org/badges/bunching)
 
-<img src='man/figures/bunching_logo.png' align='right' height='140' />
+<div>
+
+<img src='man/figures/bunching_logo.png' style='float: right; width: 20%; height=20%; alt="bunching logo"' />
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -30,6 +32,8 @@ provides an exploratory viusalization function to speed up pre-analysis,
 and produces plots in the [Chetty et
 al. (2011)](https://doi.org/10.1093/qje/qjr013) style with lots of
 options on editing the plot appearance.
+
+</div>
 
 ## Installation
 
