@@ -4,8 +4,15 @@
 \alias{do_correction}
 \title{Integration Constraint Correction}
 \usage{
-do_correction(zstar, binwidth, data_prepped, firstpass_results,
-  correct_iter_max = 200, notch = FALSE, zD_bin = NA)
+do_correction(
+  zstar,
+  binwidth,
+  data_prepped,
+  firstpass_results,
+  correct_iter_max = 200,
+  notch = FALSE,
+  zD_bin = NA
+)
 }
 \arguments{
 \item{zstar}{a numeric value for the the bunching point.}
@@ -41,7 +48,9 @@ binned_data <- bin_data(z_vector = bunching_data$kink, zstar = 10000,
                         binwidth = 50, bins_l = 20, bins_r = 20)
 prepped_data <- prep_data_for_fit(binned_data, zstar = 10000, binwidth = 50,
                                   bins_l = 20, bins_r = 20, poly = 4)
-firstpass <- fit_bunching(prepped_data$data_binned, prepped_data$model_formula)
+firstpass <- fit_bunching(prepped_data$data_binned,
+                          prepped_data$model_formula,
+                          binwidth = 50)
 corrected <- do_correction(zstar = 10000, binwidth = 50,
                            data_prepped = prepped_data$data_binned,
                            firstpass_results = firstpass)

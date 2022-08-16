@@ -117,7 +117,7 @@ plot_bunching <- function(z_vector, binned_data, cf, zstar,
                        panel.grid = element_blank(),
                        panel.border = element_blank()) +
         ggplot2::labs(title = p_title, x = p_xtitle, y = p_ytitle) +
-        ggplot2::guides(fill = FALSE, color = FALSE)
+        ggplot2::guides(fill = "none", color = "none")
 
     # pass choice of ylim and p_ybreaks
     if(sum(is.na(p_ybreaks)) == length(p_ybreaks)) {

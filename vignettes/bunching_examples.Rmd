@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the `bunching` Package"
 author: Panos Mavrokonstantis
-date: "2020-05-19"
+date: "2022-08-16"
 output: pdf_document
 header-includes: 
   - \usepackage{bbm}
@@ -511,10 +511,10 @@ If you require further flexibility than what is provided, you can instead build 
 # References
 
 
-Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <doi:10.1093/qje/qjr013>
+Chetty, R., Friedman, J.N., Olsen, T. and Pistafferi, L. (2011) <https://doi.org/10.1093/qje/qjr013>
 
-Clifford, S. and Mavrokonstantis, P. (2019) <https://www.economics.ox.ac.uk/materials/working_papers/5082/cliffordmavrokonstantishybridpolicy.pdf>
+Clifford, S. and Mavrokonstantis, P. (2021) <https://doi.org/10.1016/j.jpubeco.2021.104519>
 
-Mavrokonstantis, P. and Seibold, A.  (2020) <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3448467>
+Mavrokonstantis, P. and Seibold, A.  (2022) <http://dx.doi.org/10.2139/ssrn.4127660>
 
 
