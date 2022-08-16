@@ -8,9 +8,6 @@
 
 <img src='man/figures/bunching_logo.png' style='width: 20%; height: 20%' />
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 ## Overview
 
 `bunching` allows the user to conduct bunching analysis in a kink or
