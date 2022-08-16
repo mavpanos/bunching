@@ -1,10 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# bunching <img src='man/figures/bunching_logo.png' align="right" height="160" />
+# bunching <img src='man/figures/bunching_logo.png' style='text-align: right; height: 160' />
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 ## Overview
@@ -23,9 +22,9 @@ dominated region, fraction in dominated region in notch setting, etc.)
 which can be used for further analysis, e.g. incorporation into
 structural models that rely on bunching moments. The package also
 provides an exploratory viusalization function to speed up pre-analysis,
-and produces plots in the [Chetty et al.
-(2011)](https://doi.org/10.1093/qje/qjr013) style with lots of options
-on editing the plot appearance.
+and produces plots in the [Chetty et
+al. (2011)](https://doi.org/10.1093/qje/qjr013) style with lots of
+options on editing the plot appearance.
 
 ## Installation
 
