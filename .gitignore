@@ -15,3 +15,4 @@ old/
 ..Rcheck/
 sandbox/
 .DS_Store
+.idea/
