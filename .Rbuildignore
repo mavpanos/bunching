@@ -8,3 +8,5 @@
 ^create_sticker$
 ^README\.Rmd$
 ^cran-comments.md$
+^vignettes/bunching_theory.pdf$
+^vignettes/bunching_examples.pdf$
