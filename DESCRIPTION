@@ -17,10 +17,10 @@ Depends: BB (>= 2014.10-1),
     ggplot2 (>= 3.1.1),
     R (>= 2.10),
     stats,
-    tidyr (>= 0.8.2)    
+    tidyr (>= 0.8.2)
 RoxygenNote: 7.2.1
 Suggests: 
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown

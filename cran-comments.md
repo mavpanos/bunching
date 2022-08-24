@@ -1,9 +1,23 @@
-## Resubmission
+# submission - v0.8.6
+
+## Updates
 This is a new submission, for package already on CRAN.
 In this new submission, I have: 
 * updated the licence
 * fixed typos in vignettes
+* fixed examples
+* updated vignette references
+* updated tests
+* updated deprecated ggplot2 options
+* made documentation compatible with HTML5
 
+## Test environments
+* local OS Darwin install, R 4.2.0
+* debian (R-hub)
+* win-builder (R-hub)
+
+
+# submission - v0.8.4
 
 ## Test environments
 * local OS Mojave install, R  3.6.1
