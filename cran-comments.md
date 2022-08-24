@@ -1,12 +1,10 @@
 # submission - v0.8.6
 
 ## Updates
-This is a new submission, for package already on CRAN.
-In this new submission, I have: 
-* updated the licence
+This is a resubmission. In this new submission, I have: 
+* updated vignette references
 * fixed typos in vignettes
 * fixed examples
-* updated vignette references
 * updated tests
 * updated deprecated ggplot2 options
 * made documentation compatible with HTML5
