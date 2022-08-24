@@ -82,6 +82,7 @@
 #' @seealso \code{\link{plot_hist}}
 #'
 #' @examples
+#' \dontrun{
 #' # First, load the example data
 #' data(bunching_data)
 #'
@@ -135,7 +136,7 @@
 #'                  correct = FALSE, notch = TRUE,p_b = TRUE, p_b_e_xpos = 8900,
 #'                  n_boot = 0)
 #' notch$plot
-
+#'}
 
 #' @export
 

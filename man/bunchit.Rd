@@ -181,6 +181,7 @@ Implement the bunching estimator in a kink or notch setting.
 bunchit implements the bunching estimator in both kink and notch settings. It bins a given numeric vector, fits a counterfactual density, and estimates the bunching mass (normalized and not), the elasticity and the location of the marginal buncher. In the case of notches, it also finds the dominated region and estimates the fraction of observations located in it.
 }
 \examples{
+\dontrun{
 # First, load the example data
 data(bunching_data)
 
@@ -234,6 +235,7 @@ notch <- bunchit(z_vector = bunching_data$notch_vector, zstar = 10000, binwidth 
                  correct = FALSE, notch = TRUE,p_b = TRUE, p_b_e_xpos = 8900,
                  n_boot = 0)
 notch$plot
+}
 }
 \seealso{
 \code{\link{plot_hist}}
