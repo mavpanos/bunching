@@ -11,3 +11,4 @@
 ^vignettes/bunching_theory.pdf$
 ^vignettes/bunching_examples.pdf$
 ^.idea$
+^CRAN-SUBMISSION$
