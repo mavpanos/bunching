@@ -5,6 +5,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/bunching)](https://cran.r-project.org/package=bunching)
 [![CRAN_Downloads_Badge](https://cranlogs.r-pkg.org/badges/bunching)](https://cranlogs.r-pkg.org/badges/bunching)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/bunching)](https://CRAN.R-project.org/package=bunching)
 
 <img src='man/figures/bunching_logo.png' style='width: 20%; height: 20%' />
 
