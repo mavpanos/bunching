@@ -16,3 +16,5 @@ old/
 sandbox/
 .DS_Store
 .idea/
+paper-submission/paper-example/
+.github/
