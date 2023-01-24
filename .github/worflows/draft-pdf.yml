@@ -1,4 +1,8 @@
-on: [push]
+name: JOSS Paper Draft Build
+
+on:
+  push:
+    branches: [ paper ]
 
 jobs:
   paper:
