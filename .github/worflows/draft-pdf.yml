@@ -2,7 +2,8 @@ name: JOSS Paper Draft Build
 
 on:
   push:
-    branches: [ paper ]
+    branches:
+        - "paper"
 
 jobs:
   paper:
