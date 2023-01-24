@@ -18,7 +18,7 @@ authors:
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 3
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+ - name:  Lyman Spitzer, Jr. Fellow, Princeton University, USA
    index: 1
  - name: Institution Name, Country
    index: 2
